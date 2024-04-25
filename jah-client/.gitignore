@@ -1,6 +1,8 @@
 target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
+#!.mvn/wrapper/maven-wrapper.jar
+#!**/src/main/**/target/
+#todo will it work ingoring .mvn here?
+/.mvn
 !**/src/test/**/target/
 /mvnw
 /mvnw.cmd
