@@ -1,6 +1,10 @@
 # Default ignored files
 /shelf/
 /workspace.xml
+/aws.xml
+/dbnavigator.xml
+/git_toolbox_prj.xml
+/jpa-buddy.xml
 # Editor-based HTTP Client requests
 /httpRequests/
 # Datasource local storage ignored files
