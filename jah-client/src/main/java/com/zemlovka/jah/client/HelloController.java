@@ -1,4 +1,4 @@
-package com.zemlovka.jah.client.client;
+package com.zemlovka.jah.client;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

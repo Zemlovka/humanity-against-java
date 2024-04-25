@@ -1,4 +1,4 @@
-package com.zemlovka.jah.client.client;
+package com.zemlovka.jah.client;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
