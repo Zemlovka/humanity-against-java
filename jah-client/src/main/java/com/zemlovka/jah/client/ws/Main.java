@@ -13,9 +13,6 @@ public class Main {
 
     public static void main(String[] args) {
         log.info("Client started.");
-
-
-
         try (
             Scanner scanner = new Scanner(System.in);
             Socket clientSocket = new Socket("127.0.0.1", 8081);
