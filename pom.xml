@@ -9,9 +9,9 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>jah-server</module>
-        <module>jah-client</module>
-        <module>jah-utils</module>
+        <module>haj-server</module>
+        <module>haj-client</module>
+        <module>haj-utils</module>
     </modules>
 
     <properties>
