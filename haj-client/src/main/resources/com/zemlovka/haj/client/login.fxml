@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" prefHeight="600.0" prefWidth="900.0" spacing="20.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zemlovka.haj.client.fx.HelloController">
+<VBox alignment="CENTER" prefHeight="600.0" prefWidth="900.0" spacing="20.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zemlovka.haj.client.fx.AppController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
@@ -26,15 +26,15 @@
             </VBox>
             <VBox prefHeight="223.0" prefWidth="300.0">
                <children>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" styleClass="login-input-form">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <TextField prefWidth="125.0" promptText="Username">
+                        <TextField id="usernameInputField" fx:id="usernameInputField" prefWidth="125.0" promptText="Username">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin></TextField>
                         <HBox prefHeight="5.0" prefWidth="300.0">
                            <children>
-                              <Label id="login-input-text" prefHeight="18.0" prefWidth="175.0" text="By playing, you agree to our">
+                              <Label id="loginInputText" prefHeight="18.0" prefWidth="175.0" text="By playing, you agree to our">
                                  <font>
                                     <Font size="9.0" />
                                  </font>
@@ -53,7 +53,7 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="204.0" prefWidth="300.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="37.0" prefWidth="86.0" text="Let's play!" />
+                        <Button mnemonicParsing="false" onAction="#onButtonClick" prefHeight="37.0" prefWidth="86.0" text="Let's play!" />
                      </children>
                   </VBox>
                </children></VBox>

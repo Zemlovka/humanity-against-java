@@ -9,10 +9,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 
-public class HelloApplication extends Application {
+public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/com/zemlovka/haj/client/hello-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/com/zemlovka/haj/client/login.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 900, 600);
 
         scene.getStylesheets().add(getClass().getResource("/com/zemlovka/haj/client/styles.css").toExternalForm());
@@ -21,7 +21,8 @@ public class HelloApplication extends Application {
         //Font boldFont = Font.loadFont(getClass().getResourceAsStream("/YourFontCollection.ttf#Bold"), 14);
         //Font italicFont = Font.loadFont(getClass().getResourceAsStream("/YourFontCollection.ttf#Italic"), 14);
 
-        stage.setTitle("Hello!");
+
+        stage.setTitle("Humanity Against Java");
         stage.setScene(scene);
         stage.show();
     }

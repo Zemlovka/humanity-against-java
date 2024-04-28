@@ -1,6 +1,8 @@
+/*REUSABLE COMPONENTS*/
 .root, .label, .text-field, .hyperlink, .button {
     -fx-font-family: "Montserrat"; /* Replace "Your Font Name" with the actual font name */
 }
+
 .background {
     -fx-background-image: url("background.png"); /* Background image */
 }
@@ -12,14 +14,14 @@
 .dialog-form {
     -fx-background-color: rgba(31, 28, 32, 0.9); /* Darkish, slightly transparent background */
     -fx-background-radius: 10px; /* Rounded corners */
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0.5, 0, 0) /* Drop shadow effect */
-    , blur(5px); /* Blur effect */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 10, 0.5, 0, 0) /* Drop shadow effect */, blur(5px); /* Blur effect */
 }
 
 
 .label {
     -fx-text-fill: white;
 }
+
 #login-input-text {
     -fx-text-fill: #D8D8D8;
 }
@@ -32,11 +34,11 @@
 }
 
 
-
 .hyperlink {
     /* -fx-font-size: 10px; */
     -fx-text-fill: #E37107; /* Text color */
 }
+
 .hyperlink:hover {
     -fx-scale-x: 1; /* Prevent hover enlargement */
     -fx-scale-y: 1; /* Prevent hover enlargement */
