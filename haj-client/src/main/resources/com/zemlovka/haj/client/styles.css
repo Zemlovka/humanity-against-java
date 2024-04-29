@@ -5,6 +5,8 @@
 
 .background {
     -fx-background-image: url("background.png"); /* Background image */
+    -fx-background-position: center;
+    -fx-background-color: #191D2F;
 }
 
 #logo {
