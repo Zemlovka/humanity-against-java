@@ -7,5 +7,6 @@ module com.zemlovka.jah.client {
 
     opens com.zemlovka.haj.client to javafx.fxml;
     exports com.zemlovka.haj.client.fx;
+    exports com.zemlovka.haj.client.ws;
     opens com.zemlovka.haj.client.fx to javafx.fxml;
 }

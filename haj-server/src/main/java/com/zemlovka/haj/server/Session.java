@@ -138,6 +138,7 @@ public class Session {
                 continue;
             }
 
+            
             log.warn("Serveru byl zaslan neznamy prikaz.");
             sendMessage("ERR Tento prikaz neznam.");
         }

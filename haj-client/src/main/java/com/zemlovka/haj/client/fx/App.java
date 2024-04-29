@@ -1,6 +1,8 @@
 package com.zemlovka.haj.client.fx;
 
 import com.zemlovka.haj.client.ws.Client;
+import com.zemlovka.haj.client.ws.Listener;
+import com.zemlovka.haj.client.ws.WSActions;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
@@ -12,24 +14,24 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.Objects;
-
+import java.util.Scanner;
 
 
 public class App extends Application {
 
-    String CSS = Objects.requireNonNull(getClass().getResource("/com/zemlovka/haj/client/styles.css")).toExternalForm();
+    public static final String CSS = Objects.requireNonNull(App.class.getResource("/com/zemlovka/haj/client/styles.css")).toExternalForm();
 
     private Stage primaryStage;
+    private WSActions wsActions;
 
 
     private ObservableList<Parent> previousScenes = FXCollections.observableArrayList();
 
     @Override
     public void start(Stage stage) throws IOException {
-
-        Client client = new Client();
-        client.run(); //will it work?
 
         primaryStage = stage;
 
@@ -43,8 +45,6 @@ public class App extends Application {
         //menuScene.getStylesheets().add(CSS);
 
         //controllers (I haven't deleted them, because I don't know if they are needed in future)
-        //LoginController loginController = loginLoader.getController();
-        //loginController.setPrimaryStage(primaryStage);
 
         Font.loadFont(getClass().getResourceAsStream("/com/zemlovka/haj/client/Montserrat/static/Montserrat-Regular.ttf"), 14); // Load font collection
         Font regularFont = Font.loadFont(getClass().getResourceAsStream("/YourFontCollection.ttf#Regular"), 14);
@@ -55,9 +55,15 @@ public class App extends Application {
         primaryStage.setTitle("Humanity Against Java");
         primaryStage.setScene(loginScene);
         primaryStage.show();
+
+
+        WSActions wsActions = new WSActions();
+        LoginController loginController = loginLoader.getController();
+        loginController.setWsActions(wsActions);
     }
 
     public static void main(String[] args) {
         launch();
+
     }
 }

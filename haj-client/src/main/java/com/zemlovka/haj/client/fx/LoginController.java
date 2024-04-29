@@ -1,6 +1,7 @@
 package com.zemlovka.haj.client.fx;
 
 import com.zemlovka.haj.client.ws.Client;
+import com.zemlovka.haj.client.ws.WSActions;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
@@ -23,6 +24,7 @@ public class LoginController {
 
     private static final Logger log = LoggerFactory.getLogger(Client.class);
 
+    private WSActions wsActions;
     @FXML
     private TextField usernameInputField;
     @FXML
@@ -41,6 +43,7 @@ public class LoginController {
             LayoutUtil.showAlert(Alert.AlertType.ERROR, "Error", "Username cannot be empty");
         } else {
             log.info("Username set: {}", username);
+            wsActions.connect(username);
             // Proceed with further actions
             try {
                 //changeLayout();
@@ -60,5 +63,9 @@ public class LoginController {
         Scene scene = new Scene(root, 600, 600);
         tacStage.setScene(scene);
         tacStage.show();
+    }
+
+    public void setWsActions(WSActions wsActions) {
+        this.wsActions = wsActions;
     }
 }

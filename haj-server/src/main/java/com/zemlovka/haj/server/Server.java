@@ -24,7 +24,7 @@ public class Server {
         sessions = new HashSet<>();
         messages = new LinkedList<>();
 
-        acceptor = new Acceptor(8081, this);
+        acceptor = new Acceptor(8082, this);
         sender = new Sender(this);
     }
 
