@@ -1,6 +1,8 @@
 package com.zemlovka.haj.client.fx;
 
 import com.zemlovka.haj.client.ws.Client;
+import javafx.animation.FadeTransition;
+import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,7 +10,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +25,8 @@ public class LoginController {
 
     @FXML
     private TextField usernameInputField; // Reference to the TextField in FXML
+    @FXML
+    private VBox dialogForm;
 
     @FXML
     private void initialize() {
@@ -56,6 +62,7 @@ public class LoginController {
         tacStage.show();
     }
 
+
     private void showAlert() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -72,12 +79,25 @@ public class LoginController {
     }
 
     public void changeLayout() throws IOException {
-            //creating menu scene
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/menu.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) usernameInputField.getScene().getWindow(); //getting the current stage
-            stage.getScene().setRoot(root); //setting new root (layout)
-
+        // Create a scale transition
+        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.3), dialogForm);
+        fadeTransition.setFromValue(1); // Start from fully transparent
+        fadeTransition.setToValue(0); // End at fully opaque
+        fadeTransition.setOnFinished(event -> {
+            try {
+                // Load the new root
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/menu.fxml"));
+                Parent root = loader.load();
+                // Get the current stage
+                Stage stage = (Stage) usernameInputField.getScene().getWindow();
+                // Set the new root
+                stage.getScene().setRoot(root);
+            } catch (IOException e) {
+                log.error("Failed to load new layout", e);
+                throw new RuntimeException(e);
+            }
+        });
+        fadeTransition.play(); // Start the fade-in transition
     }
 
 }
