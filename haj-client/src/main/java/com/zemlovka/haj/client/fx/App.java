@@ -1,6 +1,8 @@
 package com.zemlovka.haj.client.fx;
 
 import javafx.application.Application;
+import javafx.collections.ObservableList;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,6 +14,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 
+
 public class App extends Application {
 
     String CSS = Objects.requireNonNull(getClass().getResource("/com/zemlovka/haj/client/styles.css")).toExternalForm();
@@ -19,6 +22,8 @@ public class App extends Application {
     private Stage primaryStage;
     private Scene loginScene;
     public  Scene menuScene;
+
+    private ObservableList<Parent> previousScenes = FXCollections.observableArrayList();
 
     @Override
     public void start(Stage stage) throws IOException {

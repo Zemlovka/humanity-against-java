@@ -76,9 +76,8 @@ public class LoginController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/menu.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) usernameInputField.getScene().getWindow(); //getting the current stage
-            Scene scene = new Scene(root, 900, 600);
-            scene.getStylesheets().add(getClass().getResource("/com/zemlovka/haj/client/styles.css").toExternalForm());
-            stage.setScene(scene);
+            stage.getScene().setRoot(root); //setting new root (layout)
+
     }
 
 }
