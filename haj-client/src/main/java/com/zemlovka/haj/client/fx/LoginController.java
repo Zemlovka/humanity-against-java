@@ -4,13 +4,10 @@ import com.zemlovka.haj.client.ws.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 
-public class AppController {
+public class LoginController {
 
     private static final Logger log = LoggerFactory.getLogger(Client.class);
 
@@ -49,6 +46,15 @@ public class AppController {
             }
         }
     }
+    @FXML
+    private void openTAC(ActionEvent event) throws IOException{
+        Stage tacStage = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/tac.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root, 600, 600);
+        tacStage.setScene(scene);
+        tacStage.show();
+    }
 
     private void showAlert() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -69,7 +75,7 @@ public class AppController {
             //creating menu scene
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/menu.fxml"));
             Parent root = loader.load();
-            Stage stage = (Stage) usernameInputField.getScene().getWindow();
+            Stage stage = (Stage) usernameInputField.getScene().getWindow(); //getting the current stage
             Scene scene = new Scene(root, 900, 600);
             scene.getStylesheets().add(getClass().getResource("/com/zemlovka/haj/client/styles.css").toExternalForm());
             stage.setScene(scene);

@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -26,13 +27,14 @@ public class App extends Application {
         FXMLLoader loginLoader = new FXMLLoader(App.class.getResource("/com/zemlovka/haj/client/login.fxml"));
         loginScene = new Scene(loginLoader.load(), 900, 600);
         loginScene.getStylesheets().add(CSS);
+        //loginScene.setFill(Paint.valueOf("#191D2F"));
 
-        FXMLLoader menuLoader = new FXMLLoader(App.class.getResource("/com/zemlovka/haj/client/login.fxml"));
-        menuScene = new Scene(menuLoader.load(), 900, 600);
-        menuScene.getStylesheets().add(CSS);
+        //FXMLLoader menuLoader = new FXMLLoader(App.class.getResource("/com/zemlovka/haj/client/login.fxml"));
+        //menuScene = new Scene(menuLoader.load(), 900, 600);
+        //menuScene.getStylesheets().add(CSS);
 
         //controllers (I haven't deleted them, because I don't know if they are needed in future)
-        //AppController loginController = loginLoader.getController();
+        //LoginController loginController = loginLoader.getController();
         //loginController.setPrimaryStage(primaryStage);
 
         Font.loadFont(getClass().getResourceAsStream("/com/zemlovka/haj/client/Montserrat/static/Montserrat-Regular.ttf"), 14); // Load font collection
