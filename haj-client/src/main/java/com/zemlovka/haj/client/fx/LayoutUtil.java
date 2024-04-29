@@ -4,6 +4,7 @@ import javafx.animation.FadeTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -32,7 +33,7 @@ public class LayoutUtil {
     }
 
     /**
-     * Fades out the current root and fades in the new root
+     * Fades out the current root
      *
      * @param currentRoot The current root
      * @param newRoot     The new root
@@ -72,5 +73,20 @@ public class LayoutUtil {
         fadeTransition.setFromValue(0);
         fadeTransition.setToValue(1);
         fadeTransition.play();
+    }
+
+    /**
+     * Shows new stage with an alert with the specified type, title and content text
+     *
+     * @param ALLERTTYPE  The type of the alert
+     * @param title       The title of the alert
+     * @param contentText The content text of the alert
+     */
+    public static void showAlert(Alert.AlertType ALLERTTYPE, String title, String contentText) {
+        Alert alert = new Alert(ALLERTTYPE);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(contentText);
+        alert.showAndWait();
     }
 }

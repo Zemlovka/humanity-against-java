@@ -32,7 +32,7 @@ public class FindLobbyController {
     private void initialize() {
         log.info("Find Lobby controller started.");
 
-        dialogForm.setOpacity(0); // Set the initial opacity to 0 (fully transparent), for animation purposes
+        LayoutUtil.fadeInTransition(dialogForm);
 
     }
 }
