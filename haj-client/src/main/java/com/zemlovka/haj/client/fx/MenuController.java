@@ -27,17 +27,48 @@ public class MenuController {
 
     @FXML
     private VBox dialogForm;
+    @FXML
+    private Button findLobbyButton;
+    @FXML
+    private Button hostLobbyButton;
+    @FXML
+    private Button aboutGameButton;
+
 
     @FXML
     private void initialize() {
         log.info("Menu controler started.");
-        // Initialize method
-        dialogForm.setOpacity(0); // Set the initial opacity to 0 (fully transparent)
-        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.3), dialogForm);
-        fadeTransition.setFromValue(0); // Start with opacity 0 (fully transparent)
-        fadeTransition.setToValue(1); // Fade to opacity 1 (fully opaque)
-        fadeTransition.play(); // Start the fade-in animation
-        // You can perform any initialization tasks here
+        LayoutUtil.fadeInTransition(dialogForm);
+
+    }
+
+    @FXML
+    private void onButtonClick(ActionEvent event) {
+        if (event.getSource() == findLobbyButton) {
+            log.info("Find lobby button clicked");
+            try {
+                LayoutUtil.changeLayoutWithFadeTransition((Stage) findLobbyButton.getScene().getWindow(), "/com/zemlovka/haj/client/findLobby.fxml");
+            } catch (IOException e) {
+                log.error("Failed to change layout", e);
+                throw new RuntimeException(e);
+            }
+        } else if (event.getSource() == hostLobbyButton) {
+            log.info("Host lobby button clicked");
+            try {
+                LayoutUtil.changeLayoutWithFadeTransition((Stage) findLobbyButton.getScene().getWindow(), "/com/zemlovka/haj/client/findLobby.fxml");
+            } catch (IOException e) {
+                log.error("Failed to change layout", e);
+                throw new RuntimeException(e);
+            }
+        } else if (event.getSource() == aboutGameButton) {
+            log.info("About game button clicked");
+            try {
+                LayoutUtil.changeLayoutWithFadeTransition((Stage) findLobbyButton.getScene().getWindow(), "/com/zemlovka/haj/client/findLobby.fxml");
+            } catch (IOException e) {
+                log.error("Failed to change layout", e);
+                throw new RuntimeException(e);
+            }
+        }
     }
 
 }

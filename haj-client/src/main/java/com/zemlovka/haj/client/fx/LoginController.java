@@ -45,7 +45,8 @@ public class LoginController {
             log.info("Username set: {}", username);
             // Proceed with further actions
             try {
-                changeLayout();
+                //changeLayout();
+                LayoutUtil.changeLayoutWithFadeTransition((Stage) usernameInputField.getScene().getWindow(), "/com/zemlovka/haj/client/menu.fxml");
             } catch (IOException e) {
                 log.error("Failed to change layout", e);
                 throw new RuntimeException(e);

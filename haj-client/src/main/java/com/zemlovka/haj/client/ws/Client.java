@@ -11,6 +11,9 @@ import java.util.Scanner;
 public class Client {
     private static final Logger log = LoggerFactory.getLogger(Client.class);
 
+    public Client() {
+    }
+
     public void run() {
         log.info("Client started.");
         try (

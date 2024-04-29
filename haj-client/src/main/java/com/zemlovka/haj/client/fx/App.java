@@ -1,5 +1,6 @@
 package com.zemlovka.haj.client.fx;
 
+import com.zemlovka.haj.client.ws.Client;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
@@ -20,17 +21,18 @@ public class App extends Application {
     String CSS = Objects.requireNonNull(getClass().getResource("/com/zemlovka/haj/client/styles.css")).toExternalForm();
 
     private Stage primaryStage;
-    private Scene loginScene;
-    public  Scene menuScene;
+
 
     private ObservableList<Parent> previousScenes = FXCollections.observableArrayList();
 
     @Override
     public void start(Stage stage) throws IOException {
+
+        Client client = new Client(); //will it work?
         primaryStage = stage;
 
         FXMLLoader loginLoader = new FXMLLoader(App.class.getResource("/com/zemlovka/haj/client/login.fxml"));
-        loginScene = new Scene(loginLoader.load(), 900, 600);
+        Scene loginScene = new Scene(loginLoader.load(), 900, 600);
         loginScene.getStylesheets().add(CSS);
         //loginScene.setFill(Paint.valueOf("#191D2F"));
 
@@ -51,9 +53,6 @@ public class App extends Application {
         primaryStage.setTitle("Humanity Against Java");
         primaryStage.setScene(loginScene);
         primaryStage.show();
-    }
-    public void switchToMenuScene() {
-        primaryStage.setScene(menuScene);
     }
 
     public static void main(String[] args) {
