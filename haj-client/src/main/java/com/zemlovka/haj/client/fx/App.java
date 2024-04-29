@@ -28,7 +28,9 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        Client client = new Client(); //will it work?
+        Client client = new Client();
+        client.run(); //will it work?
+
         primaryStage = stage;
 
         FXMLLoader loginLoader = new FXMLLoader(App.class.getResource("/com/zemlovka/haj/client/login.fxml"));
