@@ -1,7 +1,6 @@
 package com.zemlovka.haj.client.fx;
 
-import com.zemlovka.haj.client.ws.Client;
-import com.zemlovka.haj.client.ws.Listener;
+import com.zemlovka.haj.client.ws.Player;
 import com.zemlovka.haj.client.ws.WSActions;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -9,15 +8,11 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.Objects;
-import java.util.Scanner;
 
 
 public class App extends Application {
@@ -26,6 +21,8 @@ public class App extends Application {
 
     private Stage primaryStage;
     private WSActions wsActions;
+    private Player player;
+    private ObservableList<Player> players;
 
 
     private ObservableList<Parent> previousScenes = FXCollections.observableArrayList();
@@ -66,4 +63,21 @@ public class App extends Application {
         launch();
 
     }
+
+    /**
+     * Client player setter
+     * @param player player of the current client
+     */
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    /**
+     * Client player getter
+     * @return player, user of the current client
+     */
+    public Player getPlayer() {
+        return player;
+    }
+
 }

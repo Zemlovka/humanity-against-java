@@ -30,7 +30,7 @@ public class MenuController {
     @FXML
     private Button findLobbyButton;
     @FXML
-    private Button hostLobbyButton;
+    private Button createLobbyButton;
     @FXML
     private Button aboutGameButton;
 
@@ -52,10 +52,10 @@ public class MenuController {
                 log.error("Failed to change layout", e);
                 throw new RuntimeException(e);
             }
-        } else if (event.getSource() == hostLobbyButton) {
+        } else if (event.getSource() == createLobbyButton) {
             log.info("Host lobby button clicked");
             try {
-                LayoutUtil.changeLayoutWithFadeTransition((Stage) findLobbyButton.getScene().getWindow(), "/com/zemlovka/haj/client/findLobby.fxml");
+                LayoutUtil.changeLayoutWithFadeTransition((Stage) findLobbyButton.getScene().getWindow(), "/com/zemlovka/haj/client/createLobby.fxml");
             } catch (IOException e) {
                 log.error("Failed to change layout", e);
                 throw new RuntimeException(e);

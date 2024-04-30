@@ -1,6 +1,7 @@
 package com.zemlovka.haj.client.fx;
 
 import com.zemlovka.haj.client.ws.Client;
+import com.zemlovka.haj.client.ws.Player;
 import com.zemlovka.haj.client.ws.WSActions;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
@@ -30,6 +31,7 @@ public class LoginController {
     @FXML
     private VBox dialogForm;
 
+
     @FXML
     private void initialize() {
         log.info("Login controller started.");
@@ -43,6 +45,7 @@ public class LoginController {
             LayoutUtil.showAlert(Alert.AlertType.ERROR, "Error", "Username cannot be empty");
         } else {
             log.info("Username set: {}", username);
+            Player player = new Player(username,"1",true);
             wsActions.connect(username);
             // Proceed with further actions
             try {

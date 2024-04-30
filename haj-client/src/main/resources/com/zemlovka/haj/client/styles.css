@@ -57,3 +57,26 @@
 .button:hover {
     -fx-background-color: #984c06; /* Hover background color */
 }
+/* LOBBY SLIDER */
+.lobbySlider {
+    -fx-background-color: transparent; /* Background color of the slider */
+}
+
+/* Define styles for the thumb of the slider */
+.lobbySlider .thumb {
+    -fx-background-color: #f87a02; /* Color of the thumb */
+    -fx-background-radius: 10px; /* Radius of the thumb */
+    -fx-padding: 5px; /* Padding around the thumb */
+}
+
+/* Define styles for the track of the slider */
+.lobbySlider .track {
+    -fx-background-color: rgba(230, 230, 230, 0.3); /* Color of the track */
+    -fx-background-radius: 5px; /* Radius of the track */
+}
+
+/* Define styles for the range track of the slider (if applicable) */
+.lobbySlider .range-track {
+    -fx-background-color: #984c06; /* Color of the range track */
+    -fx-background-radius: 5px; /* Radius of the range track */
+}

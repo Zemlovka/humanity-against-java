@@ -15,9 +15,9 @@
             </Label>
             <VBox alignment="CENTER" prefHeight="255.0" prefWidth="300.0" spacing="20.0">
                <children>
-                  <Button fx:id="findLobbyButton" mnemonicParsing="false" onAction="#onButtonClick" prefHeight="37.0" prefWidth="86.0" text="Find a lobby" />
-                  <Button fx:id="hostLobbyButton" mnemonicParsing="false" onAction="#onButtonClick" prefHeight="37.0" prefWidth="86.0" text="Host a lobby" />
-                  <Button fx:id="AboutGameButton" mnemonicParsing="false" onAction="#onButtonClick" prefHeight="37.0" prefWidth="86.0" text="About game" />
+                  <Button fx:id="findLobbyButton" mnemonicParsing="false" onAction="#onButtonClick" prefHeight="40.0" prefWidth="100.0" text="Find a lobby" />
+                  <Button fx:id="createLobbyButton" mnemonicParsing="false" onAction="#onButtonClick" prefHeight="40.0" prefWidth="100.0" text="Create a lobby" />
+                  <Button fx:id="AboutGameButton" mnemonicParsing="false" onAction="#onButtonClick" prefHeight="40.0" prefWidth="100.0" text="About game" />
                </children>
             </VBox>
          </children>
