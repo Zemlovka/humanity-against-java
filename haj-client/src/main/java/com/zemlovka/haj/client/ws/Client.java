@@ -3,9 +3,7 @@ package com.zemlovka.haj.client.ws;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -32,10 +30,6 @@ public class Client extends Thread {
                     pw.println(message);
                     message = null;
                 }
-
-                if ("QUIT".equalsIgnoreCase(message)) {
-                    keepAlive = false;
-                }
                 Thread.sleep(50);
             }
         } catch (IOException e) {
@@ -47,5 +41,53 @@ public class Client extends Thread {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    class ClientServerOutputReader extends Thread {
+        Socket serverSocket;
+        public ClientServerOutputReader(Socket serverSocket){
+            this.serverSocket = serverSocket;
+        }
+
+        public void run() {
+            try {
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(serverSocket.getInputStream()));
+
+                String outputFromServer="";
+                while((outputFromServer=in.readLine())!= null){
+                    //This part is printing the output to console
+                    //Instead it should be appending the output to some file
+                    //or some swing element. Because this output may overlap
+                    //the user input from console
+                    System.out.println(outputFromServer);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    class ClientUserInputReader extends Thread {
+        Socket serverSocket;
+        public ClientUserInputReader(Socket serverSocket){
+            this.serverSocket = serverSocket;
+        }
+        public void run(){
+            BufferedReader stdIn = new BufferedReader(
+                    new InputStreamReader(System.in));
+            PrintWriter out;
+            try {
+                out = new PrintWriter(serverSocket.getOutputStream(), true);
+                String userInput;
+
+                while ((userInput = stdIn.readLine()) != null) {
+                    out.println(userInput);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

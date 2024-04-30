@@ -1,10 +1,5 @@
 package com.zemlovka.haj.client.ws;
 
-import com.zemlovka.haj.client.fx.App;
-
-import java.io.InputStream;
-
-
 public class WSActions {
 
     private Client client;
