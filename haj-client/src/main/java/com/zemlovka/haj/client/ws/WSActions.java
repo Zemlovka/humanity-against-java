@@ -21,7 +21,6 @@ public class WSActions {
         public void run() {
             super.run();
             System.out.println("asdasdasd");
-
         }
     }
 
