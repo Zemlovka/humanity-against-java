@@ -1,10 +1,10 @@
 package com.zemlovka.haj.client.ws;
 
-public class WSActions {
+public class LobbyWSActions {
 
-    private Client client;
-    public WSActions() {
-        Client client = new Client();
+    private LobbyClient client;
+    public LobbyWSActions() {
+        LobbyClient client = new LobbyClient();
         client.start(); //will it work?
         this.client = client;
     }

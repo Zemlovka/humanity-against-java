@@ -1,23 +1,17 @@
 package com.zemlovka.haj.client.fx;
 
-import com.zemlovka.haj.client.ws.Client;
-import com.zemlovka.haj.client.ws.Listener;
-import com.zemlovka.haj.client.ws.WSActions;
+import com.zemlovka.haj.client.ws.LobbyWSActions;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.Objects;
-import java.util.Scanner;
 
 
 public class App extends Application {
@@ -25,7 +19,7 @@ public class App extends Application {
     public static final String CSS = Objects.requireNonNull(App.class.getResource("/com/zemlovka/haj/client/styles.css")).toExternalForm();
 
     private Stage primaryStage;
-    private WSActions wsActions;
+    private LobbyWSActions wsActions;
 
 
     private ObservableList<Parent> previousScenes = FXCollections.observableArrayList();
@@ -57,7 +51,7 @@ public class App extends Application {
         primaryStage.show();
 
 
-        WSActions wsActions = new WSActions();
+        LobbyWSActions wsActions = new LobbyWSActions();
         LoginController loginController = loginLoader.getController();
         loginController.setWsActions(wsActions);
     }
