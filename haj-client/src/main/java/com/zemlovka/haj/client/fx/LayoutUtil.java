@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -87,6 +89,13 @@ public class LayoutUtil {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(contentText);
+
+        alert.getDialogPane().getScene().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                alert.close();
+            }
+        });
+
         alert.showAndWait();
     }
 }

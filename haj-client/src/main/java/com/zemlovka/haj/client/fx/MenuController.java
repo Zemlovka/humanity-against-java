@@ -11,17 +11,23 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-
+/**
+ * Controller for the main menu of the game. Handles the main menu buttons.
+ * <p>
+ *
+ * @author Nikita Korotov
+ * @version 1.0
+ */
 public class MenuController {
 
-    private static final Logger log = LoggerFactory.getLogger(LobbyClient.class);
+    private static final Logger log = LoggerFactory.getLogger(Client.class);
 
     @FXML
     private VBox dialogForm;
     @FXML
     private Button findLobbyButton;
     @FXML
-    private Button hostLobbyButton;
+    private Button createLobbyButton;
     @FXML
     private Button aboutGameButton;
 
@@ -33,20 +39,23 @@ public class MenuController {
 
     }
 
+    /**
+     * Handles the button clicks in the main menu. Changes the layout to the corresponding one, which are findLobby, createLobby and aboutGame.
+     *
+     * @param event the event that triggered the method
+     */
     @FXML
     private void onButtonClick(ActionEvent event) {
         if (event.getSource() == findLobbyButton) {
-            log.info("Find lobby button clicked");
             try {
                 LayoutUtil.changeLayoutWithFadeTransition((Stage) findLobbyButton.getScene().getWindow(), "/com/zemlovka/haj/client/findLobby.fxml");
             } catch (IOException e) {
                 log.error("Failed to change layout", e);
                 throw new RuntimeException(e);
             }
-        } else if (event.getSource() == hostLobbyButton) {
-            log.info("Host lobby button clicked");
+        } else if (event.getSource() == createLobbyButton) {
             try {
-                LayoutUtil.changeLayoutWithFadeTransition((Stage) findLobbyButton.getScene().getWindow(), "/com/zemlovka/haj/client/findLobby.fxml");
+                LayoutUtil.changeLayoutWithFadeTransition((Stage) findLobbyButton.getScene().getWindow(), "/com/zemlovka/haj/client/createLobby.fxml");
             } catch (IOException e) {
                 log.error("Failed to change layout", e);
                 throw new RuntimeException(e);
@@ -61,5 +70,4 @@ public class MenuController {
             }
         }
     }
-
 }

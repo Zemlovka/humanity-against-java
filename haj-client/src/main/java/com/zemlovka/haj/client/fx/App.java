@@ -1,5 +1,6 @@
 package com.zemlovka.haj.client.fx;
 
+import com.zemlovka.haj.client.ws.Player;
 import com.zemlovka.haj.client.ws.LobbyWSActions;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -19,6 +20,8 @@ public class App extends Application {
     public static final String CSS = Objects.requireNonNull(App.class.getResource("/com/zemlovka/haj/client/styles.css")).toExternalForm();
 
     private Stage primaryStage;
+    private Player player;
+    private ObservableList<Player> players;
     private LobbyWSActions wsActions;
 
 
@@ -32,13 +35,6 @@ public class App extends Application {
         FXMLLoader loginLoader = new FXMLLoader(App.class.getResource("/com/zemlovka/haj/client/login.fxml"));
         Scene loginScene = new Scene(loginLoader.load(), 900, 600);
         loginScene.getStylesheets().add(CSS);
-        //loginScene.setFill(Paint.valueOf("#191D2F"));
-
-        //FXMLLoader menuLoader = new FXMLLoader(App.class.getResource("/com/zemlovka/haj/client/login.fxml"));
-        //menuScene = new Scene(menuLoader.load(), 900, 600);
-        //menuScene.getStylesheets().add(CSS);
-
-        //controllers (I haven't deleted them, because I don't know if they are needed in future)
 
         Font.loadFont(getClass().getResourceAsStream("/com/zemlovka/haj/client/Montserrat/static/Montserrat-Regular.ttf"), 14); // Load font collection
         Font regularFont = Font.loadFont(getClass().getResourceAsStream("/YourFontCollection.ttf#Regular"), 14);
@@ -60,4 +56,23 @@ public class App extends Application {
         launch();
 
     }
+
+    /**
+     * Client player setter
+     *
+     * @param player player of the current client
+     */
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    /**
+     * Client player getter
+     *
+     * @return player, user of the current client
+     */
+    public Player getPlayer() {
+        return player;
+    }
+
 }
