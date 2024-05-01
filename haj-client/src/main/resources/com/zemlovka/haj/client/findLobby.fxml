@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zemlovka.haj.client.fx.MenuController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zemlovka.haj.client.fx.FindLobbyController">
     <children>
         <VBox fx:id="dialogForm" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="350.0" prefWidth="428.0" styleClass="dialog-form">
             <children>
@@ -23,12 +28,19 @@
                       </Label>
                </children>
             </HBox>
-            <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="329.0" promptText="Search">
+            <TextField fx:id="searchLobbyField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyTyped="#searchLobbies" prefHeight="26.0" prefWidth="329.0" promptText="Search">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
             </TextField>
-                <VBox fx:id="lobbyList" alignment="CENTER" prefHeight="228.0" prefWidth="428.0" spacing="20.0" />
+            <ScrollPane fx:id="lobbyListScrollPane" fitToHeight="true" fitToWidth="true">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+               <content>
+                  <VBox id="lobbyListView" fx:id="lobbyListView" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" />
+               </content>
+            </ScrollPane>
             </children>
         </VBox>
     </children>

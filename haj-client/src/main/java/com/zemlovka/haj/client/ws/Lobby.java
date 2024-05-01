@@ -25,4 +25,16 @@ public class Lobby {
     public void removePlayerFromList(Player player) {
         players.remove(player);
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public int getSize() {
+        return size;
+    }
 }

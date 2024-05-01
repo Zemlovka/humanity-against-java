@@ -11,6 +11,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -45,7 +48,6 @@ public class MenuController {
     @FXML
     private void onButtonClick(ActionEvent event) {
         if (event.getSource() == findLobbyButton) {
-            log.info("Find lobby button clicked");
             try {
                 LayoutUtil.changeLayoutWithFadeTransition((Stage) findLobbyButton.getScene().getWindow(), "/com/zemlovka/haj/client/findLobby.fxml");
             } catch (IOException e) {
@@ -53,7 +55,6 @@ public class MenuController {
                 throw new RuntimeException(e);
             }
         } else if (event.getSource() == createLobbyButton) {
-            log.info("Host lobby button clicked");
             try {
                 LayoutUtil.changeLayoutWithFadeTransition((Stage) findLobbyButton.getScene().getWindow(), "/com/zemlovka/haj/client/createLobby.fxml");
             } catch (IOException e) {
@@ -61,7 +62,6 @@ public class MenuController {
                 throw new RuntimeException(e);
             }
         } else if (event.getSource() == aboutGameButton) {
-            log.info("About game button clicked");
             try {
                 LayoutUtil.changeLayoutWithFadeTransition((Stage) findLobbyButton.getScene().getWindow(), "/com/zemlovka/haj/client/findLobby.fxml");
             } catch (IOException e) {
@@ -70,5 +70,6 @@ public class MenuController {
             }
         }
     }
+
 
 }

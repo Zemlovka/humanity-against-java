@@ -12,6 +12,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -35,6 +37,13 @@ public class LoginController {
     @FXML
     private void initialize() {
         log.info("Login controller started.");
+        // Event listener for the Enter key press event
+        usernameInputField.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                onButtonClick(new ActionEvent());
+                event.consume(); // Prevent further handling of the Enter key press event
+            }
+        });
     }
 
     @FXML
@@ -67,6 +76,7 @@ public class LoginController {
         tacStage.setScene(scene);
         tacStage.show();
     }
+
 
     public void setWsActions(WSActions wsActions) {
         this.wsActions = wsActions;

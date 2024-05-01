@@ -47,7 +47,7 @@
 }
 
 .button {
-    -fx-pref-width: 150px; /* Preferred width */
+
     -fx-background-color: #E37107; /* Button background color */
     -fx-text-fill: white; /* Button text color */
     -fx-font-weight: bold; /* Font weight */
@@ -57,6 +57,79 @@
 .button:hover {
     -fx-background-color: #984c06; /* Hover background color */
 }
+
+/* Style for the ScrollPane */
+.scroll-pane {
+    -fx-background-color: transparent; /* Transparent background */
+    -fx-background: transparent; /* Transparent background */
+    -fx-border-color: transparent; /* Transparent border */
+}
+
+/* Style for the vertical scrollbar */
+.scroll-bar:vertical {
+    -fx-background-color: transparent; /* Transparent background */
+    -fx-border-color: transparent; /* Transparent border */
+    -fx-background-insets: 0; /* No background insets */
+}
+
+/* Style for the horizontal scrollbar */
+.scroll-bar:horizontal {
+    -fx-background-color: transparent; /* Transparent background */
+    -fx-border-color: transparent; /* Transparent border */
+    -fx-background-insets: 0; /* No background insets */
+}
+/**/
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track{
+    -fx-background-color :transparent;
+    -fx-border-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-border-radius :2.0em;
+}
+
+
+.scroll-bar:horizontal .increment-button ,
+.scroll-bar:horizontal .decrement-button {
+    -fx-background-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-padding :0.0 0.0 10.0 0.0;
+
+}
+
+.scroll-bar:vertical .increment-button ,
+.scroll-bar:vertical .decrement-button {
+    -fx-background-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-padding :0.0 10.0 0.0 0.0;
+
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow{
+    -fx-shape : " ";
+    -fx-padding :0.15em 0.0;
+}
+
+.scroll-bar:vertical .increment-arrow,
+.scroll-bar:vertical .decrement-arrow{
+    -fx-shape : " ";
+    -fx-padding :0.0 0.15em;
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color : #E37107;
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 1.0em;
+}
+
+.scroll-bar:horizontal .thumb:hover,
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color :#984c06;
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 1.0em;
+}
+
 /* LOBBY SLIDER */
 .lobbySlider {
     -fx-background-color: transparent; /* Background color of the slider */
@@ -79,4 +152,25 @@
 .lobbySlider .range-track {
     -fx-background-color: #984c06; /* Color of the range track */
     -fx-background-radius: 5px; /* Radius of the range track */
+}
+
+/* LOBBY COMPONENT*/
+.lobbyComponent {
+    -fx-background-color: rgba(227, 113, 7, 0.5); /* Background color */
+    -fx-border-color: rgba(2, 2, 2, 0); /* Border color */
+    -fx-border-width: 1px; /* Border width */
+    -fx-background-radius: 20px; /* Rounded corners */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 10, 0.5, 0, 0) /* Drop shadow effect */, blur(5px); /* Blur effect */
+}
+/* Style for the lobby title label */
+.LobbyTitle {
+    -fx-text-fill: #fdfdfd; /* Text color */
+}
+/* Style for the lobby size label */
+.lobbySizeText {
+    -fx-text-fill: #d1d1d1; /* Text color */
+}
+.joinLobbyButton {
+    -fx-pref-width: 25px !important;
+    -fx-background-radius: 50px; /* Rounded corners */
 }
