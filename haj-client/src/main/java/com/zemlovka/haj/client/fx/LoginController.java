@@ -3,8 +3,6 @@ package com.zemlovka.haj.client.fx;
 import com.zemlovka.haj.client.ws.Client;
 import com.zemlovka.haj.client.ws.Player;
 import com.zemlovka.haj.client.ws.WSActions;
-import javafx.animation.FadeTransition;
-import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,12 +14,19 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
+/**
+ * Controller for the login screen. Handles the login process (just a simple username input for now).
+ * <p>
+ * Uses the {@link WSActions} to connect to the server and send the username.
+ *
+ * @author Nikita Korotov
+ * @version 1.0
+ */
 
 public class LoginController {
 
@@ -46,6 +51,11 @@ public class LoginController {
         });
     }
 
+    /**
+     * Event handler for the button click event. Gets the username from the input field and sends it to the server.
+     *
+     * @param event The event object
+     */
     @FXML
     private void onButtonClick(ActionEvent event) {
         String username = usernameInputField.getText(); // Get the text from the TextField
@@ -54,7 +64,7 @@ public class LoginController {
             LayoutUtil.showAlert(Alert.AlertType.ERROR, "Error", "Username cannot be empty");
         } else {
             log.info("Username set: {}", username);
-            Player player = new Player(username,"1",true);
+            Player player = new Player(username, "1", true);
             wsActions.connect(username);
             // Proceed with further actions
             try {
@@ -67,6 +77,12 @@ public class LoginController {
         }
     }
 
+    /**
+     * Event handler for the TAC button click event. Opens the Terms and Conditions window.
+     *
+     * @param event The event object
+     * @throws IOException If the FXML file is not found
+     */
     @FXML
     private void openTAC(ActionEvent event) throws IOException {
         Stage tacStage = new Stage();
@@ -78,6 +94,11 @@ public class LoginController {
     }
 
 
+    /**
+     * Sets the {@link WSActions} object to be used by the controller.
+     *
+     * @param wsActions The WSActions object
+     */
     public void setWsActions(WSActions wsActions) {
         this.wsActions = wsActions;
     }

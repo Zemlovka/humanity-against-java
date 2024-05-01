@@ -35,13 +35,6 @@ public class App extends Application {
         FXMLLoader loginLoader = new FXMLLoader(App.class.getResource("/com/zemlovka/haj/client/login.fxml"));
         Scene loginScene = new Scene(loginLoader.load(), 900, 600);
         loginScene.getStylesheets().add(CSS);
-        //loginScene.setFill(Paint.valueOf("#191D2F"));
-
-        //FXMLLoader menuLoader = new FXMLLoader(App.class.getResource("/com/zemlovka/haj/client/login.fxml"));
-        //menuScene = new Scene(menuLoader.load(), 900, 600);
-        //menuScene.getStylesheets().add(CSS);
-
-        //controllers (I haven't deleted them, because I don't know if they are needed in future)
 
         Font.loadFont(getClass().getResourceAsStream("/com/zemlovka/haj/client/Montserrat/static/Montserrat-Regular.ttf"), 14); // Load font collection
         Font regularFont = Font.loadFont(getClass().getResourceAsStream("/YourFontCollection.ttf#Regular"), 14);
@@ -52,7 +45,6 @@ public class App extends Application {
         primaryStage.setTitle("Humanity Against Java");
         primaryStage.setScene(loginScene);
         primaryStage.show();
-
 
         WSActions wsActions = new WSActions();
         LoginController loginController = loginLoader.getController();
@@ -66,6 +58,7 @@ public class App extends Application {
 
     /**
      * Client player setter
+     *
      * @param player player of the current client
      */
     public void setPlayer(Player player) {
@@ -74,6 +67,7 @@ public class App extends Application {
 
     /**
      * Client player getter
+     *
      * @return player, user of the current client
      */
     public Player getPlayer() {

@@ -21,6 +21,13 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
+/**
+ * Controller for the Create Lobby screen. Handles the creation of a new lobby.
+ * <p>
+ *
+ * @author Nikita Korotov
+ * @version 1.0
+ */
 
 public class CreateLobbyController {
     @FXML

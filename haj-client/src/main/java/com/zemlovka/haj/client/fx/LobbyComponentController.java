@@ -7,6 +7,14 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
+/**
+ * Controller for the lobby component, which is a single lobby in the lobby list
+ *
+ * @author Korotov Nikita
+ * @version 1.0
+ * @see Lobby (entity)
+ * @see FindLobbyController (parent controller)
+ */
 public class LobbyComponentController {
 
     @FXML
@@ -26,25 +34,22 @@ public class LobbyComponentController {
 
     @FXML
     private void initialize(Lobby lobby) {
-        // Initialize the controller
-        // For example, set the button text and image view properties
-        //joinLobbyButton.setText("Join Lobby");
-        //lobbyImageView.setImage(new Image("/path/to/image"));
+
     }
 
+    /**
+     * Set the lobby data for the component
+     *
+     * @param lobby The lobby entity to take data from
+     */
     public void setLobby(Lobby lobby) {
         // Set the lobby title
         lobbyTitle.setText(lobby.getName());
 
-        String lobbySizeString = "1/"+lobby.getSize();
+        String lobbySizeString = "1/" + lobby.getSize();
         lobbySize.setText(lobbySizeString);
 
         // Set the lobby size label
         //lobbySize.setText(lobby.getSize());
-
-        // Set other properties as needed
-        // For example, set the image view and button properties
-        //lobbyImageView.setImage(lobbyData.getImage());
-        //joinLobbyButton.setText(lobbyData.getButtonText());
     }
 }
