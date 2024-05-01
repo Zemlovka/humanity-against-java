@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class FindLobbyController {
 
-    private static final Logger log = LoggerFactory.getLogger(Client.class);
+    private static final Logger log = LoggerFactory.getLogger(FindLobbyController.class);
 
     @FXML
     private TextField searchLobbyField;

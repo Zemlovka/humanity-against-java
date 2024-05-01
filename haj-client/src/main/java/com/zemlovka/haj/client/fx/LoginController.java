@@ -1,7 +1,7 @@
 package com.zemlovka.haj.client.fx;
 
-import com.zemlovka.haj.client.ws.LobbyClient;
 import com.zemlovka.haj.client.ws.LobbyWSActions;
+import com.zemlovka.haj.client.ws.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,7 +29,7 @@ import java.io.IOException;
 
 public class LoginController {
 
-    private static final Logger log = LoggerFactory.getLogger(Client.class);
+    private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
     private LobbyWSActions wsActions;
     @FXML

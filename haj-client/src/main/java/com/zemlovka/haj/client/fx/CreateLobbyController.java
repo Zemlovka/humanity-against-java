@@ -1,21 +1,12 @@
 package com.zemlovka.haj.client.fx;
 
-import com.zemlovka.haj.client.ws.Client;
 import com.zemlovka.haj.client.ws.Lobby;
-import com.zemlovka.haj.client.ws.WSActions;
-import javafx.animation.FadeTransition;
-import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.util.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +31,7 @@ public class CreateLobbyController {
     private Slider lobbySlider;
 
 
-    private static final Logger log = LoggerFactory.getLogger(Client.class);
+    private static final Logger log = LoggerFactory.getLogger(CreateLobbyController.class);
 
     @FXML
     private void initialize() {

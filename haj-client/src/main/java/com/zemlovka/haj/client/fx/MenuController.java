@@ -20,7 +20,7 @@ import java.io.IOException;
  */
 public class MenuController {
 
-    private static final Logger log = LoggerFactory.getLogger(Client.class);
+    private static final Logger log = LoggerFactory.getLogger(MenuController.class);
 
     @FXML
     private VBox dialogForm;
