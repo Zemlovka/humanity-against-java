@@ -32,7 +32,7 @@ public class LoginController {
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
     private LobbyWSActions wsActions;
-    private final AppState appState= AppState.getInstace();
+    private final AppState appState= AppState.getInstance();
     @FXML
     private TextField usernameInputField;
     @FXML

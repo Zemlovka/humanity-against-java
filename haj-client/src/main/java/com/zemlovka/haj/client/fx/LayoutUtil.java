@@ -4,6 +4,7 @@ import javafx.animation.FadeTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -48,6 +49,7 @@ public class LayoutUtil {
         fadeTransition.setToValue(0);
         fadeTransition.setOnFinished(event -> {
             stage.getScene().setRoot(newRoot);
+            AppState.getInstance().pushScene(stage.getScene());
         });
         fadeTransition.play(); // Start the fade-out transition
     }
@@ -75,6 +77,21 @@ public class LayoutUtil {
         fadeTransition.setFromValue(0);
         fadeTransition.setToValue(1);
         fadeTransition.play();
+    }
+
+    /**
+     * Navigates back to the previous scene. If there is no previous scene, shows an error alert
+     * @param stage The primary stage
+     */
+    public static void navigateBack(Stage stage) {
+        Scene previousScene = AppState.getInstance().popScene();
+        if (previousScene != null) {
+            Parent currentRoot = stage.getScene().getRoot();
+            Parent previousRoot = previousScene.getRoot();
+            fadeOutTransition(currentRoot, previousRoot, stage);
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Navigation Error", "No previous scene available");
+        }
     }
 
     /**

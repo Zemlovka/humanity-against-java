@@ -11,8 +11,6 @@ import javafx.scene.layout.VBox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-
 /**
  * Controller for the Create Lobby screen. Handles the creation of a new lobby.
  * <p>
@@ -31,7 +29,7 @@ public class CreateLobbyController {
     @FXML
     private Slider lobbySlider;
 
-    private final AppState appState = AppState.getInstace();
+    private final AppState appState = AppState.getInstance();
     private static final Logger log = LoggerFactory.getLogger(CreateLobbyController.class);
 
     @FXML
