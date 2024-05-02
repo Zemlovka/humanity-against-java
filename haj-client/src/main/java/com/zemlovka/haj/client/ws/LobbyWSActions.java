@@ -10,6 +10,6 @@ public class LobbyWSActions {
     }
 
     public void connect(String username) {
-        client.setMessage("USER " + username);
+
     }
 }

@@ -21,7 +21,7 @@ import java.io.IOException;
 /**
  * Controller for the login screen. Handles the login process (just a simple username input for now).
  * <p>
- * Uses the {@link WSActions} to connect to the server and send the username.
+ * Uses the {@link LobbyWSActions} to connect to the server and send the username.
  *
  * @author Nikita Korotov
  * @version 1.0
@@ -32,6 +32,7 @@ public class LoginController {
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
     private LobbyWSActions wsActions;
+    private final AppState appState= AppState.getInstace();
     @FXML
     private TextField usernameInputField;
     @FXML
@@ -64,6 +65,7 @@ public class LoginController {
             log.info("Username set: {}", username);
             Player player = new Player(username, "1", true);
             wsActions.connect(username);
+            appState.setCurrentPlayer(player);
             // Proceed with further actions
             try {
                 //changeLayout();
@@ -93,7 +95,7 @@ public class LoginController {
 
 
     /**
-     * Sets the {@link WSActions} object to be used by the controller.
+     * Sets the {@link LobbyWSActions} object to be used by the controller.
      *
      * @param wsActions The WSActions object
      */

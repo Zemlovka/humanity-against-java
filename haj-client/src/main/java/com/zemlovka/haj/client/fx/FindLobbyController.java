@@ -62,10 +62,8 @@ public class FindLobbyController {
     private void renderLobbyComponents(List<Lobby> lobbyList) {
         lobbyListView.getChildren().clear();
 
-        // Loop through the lobby data list and add lobby components to the VBox
         for (Lobby lobby : lobbyList) {
             try {
-                // Load the lobby component FXML file
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/lobbyComponent.fxml"));
                 HBox lobbyComponent = loader.load();
 
@@ -86,7 +84,11 @@ public class FindLobbyController {
      * @return List of lobbies
      */
     private List<Lobby> createLobbyList() {
-        return List.of(new Lobby("Misha loh", "Label 1", 4), new Lobby("test", "Label 2", 6), new Lobby("Go lol", "Label 3", 1), new Lobby("Ya ustal", "Label 4", 3), new Lobby("pls help", "Label 5", 2));
+        return List.of(new Lobby("Misha loh", "Label 1", 4),
+                new Lobby("test", "Label 2", 6),
+                new Lobby("Go lol", "Label 3", 1),
+                new Lobby("Ya ustal", "Label 4", 3),
+                new Lobby("pls help", "Label 5", 2));
     }
 
     /**

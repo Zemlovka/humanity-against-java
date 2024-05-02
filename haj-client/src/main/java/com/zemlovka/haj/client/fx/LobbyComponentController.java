@@ -6,6 +6,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Controller for the lobby component, which is a single lobby in the lobby list
@@ -16,6 +18,7 @@ import javafx.scene.layout.HBox;
  * @see FindLobbyController (parent controller)
  */
 public class LobbyComponentController {
+    private static final Logger log = LoggerFactory.getLogger(LobbyComponentController.class);
 
     @FXML
     private HBox lobbyComponent;
@@ -34,7 +37,7 @@ public class LobbyComponentController {
 
     @FXML
     private void initialize(Lobby lobby) {
-
+        log.info("Lobby component initialized: {} ", lobby.getName());
     }
 
     /**

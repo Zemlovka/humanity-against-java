@@ -1,6 +1,7 @@
 package com.zemlovka.haj.client.fx;
 
 import com.zemlovka.haj.client.ws.Lobby;
+import com.zemlovka.haj.client.ws.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -30,12 +31,12 @@ public class CreateLobbyController {
     @FXML
     private Slider lobbySlider;
 
-
+    private final AppState appState = AppState.getInstace();
     private static final Logger log = LoggerFactory.getLogger(CreateLobbyController.class);
 
     @FXML
     private void initialize() {
-        log.info("CreateLobby controller started.");
+        log.info("CreateLobby controller init.");
     }
 
     @FXML
@@ -51,7 +52,11 @@ public class CreateLobbyController {
             LayoutUtil.showAlert(Alert.AlertType.ERROR, "Error", "Lobby name cannot be empty");
         } else {
             Lobby lobby = new Lobby(lobbyName, lobbyPassword, lobbySize);
-            log.info("Creating lobby: {}", lobbyName, lobbySize);
+            Player player = appState.getCurrentPlayer();
+            lobby.addPlayerToList(player);
+
+            appState.setCurrentLobby(lobby);
+            log.info("Creating lobby: {}", lobbyName);
             // Proceed with further actions
             /*
             try {

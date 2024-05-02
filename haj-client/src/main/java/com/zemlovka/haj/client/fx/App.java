@@ -21,11 +21,8 @@ public class App extends Application {
 
     private Stage primaryStage;
     private Player player;
-    private ObservableList<Player> players;
-    private LobbyWSActions wsActions;
 
-
-    private ObservableList<Parent> previousScenes = FXCollections.observableArrayList();
+    private ObservableList<Parent> previousScenes = FXCollections.observableArrayList(); //?
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -48,31 +45,14 @@ public class App extends Application {
 
 
         LobbyWSActions wsActions = new LobbyWSActions();
+
         LoginController loginController = loginLoader.getController();
         loginController.setWsActions(wsActions);
+
     }
 
     public static void main(String[] args) {
         launch();
 
     }
-
-    /**
-     * Client player setter
-     *
-     * @param player player of the current client
-     */
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    /**
-     * Client player getter
-     *
-     * @return player, user of the current client
-     */
-    public Player getPlayer() {
-        return player;
-    }
-
 }
