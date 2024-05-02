@@ -10,7 +10,6 @@ public final class AppState {
 
     Player currentPlayer;
     Lobby currentLobby;
-    private final Stack<Scene> sceneHistory = new Stack<>();
     private final static AppState INSTANCE = new AppState();
 
     private AppState() {}
@@ -34,18 +33,5 @@ public final class AppState {
     public void setCurrentLobby(Lobby currentLobby) {
         this.currentLobby = currentLobby;
     }
-    public void pushScene(Scene scene) {
-        sceneHistory.push(scene);
-    }
 
-    public Scene popScene() {
-        if (!sceneHistory.isEmpty()) {
-            return sceneHistory.pop();
-        }
-        return null; // Or throw an exception if you prefer
-    }
-
-    public boolean isSceneHistoryEmpty() {
-        return sceneHistory.isEmpty();
-    }
 }

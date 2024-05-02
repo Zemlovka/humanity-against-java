@@ -2,11 +2,8 @@ package com.zemlovka.haj.client.fx;
 
 import com.zemlovka.haj.client.ws.Lobby;
 import javafx.event.Event;
-import com.zemlovka.haj.client.ws.LobbyClient;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -19,8 +16,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.zemlovka.haj.client.fx.LayoutUtil.*;
 
 /**
  * Controller class for the Find Lobby screen.
@@ -59,10 +54,6 @@ public class FindLobbyController {
 
         lobbyList = createLobbyList();
         renderLobbyComponents(createLobbyList());
-
-        backButton.setOnAction(event -> {
-            LayoutUtil.navigateBack((Stage) backButton.getScene().getWindow());
-        });
 
     }
 
@@ -129,6 +120,18 @@ public class FindLobbyController {
             }
         }
         return filteredLobbies;
+    }
+
+    /**
+     * Function to return to the menu screen. Used by back button.
+     */
+    @FXML
+    private void goMenu() {
+        try {
+            LayoutUtil.changeLayoutWithFadeTransition((Stage) backButton.getScene().getWindow(), "/com/zemlovka/haj/client/menu.fxml");
+        } catch (IOException e) {
+            log.error("Failed to return to the menu", e);
+        }
     }
 
 }

@@ -49,7 +49,6 @@ public class LayoutUtil {
         fadeTransition.setToValue(0);
         fadeTransition.setOnFinished(event -> {
             stage.getScene().setRoot(newRoot);
-            AppState.getInstance().pushScene(stage.getScene());
         });
         fadeTransition.play(); // Start the fade-out transition
     }
@@ -77,21 +76,6 @@ public class LayoutUtil {
         fadeTransition.setFromValue(0);
         fadeTransition.setToValue(1);
         fadeTransition.play();
-    }
-
-    /**
-     * Navigates back to the previous scene. If there is no previous scene, shows an error alert
-     * @param stage The primary stage
-     */
-    public static void navigateBack(Stage stage) {
-        Scene previousScene = AppState.getInstance().popScene();
-        if (previousScene != null) {
-            Parent currentRoot = stage.getScene().getRoot();
-            Parent previousRoot = previousScene.getRoot();
-            fadeOutTransition(currentRoot, previousRoot, stage);
-        } else {
-            showAlert(Alert.AlertType.ERROR, "Navigation Error", "No previous scene available");
-        }
     }
 
     /**

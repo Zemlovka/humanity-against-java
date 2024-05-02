@@ -5,11 +5,15 @@ import com.zemlovka.haj.client.ws.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 
 /**
  * Controller for the Create Lobby screen. Handles the creation of a new lobby.
@@ -28,6 +32,8 @@ public class CreateLobbyController {
     private TextField lobbyPasswordField;
     @FXML
     private Slider lobbySlider;
+    @FXML
+    private Button backButton;
 
     private final AppState appState = AppState.getInstance();
     private static final Logger log = LoggerFactory.getLogger(CreateLobbyController.class);
@@ -64,6 +70,17 @@ public class CreateLobbyController {
                 throw new RuntimeException(e);
             }
             */
+        }
+    }
+    /**
+     * Function to return to the menu screen. Used by back button.
+     */
+    @FXML
+    private void goMenu() {
+        try {
+            LayoutUtil.changeLayoutWithFadeTransition((Stage) backButton.getScene().getWindow(), "/com/zemlovka/haj/client/menu.fxml");
+        } catch (IOException e) {
+            log.error("Failed to return to the menu", e);
         }
     }
 }
