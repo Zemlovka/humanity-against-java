@@ -4,10 +4,13 @@ module com.zemlovka.jah.client {
     requires javafx.fxml;
     requires com.zemlovka.jah.utils;
     requires org.slf4j;
+    requires com.fasterxml.jackson.databind;
+    requires reflections;
 
 
     opens com.zemlovka.haj.client to javafx.fxml;
     exports com.zemlovka.haj.client.fx;
     exports com.zemlovka.haj.client.ws;
+    exports com.zemlovka.haj.client.ws.commands;
     opens com.zemlovka.haj.client.fx to javafx.fxml;
 }

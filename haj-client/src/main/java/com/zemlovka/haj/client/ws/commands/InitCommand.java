@@ -1,20 +1,25 @@
 package com.zemlovka.haj.client.ws.commands;
 
 import com.zemlovka.haj.client.ws.LobbyClient;
-import com.zemlovka.haj.utils.dto.AcceptDTO;
 import com.zemlovka.haj.utils.dto.client.InitDTO;
+import com.zemlovka.haj.utils.dto.server.UserConnectionResponseDTO;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 
-public class InitCommand extends AbstractCommand<InitDTO, AcceptDTO> {
+public class InitCommand extends AbstractCommand<InitDTO, UserConnectionResponseDTO> {
     private static final String COMMAND_NAME = "Init";
     public InitCommand(LobbyClient client) {
         super(client, COMMAND_NAME);
     }
 
     @Override
-    public Future<AcceptDTO> run(InitDTO argument) {
-        return null;
+    public Future<UserConnectionResponseDTO> run(InitDTO argument) {
+        return new CompletableFutureCastingWrapper<>(
+                client.sendRequest(argument, UserConnectionResponseDTO.class)
+        );
     }
+
+
 }

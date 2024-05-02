@@ -64,7 +64,7 @@ public class LoginController {
         } else {
             log.info("Username set: {}", username);
             Player player = new Player(username, "1", true);
-            wsActions.connect(username);
+            wsActions.login(username);
             appState.setCurrentPlayer(player);
             // Proceed with further actions
             try {

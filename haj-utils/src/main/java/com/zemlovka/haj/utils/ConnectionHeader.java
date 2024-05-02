@@ -1,4 +1,7 @@
 package com.zemlovka.haj.utils;
 
-public class ConnectionHeader {
+import java.util.UUID;
+
+
+public record ConnectionHeader(UUID uuid, String objectType) {
 }
