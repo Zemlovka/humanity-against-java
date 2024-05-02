@@ -1,9 +1,12 @@
 package com.zemlovka.haj.client.fx;
 
 import com.zemlovka.haj.client.ws.LobbyClient;
+import com.zemlovka.haj.client.ws.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
@@ -30,13 +33,19 @@ public class MenuController {
     private Button createLobbyButton;
     @FXML
     private Button aboutGameButton;
+    @FXML
+    private Label nickLabel;
+    @FXML
+    private Hyperlink changeUserLink;
 
+    private final AppState appState = AppState.getInstance();
 
     @FXML
     private void initialize() {
         log.info("Menu controler started.");
         LayoutUtil.fadeInTransition(dialogForm);
-
+        Player player = appState.getCurrentPlayer();
+        nickLabel.setText(nickLabel.getText()+player.getUsername()+".");
     }
 
     /**
@@ -68,6 +77,15 @@ public class MenuController {
                 log.error("Failed to change layout", e);
                 throw new RuntimeException(e);
             }
+        }
+    }
+    @FXML
+    private void relogin(){
+        appState.setCurrentPlayer(null);
+        try {
+            LayoutUtil.changeLayoutWithFadeTransition((Stage) changeUserLink.getScene().getWindow(), "/com/zemlovka/haj/client/login.fxml");
+        } catch (IOException e) {
+            log.error("Failed to return to the login scene", e);
         }
     }
 }

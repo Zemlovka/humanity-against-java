@@ -11,4 +11,19 @@ public class Player {
         this.avatar = avatar;
         this.isClient = isClient;
     }
+    public String getUsername() {
+        return username;
+    }
+    public String getAvatar() {
+        return avatar;
+    }
+    public int getScore() {
+        return score;
+    }
+    public void setScore(int score) {
+        this.score = score;
+    }
+    public boolean isClient() {
+        return isClient;
+    }
 }
