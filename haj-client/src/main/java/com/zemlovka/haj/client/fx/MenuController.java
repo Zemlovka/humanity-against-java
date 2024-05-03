@@ -1,6 +1,5 @@
 package com.zemlovka.haj.client.fx;
 
-import com.zemlovka.haj.client.ws.LobbyClient;
 import com.zemlovka.haj.client.ws.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -42,7 +41,7 @@ public class MenuController {
 
     @FXML
     private void initialize() {
-        log.info("Menu controler started.");
+        log.info("Menu controller started.");
         LayoutUtil.fadeInTransition(dialogForm);
         Player player = appState.getCurrentPlayer();
         nickLabel.setText(nickLabel.getText()+player.getUsername()+".");

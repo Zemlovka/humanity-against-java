@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -29,7 +30,7 @@ public class App extends Application {
 
         primaryStage = stage;
 
-        FXMLLoader loginLoader = new FXMLLoader(App.class.getResource("/com/zemlovka/haj/client/login.fxml"));
+        FXMLLoader loginLoader = new FXMLLoader(App.class.getResource("/com/zemlovka/haj/client/lobby.fxml"));
         Scene loginScene = new Scene(loginLoader.load(), 900, 600);
         loginScene.getStylesheets().add(CSS);
 
@@ -41,13 +42,20 @@ public class App extends Application {
 
         primaryStage.setTitle("Humanity Against Java");
         primaryStage.setScene(loginScene);
+        primaryStage.setMinWidth(900);
+        primaryStage.setMinHeight(600);
+        primaryStage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("/com/zemlovka/haj/client/logo.png"))));
+
+        //primaryStage.setResizable(false);
+
         primaryStage.show();
 
 
-        LobbyWSActions wsActions = new LobbyWSActions();
 
-        LoginController loginController = loginLoader.getController();
-        loginController.setWsActions(wsActions);
+        //LobbyWSActions wsActions = new LobbyWSActions();
+
+        //LoginController loginController = loginLoader.getController();
+        //loginController.setWsActions(wsActions);
 
     }
 
