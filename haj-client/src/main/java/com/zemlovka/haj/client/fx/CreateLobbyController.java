@@ -62,7 +62,7 @@ public class CreateLobbyController {
             appState.setCurrentLobby(lobby);
             log.info("Creating lobby: {}", lobbyName);
             try {
-                LayoutUtil.changeLayoutWithFadeTransition((Stage) lobbyNameField.getScene().getWindow(), "/com/zemlovka/haj/client/createLobby.fxml");
+                LayoutUtil.changeLayoutWithFadeTransition((Stage) lobbyNameField.getScene().getWindow(), "/com/zemlovka/haj/client/lobby.fxml");
             } catch (IOException e) {
                 log.error("Failed to change layout", e);
                 throw new RuntimeException(e);

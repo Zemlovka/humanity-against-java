@@ -50,11 +50,11 @@
                                     <HBox fx:id="answerCardsContainer" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" spacing="20.0" />
                                  </content>
                               </ScrollPane>
-                              <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="NEVER" VBox.vgrow="NEVER">
+                              <ScrollPane fx:id="playerCardsScroll" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="NEVER" VBox.vgrow="NEVER">
                                  <content>
-                                    <VBox alignment="TOP_CENTER">
+                                    <VBox fx:id="myCardsSection" alignment="TOP_CENTER">
                                        <children>
-                                          <Label text="My cards:">
+                                          <Label fx:id="myCardsLabel" text="My cards:">
                                              <font>
                                                 <Font size="20.0" />
                                              </font>

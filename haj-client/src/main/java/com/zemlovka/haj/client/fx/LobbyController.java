@@ -43,6 +43,10 @@ public class LobbyController {
     private HBox playerCardsContainer;
     @FXML
     private ScrollPane answerCardsScroll;
+    @FXML
+    private ScrollPane playerCardsScroll;
+    @FXML
+    private VBox myCardsSection;
 
     private final AppState appState = AppState.getInstance();
     private static final Logger log = LoggerFactory.getLogger(LobbyController.class);
@@ -52,11 +56,13 @@ public class LobbyController {
         log.info("Lobby controller started.");
 
         /*
-        We really need these two lines. Bug caused by the requestLayout() method which is set/called via ScrollPaneBehavior
+        We really need these 4 lines. Bug caused by the requestLayout() method which is set/called via ScrollPaneBehavior
         More: https://stackoverflow.com/questions/53603250/javafx-how-to-prevent-label-text-resize-during-scrollpane-focus
         */
         answerCardsScroll.setOnMousePressed(Event::consume);
         answerCardsContainer.setOnMousePressed(Event::consume);
+        playerCardsScroll.setOnMousePressed(Event::consume);
+        myCardsSection.setOnMousePressed(Event::consume);
 
         renderQuestionCard();
         renderPlayers(createPlayerList());
@@ -146,7 +152,6 @@ public class LobbyController {
                 "Alcoholism.",
                 "Therapy.",
                 "Prescription drugs.",
-                "Burning deadlines.",
                 "The devil himself.");
     }
 

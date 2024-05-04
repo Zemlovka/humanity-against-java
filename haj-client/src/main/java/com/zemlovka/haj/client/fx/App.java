@@ -30,7 +30,7 @@ public class App extends Application {
 
         primaryStage = stage;
 
-        FXMLLoader loginLoader = new FXMLLoader(App.class.getResource("/com/zemlovka/haj/client/lobby.fxml"));
+        FXMLLoader loginLoader = new FXMLLoader(App.class.getResource("/com/zemlovka/haj/client/login.fxml"));
         Scene loginScene = new Scene(loginLoader.load(), 900, 600);
         loginScene.getStylesheets().add(CSS);
 
