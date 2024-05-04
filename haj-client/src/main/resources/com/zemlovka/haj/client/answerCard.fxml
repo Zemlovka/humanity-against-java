@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane fx:id="answerCard" maxHeight="210.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="180.0" prefWidth="150.0" style="-fx-background-color: rgba(227, 113, 7, 1)rgba(227, 113, 7, 1); -fx-background-radius: 20;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zemlovka.haj.client.fx.AnswerCardController">
+   <children>
+      <VBox alignment="TOP_CENTER" layoutX="13.0" layoutY="14.0" spacing="5.0">
+         <children>
+            <Label fx:id="answerText" alignment="TOP_LEFT" contentDisplay="TOP" prefHeight="108.0" prefWidth="116.0" text="The best tool of a programmer is " wrapText="true">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <AnchorPane layoutX="12.83984375" layoutY="146.0" AnchorPane.bottomAnchor="14.0">
+         <children>
+            <Label layoutX="1.16015625" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="100.0" text="Humanity against java" wrapText="true" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
