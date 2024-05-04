@@ -16,6 +16,8 @@ public class CreateLobbyCommand extends AbstractCommand<CreateLobbyDTO, AcceptDT
 
     @Override
     public Future<AcceptDTO> run(CreateLobbyDTO argument) {
-        return null;
+        return new CompletableFutureCastingWrapper<>(
+                client.sendRequest(argument, AcceptDTO.class, COMMAND_NAME)
+        );
     }
 }
