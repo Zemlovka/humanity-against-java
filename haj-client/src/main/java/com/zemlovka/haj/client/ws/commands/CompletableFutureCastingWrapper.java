@@ -2,9 +2,7 @@ package com.zemlovka.haj.client.ws.commands;
 
 import com.zemlovka.haj.utils.dto.Resource;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 
 public class CompletableFutureCastingWrapper<T extends Resource> extends CompletableFuture<T> {
@@ -17,5 +15,10 @@ public class CompletableFutureCastingWrapper<T extends Resource> extends Complet
     @Override
     public T get() throws InterruptedException, ExecutionException {
         return (T) parentFuture.get();
+    }
+
+    @Override
+    public T get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
+        return (T) parentFuture.get(timeout, unit);
     }
 }
