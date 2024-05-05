@@ -42,19 +42,21 @@ public class LobbyWSActions {
         return commands.joinLobby.run(new JoinLobbyDTO(lobby.getName(), password));
     }
 
-    class Commands {
+    static class Commands {
 
         LoginCommand login;
         LogoutCommand logout;
         CreateLobbyCommand createLobby;
         FetchLobbyCommand fetchLobby;
         JoinLobbyCommand joinLobby;
+        StartGameCommand startGame;
         public Commands(LobbyClient client) {
             login = new LoginCommand(client);
             logout = new LogoutCommand(client);
             createLobby = new CreateLobbyCommand(client);
             fetchLobby = new FetchLobbyCommand(client);
             joinLobby = new JoinLobbyCommand(client);
+            startGame = new StartGameCommand(client);
         }
     }
 }

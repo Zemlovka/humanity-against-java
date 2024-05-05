@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 public class LogoutCommand implements ResolvableCommand<LogoutDTO, LogoutResponseDTO> {
     private static final Logger logger = LoggerFactory.getLogger(LoginCommand.class);
-    private static final String NAME = CommandNameEnum.LOGIN.name();
+    private static final String NAME = CommandNameEnum.LOGOUT.name();
     private final User userData;
 
     public LogoutCommand(User userData) {
