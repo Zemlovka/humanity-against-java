@@ -6,4 +6,5 @@ public enum CommandNameEnum {
     CREATE_LOBBY,
     FETCH_LOBBY,
     JOIN_LOBBY,
+    START_GAME,
 }

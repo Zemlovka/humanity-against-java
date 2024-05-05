@@ -2,10 +2,10 @@ module com.zemlovka.jah.client {
     //IMPORTANT this shit must contain all dependencies
     requires javafx.controls;
     requires javafx.fxml;
-    requires com.zemlovka.jah.utils;
     requires org.slf4j;
     requires com.fasterxml.jackson.databind;
     requires reflections;
+    requires com.zemlovka.jah.utils;
 
 
     opens com.zemlovka.haj.client to javafx.fxml;
