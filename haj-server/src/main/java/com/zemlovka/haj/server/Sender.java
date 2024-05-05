@@ -29,7 +29,7 @@ public class Sender implements Runnable {
 
                 for (Session s : server.getAllSessions()) {
                     log.info("Odesilam zpravu: '{}'", message);
-                    s.sendMessage(message);
+//                    s.sendMessage(message); todo
                 }
             }
         } catch (InterruptedException e) {

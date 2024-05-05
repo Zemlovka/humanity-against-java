@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -47,15 +48,11 @@ public class App extends Application {
         primaryStage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("/com/zemlovka/haj/client/logo.png"))));
 
         //primaryStage.setResizable(false);
+        LobbyWSActions wsActions = new LobbyWSActions();
+        LoginController loginController = loginLoader.getController();
+        loginController.setWsActions(wsActions);
 
         primaryStage.show();
-
-
-
-        //LobbyWSActions wsActions = new LobbyWSActions();
-
-        //LoginController loginController = loginLoader.getController();
-        //loginController.setWsActions(wsActions);
 
     }
 

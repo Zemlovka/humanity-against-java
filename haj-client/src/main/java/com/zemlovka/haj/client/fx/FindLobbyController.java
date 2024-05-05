@@ -1,6 +1,7 @@
 package com.zemlovka.haj.client.fx;
 
 import com.zemlovka.haj.client.ws.Lobby;
+import com.zemlovka.haj.client.ws.LobbyWSActions;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,11 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 
 /**
  * Controller class for the Find Lobby screen.
@@ -24,7 +30,7 @@ import java.util.List;
  * @author Nikita Korotov
  * @version 1.0
  */
-public class FindLobbyController {
+public class FindLobbyController extends AbstractWsActionsSettingController {
 
     private static final Logger log = LoggerFactory.getLogger(FindLobbyController.class);
 
@@ -51,10 +57,6 @@ public class FindLobbyController {
         */
         lobbyListScrollPane.setOnMousePressed(Event::consume);
         lobbyListView.setOnMousePressed(Event::consume);
-
-        lobbyList = createLobbyList();
-        renderLobbyComponents(createLobbyList());
-
     }
 
     /**
@@ -87,11 +89,13 @@ public class FindLobbyController {
      * @return List of lobbies
      */
     private List<Lobby> createLobbyList() {
-        return List.of(new Lobby("Misha loh", "Label 1", 4),
-                new Lobby("test", "Label 2", 6),
-                new Lobby("Go lol", "Label 3", 1),
-                new Lobby("Ya ustal", "Label 4", 3),
-                new Lobby("pls help", "Label 5", 2));
+        try {
+            return wsActions.fetchLobbyList().get().lobbies().stream().map(dto -> new Lobby(dto.getName(), null, dto.getCapacity())).toList();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -128,10 +132,16 @@ public class FindLobbyController {
     @FXML
     private void goMenu() {
         try {
-            LayoutUtil.changeLayoutWithFadeTransition((Stage) backButton.getScene().getWindow(), "/com/zemlovka/haj/client/menu.fxml");
+            LayoutUtil.changeLayoutWithFadeTransition((Stage) backButton.getScene().getWindow(), "/com/zemlovka/haj/client/menu.fxml", wsActions);
         } catch (IOException e) {
             log.error("Failed to return to the menu", e);
         }
     }
 
+    @Override
+    void setWsActions(LobbyWSActions wsActions) {
+        super.setWsActions(wsActions);
+        lobbyList = createLobbyList();
+        renderLobbyComponents(createLobbyList());
+    }
 }

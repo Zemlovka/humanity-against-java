@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
  * @see Lobby (entity)
  * @see FindLobbyController (parent controller)
  */
-public class LobbyComponentController {
+public class LobbyComponentController extends AbstractWsActionsSettingController {
     private static final Logger log = LoggerFactory.getLogger(LobbyComponentController.class);
 
     @FXML

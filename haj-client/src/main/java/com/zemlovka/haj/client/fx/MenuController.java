@@ -20,7 +20,7 @@ import java.io.IOException;
  * @author Nikita Korotov
  * @version 1.0
  */
-public class MenuController {
+public class MenuController extends AbstractWsActionsSettingController {
 
     private static final Logger log = LoggerFactory.getLogger(MenuController.class);
 
@@ -56,14 +56,14 @@ public class MenuController {
     private void onButtonClick(ActionEvent event) {
         if (event.getSource() == findLobbyButton) {
             try {
-                LayoutUtil.changeLayoutWithFadeTransition((Stage) findLobbyButton.getScene().getWindow(), "/com/zemlovka/haj/client/findLobby.fxml");
+                LayoutUtil.changeLayoutWithFadeTransition((Stage) findLobbyButton.getScene().getWindow(), "/com/zemlovka/haj/client/findLobby.fxml", wsActions);
             } catch (IOException e) {
                 log.error("Failed to change layout", e);
                 throw new RuntimeException(e);
             }
         } else if (event.getSource() == createLobbyButton) {
             try {
-                LayoutUtil.changeLayoutWithFadeTransition((Stage) findLobbyButton.getScene().getWindow(), "/com/zemlovka/haj/client/createLobby.fxml");
+                LayoutUtil.changeLayoutWithFadeTransition((Stage) findLobbyButton.getScene().getWindow(), "/com/zemlovka/haj/client/createLobby.fxml", wsActions);
             } catch (IOException e) {
                 log.error("Failed to change layout", e);
                 throw new RuntimeException(e);
@@ -71,7 +71,7 @@ public class MenuController {
         } else if (event.getSource() == aboutGameButton) {
             log.info("About game button clicked");
             try {
-                LayoutUtil.changeLayoutWithFadeTransition((Stage) findLobbyButton.getScene().getWindow(), "/com/zemlovka/haj/client/findLobby.fxml");
+                LayoutUtil.changeLayoutWithFadeTransition((Stage) findLobbyButton.getScene().getWindow(), "/com/zemlovka/haj/client/findLobby.fxml", wsActions);
             } catch (IOException e) {
                 log.error("Failed to change layout", e);
                 throw new RuntimeException(e);
@@ -82,7 +82,7 @@ public class MenuController {
     private void relogin(){
         appState.setCurrentPlayer(null);
         try {
-            LayoutUtil.changeLayoutWithFadeTransition((Stage) changeUserLink.getScene().getWindow(), "/com/zemlovka/haj/client/login.fxml");
+            LayoutUtil.changeLayoutWithFadeTransition((Stage) changeUserLink.getScene().getWindow(), "/com/zemlovka/haj/client/login.fxml", wsActions);
         } catch (IOException e) {
             log.error("Failed to return to the login scene", e);
         }

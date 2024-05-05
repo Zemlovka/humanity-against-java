@@ -9,4 +9,5 @@ module com.zemlovka.jah.utils {
     opens com.zemlovka.haj.utils.dto;
     opens com.zemlovka.haj.utils.dto.server;
     opens com.zemlovka.haj.utils.dto.client;
+    exports com.zemlovka.haj.utils.dto.secondary;
 }

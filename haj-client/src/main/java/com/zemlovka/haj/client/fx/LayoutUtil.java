@@ -1,5 +1,6 @@
 package com.zemlovka.haj.client.fx;
 
+import com.zemlovka.haj.client.ws.LobbyWSActions;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -29,9 +30,9 @@ public class LayoutUtil {
      * @param fxml  The fxml file to load
      * @throws IOException If the fxml file cannot be loaded
      */
-    public static void changeLayoutWithFadeTransition(Stage stage, String fxml) throws IOException {
+    public static void changeLayoutWithFadeTransition(Stage stage, String fxml, LobbyWSActions lobbyWSActions) throws IOException {
         Parent currentRoot = stage.getScene().getRoot();
-        Parent newRoot = loadFXML(fxml);
+        Parent newRoot = loadFXML(fxml, lobbyWSActions);
         fadeOutTransition(currentRoot, newRoot, stage);
     }
 
@@ -60,9 +61,13 @@ public class LayoutUtil {
      * @return The parent node of the fxml file
      * @throws IOException If the fxml file cannot be loaded
      */
-    private static Parent loadFXML(String fxml) throws IOException {
+    private static Parent loadFXML(String fxml, LobbyWSActions lobbyWSActions) throws IOException {
         FXMLLoader loader = new FXMLLoader(LayoutUtil.class.getResource(fxml));
-        return loader.load();
+        if (loader.getController() != null)
+            ((AbstractWsActionsSettingController)loader.getController()).setWsActions(lobbyWSActions);
+        Parent parent = loader.load();
+        ((AbstractWsActionsSettingController)loader.getController()).setWsActions(lobbyWSActions);
+        return parent;
     }
 
     /**

@@ -17,7 +17,7 @@ public class InitCommand extends AbstractCommand<InitDTO, UserConnectionResponse
     @Override
     public Future<UserConnectionResponseDTO> run(InitDTO argument) {
         return new CompletableFutureCastingWrapper<>(
-                client.sendRequest(argument, UserConnectionResponseDTO.class, COMMAND_NAME)
+                client.sendRequest(argument, InitDTO.class, COMMAND_NAME)
         );
     }
 

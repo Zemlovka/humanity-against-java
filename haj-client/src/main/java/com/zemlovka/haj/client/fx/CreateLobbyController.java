@@ -1,6 +1,7 @@
 package com.zemlovka.haj.client.fx;
 
 import com.zemlovka.haj.client.ws.Lobby;
+import com.zemlovka.haj.client.ws.LobbyWSActions;
 import com.zemlovka.haj.client.ws.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,7 +24,7 @@ import java.io.IOException;
  * @version 1.0
  */
 
-public class CreateLobbyController {
+public class CreateLobbyController extends AbstractWsActionsSettingController {
     @FXML
     private VBox dialogForm;
     @FXML
@@ -34,6 +35,8 @@ public class CreateLobbyController {
     private Slider lobbySlider;
     @FXML
     private Button backButton;
+
+    private LobbyWSActions lobbyWSActions;
 
     private final AppState appState = AppState.getInstance();
     private static final Logger log = LoggerFactory.getLogger(CreateLobbyController.class);
@@ -56,13 +59,14 @@ public class CreateLobbyController {
             LayoutUtil.showAlert(Alert.AlertType.ERROR, "Error", "Lobby name cannot be empty");
         } else {
             Lobby lobby = new Lobby(lobbyName, lobbyPassword, lobbySize);
+            lobbyWSActions.createLobby(lobby);
             Player player = appState.getCurrentPlayer();
             lobby.addPlayerToList(player);
 
             appState.setCurrentLobby(lobby);
             log.info("Creating lobby: {}", lobbyName);
             try {
-                LayoutUtil.changeLayoutWithFadeTransition((Stage) lobbyNameField.getScene().getWindow(), "/com/zemlovka/haj/client/lobby.fxml");
+                LayoutUtil.changeLayoutWithFadeTransition((Stage) lobbyNameField.getScene().getWindow(), "/com/zemlovka/haj/client/lobby.fxml", lobbyWSActions);
             } catch (IOException e) {
                 log.error("Failed to change layout", e);
                 throw new RuntimeException(e);
@@ -75,9 +79,18 @@ public class CreateLobbyController {
     @FXML
     private void goMenu() {
         try {
-            LayoutUtil.changeLayoutWithFadeTransition((Stage) backButton.getScene().getWindow(), "/com/zemlovka/haj/client/menu.fxml");
+            LayoutUtil.changeLayoutWithFadeTransition((Stage) backButton.getScene().getWindow(), "/com/zemlovka/haj/client/menu.fxml", lobbyWSActions);
         } catch (IOException e) {
             log.error("Failed to return to the menu", e);
         }
+    }
+
+    /**
+     * Sets the {@link LobbyWSActions} object to be used by the controller.
+     *
+     * @param wsActions The WSActions object
+     */
+    public void setWsActions(LobbyWSActions wsActions) {
+        this.lobbyWSActions = wsActions;
     }
 }

@@ -26,7 +26,7 @@ import java.util.List;
  * @author Nikita Korotov
  * @version 1.0
  */
-public class LobbyController {
+public class LobbyController extends AbstractWsActionsSettingController {
 
     @FXML
     private Button backButton;
@@ -162,7 +162,7 @@ public class LobbyController {
     @FXML
     private void goMenu() {
         try {
-            LayoutUtil.changeLayoutWithFadeTransition((Stage) backButton.getScene().getWindow(), "/com/zemlovka/haj/client/menu.fxml");
+            LayoutUtil.changeLayoutWithFadeTransition((Stage) backButton.getScene().getWindow(), "/com/zemlovka/haj/client/menu.fxml", wsActions);
         } catch (IOException e) {
             log.error("Failed to return to the menu", e);
         }

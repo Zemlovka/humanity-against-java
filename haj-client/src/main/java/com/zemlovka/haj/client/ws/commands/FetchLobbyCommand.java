@@ -15,6 +15,8 @@ public class FetchLobbyCommand extends AbstractCommand<FetchLobbysDTO, LobbyList
 
     @Override
     public Future<LobbyListDTO> run(FetchLobbysDTO argument) {
-        return null;
+        return new CompletableFutureCastingWrapper<>(
+                client.sendRequest(argument, FetchLobbysDTO.class, COMMAND_NAME)
+        );
     }
 }

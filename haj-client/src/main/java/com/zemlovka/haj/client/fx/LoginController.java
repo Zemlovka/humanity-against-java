@@ -2,6 +2,7 @@ package com.zemlovka.haj.client.fx;
 
 import com.zemlovka.haj.client.ws.LobbyWSActions;
 import com.zemlovka.haj.client.ws.Player;
+import com.zemlovka.haj.utils.dto.server.UserConnectionResponseDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
+
 /**
  * Controller for the login screen. Handles the login process (just a simple username input for now).
  * <p>
@@ -27,11 +29,10 @@ import java.io.IOException;
  * @version 1.0
  */
 
-public class LoginController {
+public class LoginController extends AbstractWsActionsSettingController {
 
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
-    private LobbyWSActions wsActions;
     private final AppState appState= AppState.getInstance();
     @FXML
     private TextField usernameInputField;
@@ -62,14 +63,20 @@ public class LoginController {
             log.error("Username is empty or null");
             LayoutUtil.showAlert(Alert.AlertType.ERROR, "Error", "Username cannot be empty");
         } else {
-            log.info("Username set: {}", username);
             Player player = new Player(username, "1", true);
-            //wsActions.login(username);
+            try {
+                //todo
+                UserConnectionResponseDTO userConnectionResponseDTO = wsActions.login(username).get();
+                if (userConnectionResponseDTO.isSuccesful())
+                    log.info("Username set: {}", username);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
             appState.setCurrentPlayer(player);
             // Proceed with further actions
             try {
                 //changeLayout();
-                LayoutUtil.changeLayoutWithFadeTransition((Stage) usernameInputField.getScene().getWindow(), "/com/zemlovka/haj/client/menu.fxml");
+                LayoutUtil.changeLayoutWithFadeTransition((Stage) usernameInputField.getScene().getWindow(), "/com/zemlovka/haj/client/menu.fxml", wsActions);
             } catch (IOException e) {
                 log.error("Failed to change layout", e);
                 throw new RuntimeException(e);
@@ -93,13 +100,4 @@ public class LoginController {
         tacStage.show();
     }
 
-
-    /**
-     * Sets the {@link LobbyWSActions} object to be used by the controller.
-     *
-     * @param wsActions The WSActions object
-     */
-    public void setWsActions(LobbyWSActions wsActions) {
-        this.wsActions = wsActions;
-    }
 }

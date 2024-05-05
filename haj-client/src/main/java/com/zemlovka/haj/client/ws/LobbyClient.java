@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zemlovka.haj.utils.CommunicationObject;
 import com.zemlovka.haj.utils.ConnectionHeader;
+import com.zemlovka.haj.utils.ResourceObjectMapperFactory;
 import com.zemlovka.haj.utils.dto.Resource;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
@@ -26,17 +27,8 @@ public class LobbyClient extends Thread {
     private ConcurrentHashMap<UUID, CompletableFuture<Resource>> futureConcurrentHashMap;
     private UUID clientId;
     private PrintWriter pw;
-    private CompletableFuture<Future<Resource>> senderThreadFuture;
-    private Resource senderThreadResource;
-    private Class<?> senderThreadReturnObjectType;
-    private String senderThreadCommandName;
-    private Thread senderThread;
-
     public LobbyClient() {
-
-        this.objectMapper = new ObjectMapper();
-        Set<Class<?>> subtypes = new HashSet<>(new Reflections().getSubTypesOf(Resource.class));
-        objectMapper.registerSubtypes(subtypes);
+        this.objectMapper = ResourceObjectMapperFactory.getObjectMapper();
         futureConcurrentHashMap = new ConcurrentHashMap<>();
         clientId = UUID.randomUUID();
     }
@@ -57,9 +49,9 @@ public class LobbyClient extends Thread {
         }
     }
 
-    public <T> Future<Resource> sendRequest(Resource request, Class<T> returnObjectType , String commandName) {
+    public <T> Future<Resource> sendRequest(Resource request, Class<T> ojectType , String commandName) {
         final UUID uuid = UUID.randomUUID();
-        final ConnectionHeader header = new ConnectionHeader(clientId, uuid, returnObjectType.getSimpleName(), commandName);
+        final ConnectionHeader header = new ConnectionHeader(clientId, uuid, ojectType.getSimpleName(), commandName);
         final CommunicationObject communicationObject = new CommunicationObject(header, request);
         CompletableFuture<Resource> completableFuture = new CompletableFuture<>();
         futureConcurrentHashMap.put(uuid, completableFuture);
@@ -71,7 +63,7 @@ public class LobbyClient extends Thread {
             throw new RuntimeException(e);
         }
 //        senderThreadResource = request;
-//        senderThreadReturnObjectType = returnObjectType;
+//        senderThreadReturnObjectType = ojectType;
 //        senderThreadCommandName = commandName;
 //        senderThreadFuture = new CompletableFuture<>();
 //        senderThread.notify();
@@ -95,11 +87,12 @@ public class LobbyClient extends Thread {
                     new InputStreamReader(clientSocket.getInputStream()))) {
 
                 while (true) {
-                    String content = br.lines().collect(Collectors.joining());
+                    String content = br.readLine();
                     CommunicationObject communicationObject = objectMapper.readValue(content, CommunicationObject.class);
                     futureConcurrentHashMap.forEach((uuid, commandCallback) -> {
                                 if (uuid.equals(communicationObject.header().communicationUuid())) {
                                     commandCallback.complete(communicationObject.body());
+                                    futureConcurrentHashMap.remove(communicationObject.header().communicationUuid());
                                 }
                             });
                 }
@@ -109,45 +102,7 @@ public class LobbyClient extends Thread {
         }
     }
 
-    class ClientSocketSender extends Thread {
-        private PrintWriter pw;
-
-        public void run() {
-            try {
-                PrintWriter pw = new PrintWriter(clientSocket.getOutputStream(), true);
-                while (true) {
-//                    pw.println(new Scanner(System.in).nextLine());
-                    synchronized(this) {
-                    wait();
-                    }
-                    senderThreadFuture.complete(sendRequest(senderThreadResource, senderThreadReturnObjectType, senderThreadCommandName));
-                }
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        @Override
-        public void interrupt() {
-            super.interrupt();
-        }
-
-        public Future<Resource> sendRequest(Resource request, Class<?> returnObjectType , String commandName) {
-            final UUID uuid = UUID.randomUUID();
-            final ConnectionHeader header = new ConnectionHeader(clientId, uuid, returnObjectType.getSimpleName(), commandName);
-            final CommunicationObject communicationObject = new CommunicationObject(header, request);
-            CompletableFuture<Resource> completableFuture = new CompletableFuture<>();
-            futureConcurrentHashMap.put(uuid, completableFuture);
-            try {
-                pw.println(objectMapper.writeValueAsString(communicationObject));
-                return completableFuture;
-            } catch (JsonProcessingException e) {
-                //todo
-                throw new RuntimeException(e);
-            }
-        }
+    public UUID getClientId() {
+        return clientId;
     }
-
 }

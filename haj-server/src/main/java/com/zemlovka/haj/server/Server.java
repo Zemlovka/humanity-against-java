@@ -1,5 +1,6 @@
 package com.zemlovka.haj.server;
 
+import com.zemlovka.haj.server.user.Lobby;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,6 +9,8 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 
 public class Server {
     private static final Logger log = LoggerFactory.getLogger(Server.class);
@@ -19,10 +22,12 @@ public class Server {
     private Acceptor acceptor;
 
     private Sender sender;
+    private ConcurrentHashMap<String, Lobby> lobbies;
 
     public Server() {
         sessions = new HashSet<>();
         messages = new LinkedList<>();
+        lobbies = new ConcurrentHashMap<>();
 
         acceptor = new Acceptor(8082, this);
         sender = new Sender(this);
@@ -40,7 +45,7 @@ public class Server {
 
     public void newSession(Socket clientSocket) {
         log.info("Vytvarim novou session.");
-        Session session = new Session(clientSocket, this);
+        Session session = new Session(clientSocket, this, lobbies);
 
         synchronized(sessions) {
             sessions.add(session);
