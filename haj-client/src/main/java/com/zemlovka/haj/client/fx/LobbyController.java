@@ -1,5 +1,7 @@
 package com.zemlovka.haj.client.fx;
 
+import com.zemlovka.haj.client.ws.AnswerCard;
+import com.zemlovka.haj.client.ws.Card;
 import com.zemlovka.haj.client.ws.Lobby;
 import com.zemlovka.haj.client.ws.Player;
 import javafx.event.ActionEvent;
@@ -106,21 +108,17 @@ public class LobbyController extends AbstractWsActionsSettingController {
     }
 
     private List<Player> createPlayerList() {
-        return List.of(new Player("Misha loh", "1", true),
-                new Player("test", "2", false),
-                new Player("Go lol", "3", false),
-                new Player("Ya ustal", "4", false),
-                new Player("pls help", "5", false));
+        return AppState.getInstance().currentLobby.getPlayers();
     }
     @FXML
-    private void renderAnswerCards(List<String> answersList) {
+    private void renderAnswerCards(List<Card> answerCards) {
         answerCardsContainer.getChildren().clear();
-        for (String answer : answersList) {
+        for (Card card : answerCards) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/answerCard.fxml"));
                 Pane answerCard = loader.load();
                 AnswerCardController controller = loader.getController();
-                controller.setCard(answer);
+                controller.setCard(card.getText());
                 answerCardsContainer.getChildren().add(answerCard);
             } catch (IOException e) {
                 log.error("Error loading lobby component", e);
@@ -128,17 +126,14 @@ public class LobbyController extends AbstractWsActionsSettingController {
         }
     }
     @FXML
-    private void renderPlayerCards(List<String> answersList) {
+    private void renderPlayerCards(List<Card> answersCards) {
         playerCardsContainer.getChildren().clear();
-        for (String answer : answersList) {
+        for (Card card : answersCards) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/answerCard.fxml"));
                 Pane answerCard = loader.load();
                 AnswerCardController controller = loader.getController();
-                controller.setCard(answer);
-                Pane pane = new Pane(answerCard);
-                //playerCardsContainer.getChildren().add(pane);
-                //answerCard.setClip(new Rectangle(200, 100));
+                controller.setCard(card.getText());
 
                 playerCardsContainer.getChildren().add(answerCard);
             } catch (IOException e) {
@@ -147,12 +142,12 @@ public class LobbyController extends AbstractWsActionsSettingController {
         }
     }
 
-    private List<String> answerPlaceholderStrings() {
-        return List.of("Poor life choices.",
-                "Alcoholism.",
-                "Therapy.",
-                "Prescription drugs.",
-                "The devil himself.");
+    private List<Card> answerPlaceholderStrings() {
+        return List.of(new AnswerCard(1, "Bad life choices."),
+                new AnswerCard(2, "Alcoholism."),
+                new AnswerCard(3, "Therapy."),
+                new AnswerCard(4, "Prescription drugs."),
+                new AnswerCard(5, "Bad life choices."));
     }
 
 

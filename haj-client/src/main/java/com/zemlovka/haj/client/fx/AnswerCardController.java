@@ -42,8 +42,8 @@ public class AnswerCardController {
         answerText.setText(answer);
     }
     public static void addHoverAnimation(Node node) {
-        TranslateTransition transition = new TranslateTransition(Duration.seconds(0.3), node);
-        transition.setByY(-20);
+        TranslateTransition transition = new TranslateTransition(Duration.seconds(0.2), node);
+        transition.setByY(-40);
 
         node.setOnMouseEntered(event -> {
             transition.play();

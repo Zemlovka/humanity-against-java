@@ -22,9 +22,6 @@ public class App extends Application {
     public static final String CSS = Objects.requireNonNull(App.class.getResource("/com/zemlovka/haj/client/styles.css")).toExternalForm();
 
     private Stage primaryStage;
-    private Player player;
-
-    private ObservableList<Parent> previousScenes = FXCollections.observableArrayList(); //?
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -36,9 +33,9 @@ public class App extends Application {
         loginScene.getStylesheets().add(CSS);
 
         Font.loadFont(getClass().getResourceAsStream("/com/zemlovka/haj/client/Montserrat/static/Montserrat-Regular.ttf"), 14); // Load font collection
-        Font regularFont = Font.loadFont(getClass().getResourceAsStream("/YourFontCollection.ttf#Regular"), 14);
-        Font boldFont = Font.loadFont(getClass().getResourceAsStream("/YourFontCollection.ttf#Bold"), 14);
-        Font italicFont = Font.loadFont(getClass().getResourceAsStream("/YourFontCollection.ttf#Italic"), 14);
+        //Font regularFont = Font.loadFont(getClass().getResourceAsStream("/YourFontCollection.ttf#Regular"), 14);
+        //Font boldFont = Font.loadFont(getClass().getResourceAsStream("/YourFontCollection.ttf#Bold"), 14);
+        //Font italicFont = Font.loadFont(getClass().getResourceAsStream("/YourFontCollection.ttf#Italic"), 14);
 
 
         primaryStage.setTitle("Humanity Against Java");
