@@ -1,6 +1,5 @@
-package com.zemlovka.haj.server.user;
+package com.zemlovka.haj.server.game;
 
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 

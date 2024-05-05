@@ -3,8 +3,8 @@ package com.zemlovka.haj.server;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zemlovka.haj.server.command.*;
-import com.zemlovka.haj.server.user.Lobby;
-import com.zemlovka.haj.server.user.User;
+import com.zemlovka.haj.server.game.Lobby;
+import com.zemlovka.haj.server.game.User;
 import com.zemlovka.haj.utils.CommunicationObject;
 import com.zemlovka.haj.utils.ConnectionHeader;
 import com.zemlovka.haj.utils.ResourceObjectMapperFactory;
@@ -120,9 +120,8 @@ public class Session {
             String message = reader.readLine();
             CommunicationObject clientCommunicationObject = objectMapper.readValue(message, CommunicationObject.class);
             ConnectionHeader clientHeader = clientCommunicationObject.header();
-            log.debug("Message received from client " + clientHeader.clientID()
-                    + " with object type " + clientHeader.objectType()
-                    + " and communicationId " + clientHeader.communicationUuid());
+            log.debug("Command {} received from client {} with object type and communicationId {}",
+                    clientHeader.commandName(), clientHeader.clientID(), clientHeader.communicationUuid());
             ResolvableCommand<Resource,Resource> staticCommand = null;
             Resource responseResource = null;
             for (ResolvableCommand resolvableCommand : staticCommandSet) {

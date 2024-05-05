@@ -1,6 +1,6 @@
 package com.zemlovka.haj.server;
 
-import com.zemlovka.haj.server.user.Lobby;
+import com.zemlovka.haj.server.game.Lobby;
 import com.zemlovka.haj.utils.dto.secondary.LobbyDTO;
 import com.zemlovka.haj.utils.dto.secondary.PlayerDTO;
 

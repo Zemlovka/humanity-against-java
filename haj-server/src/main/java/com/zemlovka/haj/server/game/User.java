@@ -1,4 +1,4 @@
-package com.zemlovka.haj.server.user;
+package com.zemlovka.haj.server.game;
 
 import java.util.UUID;
 

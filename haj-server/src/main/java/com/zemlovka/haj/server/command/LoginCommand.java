@@ -1,6 +1,6 @@
 package com.zemlovka.haj.server.command;
 
-import com.zemlovka.haj.server.user.User;
+import com.zemlovka.haj.server.game.User;
 import com.zemlovka.haj.utils.dto.CommandNameEnum;
 import com.zemlovka.haj.utils.dto.client.LoginDTO;
 import com.zemlovka.haj.utils.dto.server.LoginResponseDTO;

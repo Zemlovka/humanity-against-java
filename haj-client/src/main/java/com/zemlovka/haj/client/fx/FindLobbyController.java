@@ -142,6 +142,6 @@ public class FindLobbyController extends AbstractWsActionsSettingController {
     void setWsActions(LobbyWSActions wsActions) {
         super.setWsActions(wsActions);
         lobbyList = createLobbyList();
-        renderLobbyComponents(createLobbyList());
+        renderLobbyComponents(lobbyList);
     }
 }

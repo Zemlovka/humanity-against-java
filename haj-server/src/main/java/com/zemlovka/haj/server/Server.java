@@ -1,6 +1,6 @@
 package com.zemlovka.haj.server;
 
-import com.zemlovka.haj.server.user.Lobby;
+import com.zemlovka.haj.server.game.Lobby;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -41,17 +41,15 @@ public class LobbyClient extends Thread {
             this.clientSocket = new Socket("127.0.0.1", 8082);
             this.pw = new PrintWriter(clientSocket.getOutputStream(), true);
             Thread listenerThread = new ClientServerOutputReader(clientSocket);
-//            senderThread = new ClientSocketSender();
             listenerThread.start();
-//            senderThread.start();
         } catch (IOException e) {
             log.error("Communication error.", e);
         }
     }
 
-    public <T> Future<Resource> sendRequest(Resource request, Class<T> ojectType , String commandName) {
+    public Future<Resource> sendRequest(Resource request, String commandName) {
         final UUID uuid = UUID.randomUUID();
-        final ConnectionHeader header = new ConnectionHeader(clientId, uuid, ojectType.getSimpleName(), commandName);
+        final ConnectionHeader header = new ConnectionHeader(clientId, uuid, request.getClass().getSimpleName(), commandName);
         final CommunicationObject communicationObject = new CommunicationObject(header, request);
         CompletableFuture<Resource> completableFuture = new CompletableFuture<>();
         futureConcurrentHashMap.put(uuid, completableFuture);
@@ -62,18 +60,6 @@ public class LobbyClient extends Thread {
             //todo
             throw new RuntimeException(e);
         }
-//        senderThreadResource = request;
-//        senderThreadReturnObjectType = ojectType;
-//        senderThreadCommandName = commandName;
-//        senderThreadFuture = new CompletableFuture<>();
-//        senderThread.notify();
-//        try {
-//            return senderThreadFuture.get();
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        } catch (ExecutionException e) {
-//            throw new RuntimeException(e);
-//        }
     }
 
     class ClientServerOutputReader extends Thread {

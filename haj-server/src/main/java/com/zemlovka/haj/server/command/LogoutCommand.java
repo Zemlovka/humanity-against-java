@@ -1,9 +1,8 @@
 package com.zemlovka.haj.server.command;
 
-import com.zemlovka.haj.server.user.User;
+import com.zemlovka.haj.server.game.User;
 import com.zemlovka.haj.utils.dto.CommandNameEnum;
 import com.zemlovka.haj.utils.dto.client.LogoutDTO;
-import com.zemlovka.haj.utils.dto.server.LoginResponseDTO;
 import com.zemlovka.haj.utils.dto.server.LogoutResponseDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

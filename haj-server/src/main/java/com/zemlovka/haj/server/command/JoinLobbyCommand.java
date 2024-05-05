@@ -1,18 +1,15 @@
 package com.zemlovka.haj.server.command;
 
 import com.zemlovka.haj.server.DtoMapper;
-import com.zemlovka.haj.server.user.Lobby;
-import com.zemlovka.haj.server.user.User;
+import com.zemlovka.haj.server.game.Lobby;
+import com.zemlovka.haj.server.game.User;
 import com.zemlovka.haj.utils.dto.CommandNameEnum;
 import com.zemlovka.haj.utils.dto.client.JoinLobbyDTO;
-import com.zemlovka.haj.utils.dto.secondary.LobbyDTO;
-import com.zemlovka.haj.utils.dto.secondary.PlayerDTO;
 import com.zemlovka.haj.utils.dto.server.JoinLobbyResponseDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 
 public class JoinLobbyCommand implements ResolvableCommand<JoinLobbyDTO, JoinLobbyResponseDTO> {

@@ -18,9 +18,11 @@ public abstract class AbstractCommand<V extends Resource, R extends Resource> im
 
     public Future<R> sendRequest(Resource argument) {
         return new CompletableFutureCastingWrapper<>(
-                client.sendRequest(argument, LoginDTO.class, commandName)
+                client.sendRequest(argument, commandName)
         );
     }
+
+
 
     @Override
     public abstract Future<R> run(V argument);
