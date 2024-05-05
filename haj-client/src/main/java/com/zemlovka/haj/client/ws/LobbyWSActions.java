@@ -1,56 +1,60 @@
 package com.zemlovka.haj.client.ws;
 
-import com.zemlovka.haj.client.ws.commands.CreateLobbyCommand;
-import com.zemlovka.haj.client.ws.commands.FetchLobbyCommand;
-import com.zemlovka.haj.client.ws.commands.InitCommand;
-import com.zemlovka.haj.client.ws.commands.JoinLobbyCommand;
-import com.zemlovka.haj.utils.dto.AcceptDTO;
-import com.zemlovka.haj.utils.dto.client.CreateLobbyDTO;
-import com.zemlovka.haj.utils.dto.client.FetchLobbysDTO;
-import com.zemlovka.haj.utils.dto.client.InitDTO;
-import com.zemlovka.haj.utils.dto.server.CreateLobbyResponseDTO;
-import com.zemlovka.haj.utils.dto.server.LobbyListDTO;
-import com.zemlovka.haj.utils.dto.server.UserConnectionResponseDTO;
+import com.zemlovka.haj.client.ws.commands.*;
+import com.zemlovka.haj.utils.dto.client.*;
+import com.zemlovka.haj.utils.dto.server.*;
 
 import java.util.concurrent.Future;
 
 
 public class LobbyWSActions {
 
-    private LobbyClient client;
+    private final Commands commands;
+    private final LobbyClient client;
 
-
-    private InitCommand initCommand;
-    private CreateLobbyCommand createLobbyCommand;
-    private FetchLobbyCommand fetchLobbyCommand;
-    private JoinLobbyCommand joinLobbyCommand;
     public LobbyWSActions() {
-        LobbyClient client = new LobbyClient();
-        client.start(); //will it work?
-        this.client = client;
-        initCommand = new InitCommand(client);
-        createLobbyCommand = new CreateLobbyCommand(client);
-        fetchLobbyCommand = new FetchLobbyCommand(client);
-        joinLobbyCommand = new JoinLobbyCommand(client);
+        LobbyClient lobbyClient = new LobbyClient();
+        lobbyClient.start();
+        this.client = lobbyClient;
+        commands = new Commands(lobbyClient);
     }
 
-    public Future<UserConnectionResponseDTO> login(String username) {
-        final InitDTO initDTO = new InitDTO(username, client.getClientId());
-        return initCommand.run(initDTO);
+
+    public Future<LoginResponseDTO> login(String username) {
+        return commands.login.run(new LoginDTO(username, client.getClientId()));
     }
 
-    public Future<UserConnectionResponseDTO> logout(String username) {
-        // todo
-        return null;
+    public Future<LogoutResponseDTO> logout() {
+        return commands.logout.run(new LogoutDTO());
     }
 
     public Future<CreateLobbyResponseDTO> createLobby(Lobby lobby) {
-        final CreateLobbyDTO createLobbyDTO = new CreateLobbyDTO(lobby.getName(), lobby.getPassword(), lobby.getSize());
-        return createLobbyCommand.run(createLobbyDTO);
+        return commands.createLobby.run(
+                new CreateLobbyDTO(lobby.getName(), lobby.getPassword(), lobby.getSize())
+        );
     }
 
     public Future<LobbyListDTO> fetchLobbyList() {
-        return fetchLobbyCommand.run(new FetchLobbysDTO());
+        return commands.fetchLobby.run(new FetchLobbysDTO());
     }
 
+    public Future<JoinLobbyResponseDTO> fetchLobbyList(Lobby lobby, String password) {
+        return commands.joinLobby.run(new JoinLobbyDTO(lobby.getName(), password));
+    }
+
+    class Commands {
+
+        LoginCommand login;
+        LogoutCommand logout;
+        CreateLobbyCommand createLobby;
+        FetchLobbyCommand fetchLobby;
+        JoinLobbyCommand joinLobby;
+        public Commands(LobbyClient client) {
+            login = new LoginCommand(client);
+            logout = new LogoutCommand(client);
+            createLobby = new CreateLobbyCommand(client);
+            fetchLobby = new FetchLobbyCommand(client);
+            joinLobby = new JoinLobbyCommand(client);
+        }
+    }
 }

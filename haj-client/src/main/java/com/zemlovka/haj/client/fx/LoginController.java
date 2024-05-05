@@ -2,7 +2,7 @@ package com.zemlovka.haj.client.fx;
 
 import com.zemlovka.haj.client.ws.LobbyWSActions;
 import com.zemlovka.haj.client.ws.Player;
-import com.zemlovka.haj.utils.dto.server.UserConnectionResponseDTO;
+import com.zemlovka.haj.utils.dto.server.LoginResponseDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -66,8 +66,8 @@ public class LoginController extends AbstractWsActionsSettingController {
             Player player = new Player(username, "1", true);
             try {
                 //todo
-                UserConnectionResponseDTO userConnectionResponseDTO = wsActions.login(username).get();
-                if (userConnectionResponseDTO.isSuccesful())
+                LoginResponseDTO loginResponseDTO = wsActions.login(username).get();
+                if (loginResponseDTO.isSuccesful())
                     log.info("Username set: {}", username);
             } catch (Exception e) {
                 throw new RuntimeException(e);

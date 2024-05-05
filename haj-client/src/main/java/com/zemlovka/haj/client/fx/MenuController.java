@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+
 
 /**
  * Controller for the main menu of the game. Handles the main menu buttons.
@@ -80,6 +82,13 @@ public class MenuController extends AbstractWsActionsSettingController {
     }
     @FXML
     private void relogin(){
+        try {
+            wsActions.logout().get();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
         appState.setCurrentPlayer(null);
         try {
             LayoutUtil.changeLayoutWithFadeTransition((Stage) changeUserLink.getScene().getWindow(), "/com/zemlovka/haj/client/login.fxml", wsActions);

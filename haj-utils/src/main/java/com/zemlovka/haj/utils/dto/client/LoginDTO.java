@@ -5,5 +5,5 @@ import com.zemlovka.haj.utils.dto.Resource;
 import java.util.UUID;
 
 
-public record InitDTO(String username, UUID clientUuid) implements Resource {
+public record LoginDTO(String username, UUID clientUuid) implements Resource {
 }

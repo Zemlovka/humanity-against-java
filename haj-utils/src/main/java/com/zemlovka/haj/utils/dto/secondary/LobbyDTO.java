@@ -1,15 +1,16 @@
 package com.zemlovka.haj.utils.dto.secondary;
 
-import com.zemlovka.haj.utils.dto.server.LobbyListDTO;
+
+import java.util.Set;
 
 
 public class LobbyDTO {
     private String name;
     private int capacity;
-    private int players;
+    private Set<PlayerDTO> players;
     private boolean isLocked;
 
-    public LobbyDTO(String name, int capacity, int players, boolean isLocked) {
+    public LobbyDTO(String name, int capacity, Set<PlayerDTO> players, boolean isLocked) {
         this.name = name;
         this.capacity = capacity;
         this.players = players;
@@ -36,11 +37,11 @@ public class LobbyDTO {
         this.capacity = capacity;
     }
 
-    public int getPlayers() {
+    public Set<PlayerDTO> getPlayers() {
         return players;
     }
 
-    public void setPlayers(int players) {
+    public void setPlayers(Set<PlayerDTO> players) {
         this.players = players;
     }
 

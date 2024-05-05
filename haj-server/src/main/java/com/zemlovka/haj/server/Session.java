@@ -33,7 +33,6 @@ public class Session {
     private Socket clientSocket;
     private Server server;
     private User userData;
-    private final Object lock = new Object();
     private ObjectMapper objectMapper;
     private Set<ResolvableCommand<? extends Resource, ? extends Resource>> staticCommandSet;
     private ConcurrentHashMap<String, Lobby> lobbies;
@@ -109,7 +108,8 @@ public class Session {
 
     private void populateStaticCommandSet() {
         staticCommandSet = new HashSet<>();
-        staticCommandSet.add(new InitCommand(userData));
+        staticCommandSet.add(new LoginCommand(userData));
+        staticCommandSet.add(new LogoutCommand(userData));
         staticCommandSet.add(new JoinLobbyCommand(lobbies, userData));
         staticCommandSet.add(new CreateLobbyCommand(lobbies, userData));
         staticCommandSet.add(new FetchLobbysCommand(lobbies));

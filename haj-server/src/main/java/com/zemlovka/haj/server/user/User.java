@@ -7,6 +7,10 @@ public class User {
     private String username;
     private UUID uuid;
 
+    public boolean isLoggedIn() {
+        return username != null;
+    }
+
     public String getUsername() {
         return username;
     }

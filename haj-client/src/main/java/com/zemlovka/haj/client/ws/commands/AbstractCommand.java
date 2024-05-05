@@ -3,6 +3,7 @@ package com.zemlovka.haj.client.ws.commands;
 import com.zemlovka.haj.client.ws.LobbyClient;
 import com.zemlovka.haj.utils.Command;
 import com.zemlovka.haj.utils.dto.Resource;
+import com.zemlovka.haj.utils.dto.client.LoginDTO;
 
 import java.util.concurrent.Future;
 
@@ -14,6 +15,13 @@ public abstract class AbstractCommand<V extends Resource, R extends Resource> im
         this.client = client;
         this.commandName = commandName;
     }
+
+    public Future<R> sendRequest(Resource argument) {
+        return new CompletableFutureCastingWrapper<>(
+                client.sendRequest(argument, LoginDTO.class, commandName)
+        );
+    }
+
     @Override
     public abstract Future<R> run(V argument);
 

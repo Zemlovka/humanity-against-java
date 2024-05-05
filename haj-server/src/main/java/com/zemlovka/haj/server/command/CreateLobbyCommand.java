@@ -2,6 +2,7 @@ package com.zemlovka.haj.server.command;
 
 import com.zemlovka.haj.server.user.Lobby;
 import com.zemlovka.haj.server.user.User;
+import com.zemlovka.haj.utils.dto.CommandNameEnum;
 import com.zemlovka.haj.utils.dto.client.CreateLobbyDTO;
 import com.zemlovka.haj.utils.dto.server.CreateLobbyResponseDTO;
 import org.slf4j.Logger;
@@ -13,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class CreateLobbyCommand implements ResolvableCommand<CreateLobbyDTO, CreateLobbyResponseDTO> {
     private static final Logger logger = LoggerFactory.getLogger(CreateLobbyCommand.class);
-    private static final String NAME = "CreateLobby";
+    private static final String NAME = CommandNameEnum.CREATE_LOBBY.name();
     private final User userData;
     private final ConcurrentHashMap<String, Lobby> lobbies;
 
@@ -24,6 +25,8 @@ public class CreateLobbyCommand implements ResolvableCommand<CreateLobbyDTO, Cre
 
     @Override
     public CreateLobbyResponseDTO run(CreateLobbyDTO argument) {
+        if (userData.isLoggedIn())
+            return new CreateLobbyResponseDTO(false);
         if (lobbies.containsKey(argument.name()))
             return new CreateLobbyResponseDTO(false);
         ConcurrentHashMap<UUID, User> users = new ConcurrentHashMap<>();
