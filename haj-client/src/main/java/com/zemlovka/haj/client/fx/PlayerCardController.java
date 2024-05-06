@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Controller for the asnwerCard component, which represents answer (orange) card in the game
+ * Controller for the answerCard component, which represents answer (orange) card in the game
  *
  * @author Korotov Nikita
  * @version 1.0
@@ -58,6 +58,5 @@ public class PlayerCardController {
     private void onCardClick(Event event){
         log.info("PLAYER CARD");
     }
-
 
 }

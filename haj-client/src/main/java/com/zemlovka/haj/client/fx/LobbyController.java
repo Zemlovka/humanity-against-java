@@ -4,9 +4,7 @@ import com.zemlovka.haj.client.ws.*;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
@@ -48,10 +46,20 @@ public class LobbyController extends AbstractWsActionsSettingController {
     private Lobby lobby = appState.getCurrentLobby();
     private static final Logger log = LoggerFactory.getLogger(LobbyController.class);
 
+    private enum State {
+        WAITING,
+        CHOOSING,
+        VOTING
+    }
+
+    private State waiting = State.WAITING;
+    private State choosing = State.CHOOSING;
+    private State voting = State.VOTING;
+
     @FXML
     private void initialize() {
         log.info("Lobby controller started.");
-
+        LayoutUtil.fadeInTransition(dialogForm);
         /*
         We really need these 4 lines. Bug caused by the requestLayout() method which is set/called via ScrollPaneBehavior
         More: https://stackoverflow.com/questions/53603250/javafx-how-to-prevent-label-text-resize-during-scrollpane-focus
@@ -64,6 +72,7 @@ public class LobbyController extends AbstractWsActionsSettingController {
         renderQuestionCard();
         renderPlayers(createPlayerList());
         //renderAnswerCards(answerPlaceholderStrings());
+        showSpinner();
         renderPlayerCards(answerPlaceholderStrings());
     }
 
@@ -84,28 +93,30 @@ public class LobbyController extends AbstractWsActionsSettingController {
         }
 
     }
+
     private void renderPlayers(List<Player> playerList) {
         playersContainer.getChildren().clear();
 
         for (Player player : playerList) {
-                //FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/lobbyComponent.fxml"));
-                //HBox lobbyComponent = loader.load();
-                //LobbyComponentController controller = loader.getController();
+            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/lobbyComponent.fxml"));
+            //HBox lobbyComponent = loader.load();
+            //LobbyComponentController controller = loader.getController();
 
-                //controller.setLobby(lobby);
-                Label playerComponent = new Label(player.getUsername());
-                if(player.isClient()){
-                    playerComponent.setText(playerComponent.getText() + " (You)");
-                }
+            //controller.setLobby(lobby);
+            Label playerComponent = new Label(player.getUsername());
+            if (player.isClient()) {
+                playerComponent.setText(playerComponent.getText() + " (You)");
+            }
             //playerComponent.setWrapText(true);
 
-                playersContainer.getChildren().add(playerComponent);
+            playersContainer.getChildren().add(playerComponent);
         }
     }
 
     private List<Player> createPlayerList() {
         return AppState.getInstance().currentLobby.getPlayers();
     }
+
     @FXML
     private void renderAnswerCards(List<Card> answerCards) {
         answerCardsContainer.getChildren().clear();
@@ -122,6 +133,7 @@ public class LobbyController extends AbstractWsActionsSettingController {
             }
         }
     }
+
     @FXML
     private void renderPlayerCards(List<Card> answersCards) {
         playerCardsContainer.getChildren().clear();
@@ -144,7 +156,24 @@ public class LobbyController extends AbstractWsActionsSettingController {
                 new AnswerCard(2, "Alcoholism."),
                 new AnswerCard(3, "Therapy."),
                 new AnswerCard(4, "Prescription drugs."),
-                new AnswerCard(5, "Bad life choices."));
+                new AnswerCard(5, "A disappointing birthday party."));
+    }
+
+    private void showSpinner() {
+        VBox container = new VBox();
+        container.setAlignment(javafx.geometry.Pos.CENTER);
+        container.setSpacing(15);
+
+        ProgressIndicator spinner = new ProgressIndicator();
+        spinner.setMaxSize(50, 50);
+        spinner.setStyle("-fx-progress-color: #E37107;");
+
+        Label label = new Label("Waiting for other players...");
+
+        answerCardsContainer.getChildren().clear();
+        container.getChildren().add(spinner);
+        container.getChildren().add(label);
+        answerCardsContainer.getChildren().add(container);
     }
 
 
@@ -154,9 +183,12 @@ public class LobbyController extends AbstractWsActionsSettingController {
     @FXML
     private void goMenu() {
         try {
-            LayoutUtil.changeLayoutWithFadeTransition((Stage) backButton.getScene().getWindow(), "/com/zemlovka/haj/client/menu.fxml", wsActions);
+            if (LayoutUtil.showAlert(Alert.AlertType.CONFIRMATION, "You are about to leave the lobby", "Proceed leaving lobby?")) {
+                LayoutUtil.changeLayoutWithFadeTransition((Stage) backButton.getScene().getWindow(), "/com/zemlovka/haj/client/menu.fxml", wsActions);
+            }
         } catch (IOException e) {
             log.error("Failed to return to the menu", e);
         }
     }
+
 }

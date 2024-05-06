@@ -22,6 +22,8 @@ import java.io.IOException;
  */
 public class LobbyComponentController extends AbstractWsActionsSettingController {
     private static final Logger log = LoggerFactory.getLogger(LobbyComponentController.class);
+    private final AppState appState = AppState.getInstance();
+    private Lobby lobby;
 
     @FXML
     private HBox lobbyComponent;
@@ -49,6 +51,7 @@ public class LobbyComponentController extends AbstractWsActionsSettingController
      * @param lobby The lobby entity to take data from
      */
     public void setLobby(Lobby lobby) {
+        this.lobby = lobby;
         // Set the lobby title
         lobbyTitle.setText(lobby.getName());
 
@@ -56,11 +59,13 @@ public class LobbyComponentController extends AbstractWsActionsSettingController
         lobbySize.setText(lobbySizeString);
 
     }
+
     @FXML
     private void onJoinLobbyClick() {
         log.info("Join lobby button clicked");
         try {
-            LayoutUtil.changeLayoutWithFadeTransition((Stage) joinLobbyButton.getScene().getWindow(), "/com/zemlovka/haj/client/menu.fxml", wsActions);
+            appState.setCurrentLobby(lobby);
+            LayoutUtil.changeLayoutWithFadeTransition((Stage) joinLobbyButton.getScene().getWindow(), "/com/zemlovka/haj/client/lobby.fxml", wsActions);
         } catch (IOException e) {
             log.error("Error changing layout: ", e);
         }

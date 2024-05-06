@@ -7,12 +7,14 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Utility class for handling layout changes
@@ -48,9 +50,7 @@ public class LayoutUtil {
         FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.3), transitionNode);
         fadeTransition.setFromValue(1);
         fadeTransition.setToValue(0);
-        fadeTransition.setOnFinished(event -> {
-            stage.getScene().setRoot(newRoot);
-        });
+        fadeTransition.setOnFinished(event -> stage.getScene().setRoot(newRoot));
         fadeTransition.play(); // Start the fade-out transition
     }
 
@@ -64,9 +64,9 @@ public class LayoutUtil {
     private static Parent loadFXML(String fxml, LobbyWSActions lobbyWSActions) throws IOException {
         FXMLLoader loader = new FXMLLoader(LayoutUtil.class.getResource(fxml));
         if (loader.getController() != null)
-            ((AbstractWsActionsSettingController)loader.getController()).setWsActions(lobbyWSActions);
+            ((AbstractWsActionsSettingController) loader.getController()).setWsActions(lobbyWSActions);
         Parent parent = loader.load();
-        ((AbstractWsActionsSettingController)loader.getController()).setWsActions(lobbyWSActions);
+        ((AbstractWsActionsSettingController) loader.getController()).setWsActions(lobbyWSActions);
         return parent;
     }
 
@@ -86,15 +86,21 @@ public class LayoutUtil {
     /**
      * Shows new stage with an alert with the specified type, title and content text
      *
-     * @param ALLERTTYPE  The type of the alert
+     * @param alertType   The type of the alert
      * @param title       The title of the alert
      * @param contentText The content text of the alert
+     * @return true if OK is pressed, false otherwise (for confirmation alerts)
      */
-    public static void showAlert(Alert.AlertType ALLERTTYPE, String title, String contentText) {
-        Alert alert = new Alert(ALLERTTYPE);
+    public static boolean showAlert(Alert.AlertType alertType, String title, String contentText) {
+        Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(contentText);
+        Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+        alertStage.setAlwaysOnTop(true);
+        //alertStage.initStyle(StageStyle.UNDECORATED);
+        Scene alertScene = alert.getDialogPane().getScene();
+        alertScene.getRoot().getStylesheets().add(Objects.requireNonNull(LayoutUtil.class.getResource("/com/zemlovka/haj/client/alert.css")).toExternalForm());
 
         alert.getDialogPane().getScene().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.ENTER) {
@@ -103,5 +109,7 @@ public class LayoutUtil {
         });
 
         alert.showAndWait();
+
+        return alert.getResult() == ButtonType.OK;
     }
 }

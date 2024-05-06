@@ -1,16 +1,28 @@
+/* Style for the root of the Alert dialog */
 .dialog-pane {
-    -fx-background-color: black;
+    -fx-background-color: rgba(31, 28, 32, 0.9);
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 10, 0.5, 0, 0), blur(5px);
+}
+.dialog-pane > *.button-bar > *.container{
+}
+.dialog-pane > *.button-bar > *.container > *.button{
+    -fx-background-color: #E37107;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-color-transition: color 0.3s;
+}
+.dialog-pane > *.button-bar > *.container > *.button:hover{
+    -fx-background-color: #984c06;
 }
 
 .dialog-pane .label {
-    -fx-text-fill: #ca1919;
+    -fx-text-fill: #fdf9f9;
+    -fx-font-size: 16px;
+
 }
 
-.dialog-pane:header .header-panel {
-    -fx-background-color: #dc0a0a;
-}
-
-.dialog-pane:header .header-panel .label {
-    -fx-font-style: italic;
-    -fx-font-size: 2em;
+/* Style for the text in the header of the Alert dialog */
+.dialog-pane .header-panel .label {
+    -fx-font-style: italic; /* Italic font style */
+    -fx-font-size: 2em; /* Font size */
 }

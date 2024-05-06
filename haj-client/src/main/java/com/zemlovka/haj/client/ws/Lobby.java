@@ -28,6 +28,10 @@ public class Lobby {
         return players;
     }
 
+    public void setPlayers(List<Player> players) {
+        this.players = players;
+    }
+
     public void addPlayerToList(Player player) {
         players.add(player);
     }
@@ -46,6 +50,30 @@ public class Lobby {
 
     public int getSize() {
         return size;
+    }
+
+    public List<AnswerCard> getAnswerCards() {
+        return answerCards;
+    }
+
+    public void addAnswerCard(AnswerCard answerCard) {
+        answerCards.add(answerCard);
+    }
+
+    public List<AnswerCard> getPlayerCards() {
+        return playerCards;
+    }
+
+    public void addPlayerCard(AnswerCard playerCard) {
+        playerCards.add(playerCard);
+    }
+
+    public void setAnswerCards(List<AnswerCard> answerCards) {
+        this.answerCards = answerCards;
+    }
+
+    public void setPlayerCards(List<AnswerCard> playerCards) {
+        this.playerCards = playerCards;
     }
 
     public void setQuestionCard(QuestionCard questionCard) {
