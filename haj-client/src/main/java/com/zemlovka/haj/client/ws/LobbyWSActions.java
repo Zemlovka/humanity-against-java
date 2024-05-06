@@ -4,6 +4,7 @@ import com.zemlovka.haj.client.ws.commands.*;
 import com.zemlovka.haj.utils.dto.client.*;
 import com.zemlovka.haj.utils.dto.server.*;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 
@@ -20,26 +21,29 @@ public class LobbyWSActions {
     }
 
 
-    public Future<LoginResponseDTO> login(String username) {
+    public CompletableFuture<LoginResponseDTO> login(String username) {
         return commands.login.run(new LoginDTO(username, client.getClientId()));
     }
 
-    public Future<LogoutResponseDTO> logout() {
+    public CompletableFuture<LogoutResponseDTO> logout() {
         return commands.logout.run(new LogoutDTO());
     }
 
-    public Future<CreateLobbyResponseDTO> createLobby(Lobby lobby) {
+    public CompletableFuture<CreateLobbyResponseDTO> createLobby(Lobby lobby) {
         return commands.createLobby.run(
                 new CreateLobbyDTO(lobby.getName(), lobby.getPassword(), lobby.getSize())
         );
     }
 
-    public Future<LobbyListDTO> fetchLobbyList() {
+    public CompletableFuture<LobbyListDTO> fetchLobbyList() {
         return commands.fetchLobby.run(new FetchLobbysDTO());
     }
 
-    public Future<JoinLobbyResponseDTO> fetchLobbyList(Lobby lobby, String password) {
+    public CompletableFuture<JoinLobbyResponseDTO> joinLobby(Lobby lobby, String password) {
         return commands.joinLobby.run(new JoinLobbyDTO(lobby.getName(), password));
+    }
+    public CompletableFuture<StartGameResponseDTO> startGame(Lobby lobby, String password) {
+        return commands.startGame.run(new StartGameDTO());
     }
 
     static class Commands {

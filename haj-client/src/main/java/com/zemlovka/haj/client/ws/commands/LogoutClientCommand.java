@@ -5,6 +5,7 @@ import com.zemlovka.haj.utils.dto.CommandNameEnum;
 import com.zemlovka.haj.utils.dto.client.LogoutDTO;
 import com.zemlovka.haj.utils.dto.server.LogoutResponseDTO;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 
@@ -15,7 +16,7 @@ public class LogoutClientCommand extends AbstractClientCommand<LogoutDTO, Logout
     }
 
     @Override
-    public Future<LogoutResponseDTO> run(LogoutDTO argument) {
+    public CompletableFuture<LogoutResponseDTO> run(LogoutDTO argument) {
         return sendRequest(argument);
     }
 }

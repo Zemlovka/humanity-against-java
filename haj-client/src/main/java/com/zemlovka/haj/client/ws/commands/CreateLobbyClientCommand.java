@@ -5,6 +5,7 @@ import com.zemlovka.haj.utils.dto.CommandNameEnum;
 import com.zemlovka.haj.utils.dto.client.CreateLobbyDTO;
 import com.zemlovka.haj.utils.dto.server.CreateLobbyResponseDTO;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 
@@ -16,7 +17,7 @@ public class CreateLobbyClientCommand extends AbstractClientCommand<CreateLobbyD
     }
 
     @Override
-    public Future<CreateLobbyResponseDTO> run(CreateLobbyDTO argument) {
+    public CompletableFuture<CreateLobbyResponseDTO> run(CreateLobbyDTO argument) {
         return sendRequest(argument);
     }
 }

@@ -5,6 +5,7 @@ import com.zemlovka.haj.utils.dto.CommandNameEnum;
 import com.zemlovka.haj.utils.dto.client.StartGameDTO;
 import com.zemlovka.haj.utils.dto.server.StartGameResponseDTO;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 
@@ -15,7 +16,7 @@ public class StartGameClientCommand extends AbstractClientCommand<StartGameDTO, 
     }
 
     @Override
-    public Future<StartGameResponseDTO> run(StartGameDTO argument) {
+    public CompletableFuture<StartGameResponseDTO> run(StartGameDTO argument) {
         return sendRequest(argument);
     }
 }

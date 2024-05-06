@@ -40,7 +40,6 @@ public class Session {
         this.clientSocket = clientSocket;
         this.server = server;
         userData = new User();
-        wsActions = new ServerWsActions(workLock, writer, lobbies, userData);
 
         keepAlive = true;
         closed = false;
@@ -71,6 +70,7 @@ public class Session {
 
             log.debug("Vlakno session uzivatele '{}' bylo ukonceno.", userData.getUsername());
         });
+        wsActions = new ServerWsActions(workLock, writer, lobbies, userData);
 
         // thread.setDaemon(true);
         thread.start();

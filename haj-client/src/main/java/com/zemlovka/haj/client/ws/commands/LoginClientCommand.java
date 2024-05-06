@@ -5,6 +5,7 @@ import com.zemlovka.haj.utils.dto.CommandNameEnum;
 import com.zemlovka.haj.utils.dto.client.LoginDTO;
 import com.zemlovka.haj.utils.dto.server.LoginResponseDTO;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 
@@ -15,7 +16,7 @@ public class LoginClientCommand extends AbstractClientCommand<LoginDTO, LoginRes
     }
 
     @Override
-    public Future<LoginResponseDTO> run(LoginDTO argument) {
+    public CompletableFuture<LoginResponseDTO> run(LoginDTO argument) {
         return sendRequest(argument);
     }
 

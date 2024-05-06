@@ -5,6 +5,7 @@ import com.zemlovka.haj.utils.dto.CommandNameEnum;
 import com.zemlovka.haj.utils.dto.client.FetchLobbysDTO;
 import com.zemlovka.haj.utils.dto.server.LobbyListDTO;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 
@@ -15,7 +16,7 @@ public class FetchLobbyClientCommand extends AbstractClientCommand<FetchLobbysDT
     }
 
     @Override
-    public Future<LobbyListDTO> run(FetchLobbysDTO argument) {
+    public CompletableFuture<LobbyListDTO> run(FetchLobbysDTO argument) {
         return sendRequest(argument);
     }
 }
