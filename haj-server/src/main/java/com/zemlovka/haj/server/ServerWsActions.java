@@ -12,7 +12,6 @@ import com.zemlovka.haj.utils.dto.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.Set;
@@ -53,7 +52,6 @@ public class ServerWsActions {
         ConnectionHeader clientHeader = clientCommunicationObject.header();
         log.debug("Command {} received from client {} with object type and communicationId {}",
                 clientHeader.commandName(), clientHeader.clientID(), clientHeader.communicationUuid());
-        int i = 0;
         for (ServerCommand command : commandSet) {
             if (command.resolve(clientCommunicationObject)) {
                 command.execute(clientCommunicationObject.body(), clientHeader);

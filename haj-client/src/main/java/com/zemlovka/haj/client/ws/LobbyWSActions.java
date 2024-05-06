@@ -42,7 +42,7 @@ public class LobbyWSActions {
     public CompletableFuture<JoinLobbyResponseDTO> joinLobby(Lobby lobby, String password) {
         return commands.joinLobby.run(new JoinLobbyDTO(lobby.getName(), password));
     }
-    public CompletableFuture<StartGameResponseDTO> startGame(Lobby lobby, String password) {
+    public CompletableFuture<StartGameResponseDTO> startGame() {
         return commands.startGame.run(new StartGameDTO());
     }
 
