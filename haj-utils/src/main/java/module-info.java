@@ -1,4 +1,4 @@
-module com.zemlovka.jah.utils {
+module com.zemlovka.haj.utils {
 
     requires com.fasterxml.jackson.databind;
     requires reflections;
