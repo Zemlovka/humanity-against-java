@@ -8,9 +8,9 @@ import com.zemlovka.haj.utils.dto.server.LogoutResponseDTO;
 import java.util.concurrent.Future;
 
 
-public class LogoutCommand extends AbstractCommand<LogoutDTO, LogoutResponseDTO> {
+public class LogoutClientCommand extends AbstractClientCommand<LogoutDTO, LogoutResponseDTO> {
     private static final String COMMAND_NAME = CommandNameEnum.LOGOUT.name();
-    public LogoutCommand(LobbyClient client) {
+    public LogoutClientCommand(LobbyClient client) {
         super(client, COMMAND_NAME);
     }
 

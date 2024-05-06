@@ -8,9 +8,9 @@ import com.zemlovka.haj.utils.dto.server.LoginResponseDTO;
 import java.util.concurrent.Future;
 
 
-public class LoginCommand extends AbstractCommand<LoginDTO, LoginResponseDTO> {
+public class LoginClientCommand extends AbstractClientCommand<LoginDTO, LoginResponseDTO> {
     private static final String COMMAND_NAME = CommandNameEnum.LOGIN.name();
-    public LoginCommand(LobbyClient client) {
+    public LoginClientCommand(LobbyClient client) {
         super(client, COMMAND_NAME);
     }
 

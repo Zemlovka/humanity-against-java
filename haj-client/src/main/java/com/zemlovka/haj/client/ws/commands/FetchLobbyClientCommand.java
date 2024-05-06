@@ -8,9 +8,9 @@ import com.zemlovka.haj.utils.dto.server.LobbyListDTO;
 import java.util.concurrent.Future;
 
 
-public class FetchLobbyCommand extends AbstractCommand<FetchLobbysDTO, LobbyListDTO> {
+public class FetchLobbyClientCommand extends AbstractClientCommand<FetchLobbysDTO, LobbyListDTO> {
     private static final String COMMAND_NAME = CommandNameEnum.FETCH_LOBBY.name();
-    public FetchLobbyCommand(LobbyClient client) {
+    public FetchLobbyClientCommand(LobbyClient client) {
         super(client, COMMAND_NAME);
     }
 

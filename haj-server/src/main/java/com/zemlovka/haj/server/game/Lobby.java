@@ -5,16 +5,18 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 public class Lobby {
-    private int capacity;
-    private String name;
-    private String password;
-    private ConcurrentHashMap<UUID, User> users;
+    private final int capacity;
+    private final String name;
+    private final String password;
+    private final ConcurrentHashMap<UUID, User> users;
+    private final Flags flags;
 
     public Lobby(int capacity, String name, String password, ConcurrentHashMap<UUID, User> users) {
         this.capacity = capacity;
         this.name = name;
         this.password = password;
         this.users = users;
+        this.flags = new Flags();
     }
 
     public int getCapacity() {
@@ -31,5 +33,9 @@ public class Lobby {
 
     public ConcurrentHashMap<UUID, User> getUsers() {
         return users;
+    }
+
+    public Flags getFlags() {
+        return flags;
     }
 }

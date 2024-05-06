@@ -44,19 +44,19 @@ public class LobbyWSActions {
 
     static class Commands {
 
-        LoginCommand login;
-        LogoutCommand logout;
-        CreateLobbyCommand createLobby;
-        FetchLobbyCommand fetchLobby;
-        JoinLobbyCommand joinLobby;
-        StartGameCommand startGame;
+        LoginClientCommand login;
+        LogoutClientCommand logout;
+        CreateLobbyClientCommand createLobby;
+        FetchLobbyClientCommand fetchLobby;
+        JoinLobbyClientCommand joinLobby;
+        StartGameClientCommand startGame;
         public Commands(LobbyClient client) {
-            login = new LoginCommand(client);
-            logout = new LogoutCommand(client);
-            createLobby = new CreateLobbyCommand(client);
-            fetchLobby = new FetchLobbyCommand(client);
-            joinLobby = new JoinLobbyCommand(client);
-            startGame = new StartGameCommand(client);
+            login = new LoginClientCommand(client);
+            logout = new LogoutClientCommand(client);
+            createLobby = new CreateLobbyClientCommand(client);
+            fetchLobby = new FetchLobbyClientCommand(client);
+            joinLobby = new JoinLobbyClientCommand(client);
+            startGame = new StartGameClientCommand(client);
         }
     }
 }

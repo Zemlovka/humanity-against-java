@@ -33,22 +33,18 @@ public class Session {
     private Socket clientSocket;
     private Server server;
     private User userData;
-    private ObjectMapper objectMapper;
-    private Set<ResolvableCommand<? extends Resource, ? extends Resource>> staticCommandSet;
-    private ConcurrentHashMap<String, Lobby> lobbies;
+    private ServerWsActions wsActions;
 
     public Session(Socket clientSocket, Server server, ConcurrentHashMap<String, Lobby> lobbies) {
         log.debug("Vytvarim objekt Session a pripravuji samostatna vlakna pro jeho obsluhu.");
         this.clientSocket = clientSocket;
         this.server = server;
-        this.objectMapper = ResourceObjectMapperFactory.getObjectMapper();
-        this.lobbies = lobbies;
+        userData = new User();
+        wsActions = new ServerWsActions(workLock, writer, lobbies, userData);
 
         keepAlive = true;
         closed = false;
 
-        userData = new User();
-        populateStaticCommandSet();
 
         log.debug("Vytvarim reader a writer objekty.");
         try {
@@ -105,52 +101,11 @@ public class Session {
 //        sendMessage("ERR Server se ukoncuje, spojeni bude uzavreno.");
         close();
     }
-
-    private void populateStaticCommandSet() {
-        staticCommandSet = new HashSet<>();
-        staticCommandSet.add(new LoginCommand(userData));
-        staticCommandSet.add(new LogoutCommand(userData));
-        staticCommandSet.add(new JoinLobbyCommand(lobbies, userData));
-        staticCommandSet.add(new CreateLobbyCommand(lobbies, userData));
-        staticCommandSet.add(new FetchLobbysCommand(lobbies));
-    }
-
     private void startReceivingMessages() throws IOException {
         while (keepAlive) {
             String message = reader.readLine();
-            CommunicationObject clientCommunicationObject = objectMapper.readValue(message, CommunicationObject.class);
-            ConnectionHeader clientHeader = clientCommunicationObject.header();
-            log.debug("Command {} received from client {} with object type and communicationId {}",
-                    clientHeader.commandName(), clientHeader.clientID(), clientHeader.communicationUuid());
-            ResolvableCommand<Resource,Resource> staticCommand = null;
-            Resource responseResource = null;
-            for (ResolvableCommand resolvableCommand : staticCommandSet) {
-                if (resolvableCommand.resolve(clientCommunicationObject))
-                    staticCommand = resolvableCommand;
-            }
-            if (staticCommand != null) {
-                responseResource = staticCommand.run(clientCommunicationObject.body());
-            }
-
-
-            ConnectionHeader responseHeader = new ConnectionHeader(
-                    clientHeader.clientID(),
-                    clientHeader.communicationUuid(),
-                    responseResource.getClass().getSimpleName(),
-                    clientHeader.commandName());
-            CommunicationObject responseObject = new CommunicationObject(responseHeader, responseResource);
-            sendMessage(responseObject);
+            wsActions.resolveAndSendCommand(message);
         }
 
-    }
-
-    public void sendMessage(CommunicationObject message) {
-        synchronized (workLock) {
-            try {
-                writer.println(objectMapper.writeValueAsString(message));
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-            }
-        }
     }
 }

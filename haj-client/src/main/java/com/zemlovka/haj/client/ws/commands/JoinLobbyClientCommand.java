@@ -8,9 +8,9 @@ import com.zemlovka.haj.utils.dto.server.JoinLobbyResponseDTO;
 import java.util.concurrent.Future;
 
 
-public class JoinLobbyCommand extends AbstractCommand<JoinLobbyDTO, JoinLobbyResponseDTO> {
+public class JoinLobbyClientCommand extends AbstractClientCommand<JoinLobbyDTO, JoinLobbyResponseDTO> {
     private static final String COMMAND_NAME = CommandNameEnum.JOIN_LOBBY.name();
-    public JoinLobbyCommand(LobbyClient client) {
+    public JoinLobbyClientCommand(LobbyClient client) {
         super(client, COMMAND_NAME);
     }
 
