@@ -49,6 +49,9 @@ public class CreateLobbyController extends AbstractWsActionsSettingController {
     @FXML
     private void onCreateLobbyClick(ActionEvent event) {
         String lobbyName = lobbyNameField.getText(); // Get the text from the TextField
+
+        lobbyPasswordField.setDisable(true);
+
         String lobbyPassword = lobbyPasswordField.getText();
         int lobbySize = (int) lobbySlider.getValue();
         log.info("Lobby name: {}", lobbyName);

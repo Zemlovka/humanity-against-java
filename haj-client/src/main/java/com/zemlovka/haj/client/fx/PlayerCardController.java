@@ -1,12 +1,10 @@
 package com.zemlovka.haj.client.fx;
 
-import com.zemlovka.haj.client.ws.Lobby;
 import javafx.animation.TranslateTransition;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 import org.slf4j.Logger;
@@ -18,8 +16,8 @@ import org.slf4j.LoggerFactory;
  * @author Korotov Nikita
  * @version 1.0
  */
-public class AnswerCardController {
-    private static final Logger log = LoggerFactory.getLogger(AnswerCardController.class);
+public class PlayerCardController {
+    private static final Logger log = LoggerFactory.getLogger(PlayerCardController.class);
     @FXML
     private Label answerText;
     @FXML
@@ -43,7 +41,7 @@ public class AnswerCardController {
         TranslateTransition transitionIn = new TranslateTransition(Duration.seconds(0.2), node);
         TranslateTransition transitionOut = new TranslateTransition(Duration.seconds(0.2), node);
 
-        transitionIn.setToY(-10);
+        transitionIn.setToY(-40);
         transitionOut.setToY(0);
 
         node.setOnMouseEntered(event -> {
@@ -58,7 +56,8 @@ public class AnswerCardController {
     }
     @FXML
     private void onCardClick(Event event){
-        log.info("ANSWER CARD");
+        log.info("PLAYER CARD");
     }
+
 
 }

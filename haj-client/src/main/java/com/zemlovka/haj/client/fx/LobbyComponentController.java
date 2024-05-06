@@ -6,8 +6,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 
 /**
  * Controller for the lobby component, which is a single lobby in the lobby list
@@ -52,7 +55,14 @@ public class LobbyComponentController extends AbstractWsActionsSettingController
         String lobbySizeString = "1/" + lobby.getSize();
         lobbySize.setText(lobbySizeString);
 
-        // Set the lobby size label
-        //lobbySize.setText(lobby.getSize());
+    }
+    @FXML
+    private void onJoinLobbyClick() {
+        log.info("Join lobby button clicked");
+        try {
+            LayoutUtil.changeLayoutWithFadeTransition((Stage) joinLobbyButton.getScene().getWindow(), "/com/zemlovka/haj/client/menu.fxml", wsActions);
+        } catch (IOException e) {
+            log.error("Error changing layout: ", e);
+        }
     }
 }
