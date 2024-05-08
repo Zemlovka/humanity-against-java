@@ -1,7 +1,10 @@
 package com.zemlovka.haj.utils.dto.server;
 
 import com.zemlovka.haj.utils.dto.Resource;
+import com.zemlovka.haj.utils.dto.secondary.CardDTO;
+
+import java.util.List;
 
 
-public record StartGameResponseDTO() implements Resource {
+public record StartGameResponseDTO(List<CardDTO> answerCards, CardDTO questionCard) implements Resource {
 }
