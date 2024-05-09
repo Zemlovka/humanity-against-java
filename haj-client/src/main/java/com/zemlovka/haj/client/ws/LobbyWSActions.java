@@ -45,6 +45,9 @@ public class LobbyWSActions {
     public CompletableFuture<StartGameResponseDTO> startGame() {
         return commands.startGame.run(new StartGameDTO());
     }
+    public CompletableFuture<FetchPlayersResponseDTO> fetchPlayers() {
+        return commands.fetchPlayers.run(new FetchPlayersDTO());
+    }
 
     static class Commands {
 
@@ -54,6 +57,7 @@ public class LobbyWSActions {
         FetchLobbyClientCommand fetchLobby;
         JoinLobbyClientCommand joinLobby;
         StartGameClientCommand startGame;
+        FetchPlayersCommand fetchPlayers;
         public Commands(LobbyClient client) {
             login = new LoginClientCommand(client);
             logout = new LogoutClientCommand(client);
@@ -61,6 +65,7 @@ public class LobbyWSActions {
             fetchLobby = new FetchLobbyClientCommand(client);
             joinLobby = new JoinLobbyClientCommand(client);
             startGame = new StartGameClientCommand(client);
+            fetchPlayers = new FetchPlayersCommand(client);
         }
     }
 }

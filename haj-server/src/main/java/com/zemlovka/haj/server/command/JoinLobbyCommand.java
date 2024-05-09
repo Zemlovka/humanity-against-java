@@ -38,6 +38,7 @@ public class JoinLobbyCommand extends AbstractServerCommand<JoinLobbyDTO, JoinLo
         else{
             userData.setCurrentLobby(lobby);
             lobby.getUsers().put(userData.getUuid(), userData);
+            lobby.getFlags().getNewPlayerFlag().complete(null);
             response = new JoinLobbyResponseDTO(true, DtoMapper.mapLobby(lobby));
         }
         send(response, clientHeader);

@@ -45,6 +45,7 @@ public class ServerWsActions {
         commandSet.add(new CreateLobbyCommand(this, lobbies, userData));
         commandSet.add(new FetchLobbysCommand(this, lobbies));
         commandSet.add(new StartGameCommand(this, userData));
+        commandSet.add(new FetchPlayersCommand(this, userData));
     }
 
     public void resolveAndSendCommand(String message) throws JsonProcessingException {
