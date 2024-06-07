@@ -73,6 +73,7 @@ public class FindLobbyController extends AbstractWsActionsSettingController {
                 HBox lobbyComponent = loader.load();
 
                 LobbyComponentController controller = loader.getController();
+                controller.setWsActions(wsActions);
 
                 controller.setLobby(lobby);
 

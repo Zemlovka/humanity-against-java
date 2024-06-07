@@ -1,6 +1,8 @@
 package com.zemlovka.haj.client.fx;
 
 import com.zemlovka.haj.client.ws.LobbyWSActions;
+import com.zemlovka.haj.client.ws.Player;
+import com.zemlovka.haj.utils.dto.secondary.PlayerDTO;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -14,7 +16,10 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Utility class for handling layout changes
@@ -111,5 +116,14 @@ public class LayoutUtil {
         alert.showAndWait();
 
         return alert.getResult() == ButtonType.OK;
+    }
+
+    public static List<Player> mapPlayers(Set<PlayerDTO> playerDTOSet, Player currentPlayer) {
+        return playerDTOSet.stream().map(p -> {
+            if (currentPlayer.getUsername().equals(p.getName()))
+                return currentPlayer;
+            else
+                return new Player(p.getName(), null, false);
+        }).collect(Collectors.toList());
     }
 }

@@ -23,6 +23,13 @@ public class Lobby {
         this.answerCards = new ArrayList<>();
         this.playerCards = new ArrayList<>();
     }
+    public Lobby(String name, List<Player> players) {
+        this.name = name;
+        this.size = players.size();
+        this.players = players;
+        this.answerCards = new ArrayList<>();
+        this.playerCards = new ArrayList<>();
+    }
 
     public List<Player> getPlayers() {
         return players;

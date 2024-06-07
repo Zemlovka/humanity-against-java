@@ -4,5 +4,11 @@ import com.zemlovka.haj.utils.dto.Resource;
 import com.zemlovka.haj.utils.dto.secondary.LobbyDTO;
 
 
-public record JoinLobbyResponseDTO(boolean successful, LobbyDTO lobby) implements Resource {
+public record JoinLobbyResponseDTO(JoinState joinState, LobbyDTO lobby) implements Resource {
+    public enum JoinState{
+        SUCCESS,
+        LOBBY_FULL,
+        WRONG_PASSWORD,
+        LOBBY_DOES_NOT_EXIST;
+    }
 }

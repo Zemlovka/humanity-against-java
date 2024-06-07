@@ -11,6 +11,7 @@ public class Player {
         this.avatar = avatar;
         this.isClient = isClient;
     }
+
     public String getUsername() {
         return username;
     }

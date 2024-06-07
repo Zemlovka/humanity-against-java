@@ -55,6 +55,8 @@ public class ServerWsActions {
                 clientHeader.commandName(), clientHeader.clientID(), clientHeader.communicationUuid());
         for (ServerCommand command : commandSet) {
             if (command.resolve(clientCommunicationObject)) {
+                log.debug("Command with communicationId {} resolved to server command {}",
+                        clientHeader.communicationUuid(), command.getName());
                 command.execute(clientCommunicationObject.body(), clientHeader);
                 break;
             }

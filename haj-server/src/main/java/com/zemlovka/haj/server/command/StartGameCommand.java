@@ -17,7 +17,7 @@ import java.util.List;
 
 public class StartGameCommand extends AbstractServerCommand<StartGameDTO, StartGameResponseDTO> {
     private static final Logger logger = LoggerFactory.getLogger(LoginCommand.class);
-    private static final String NAME = CommandNameEnum.LOGIN.name();
+    private static final String NAME = CommandNameEnum.START_GAME.name();
     private final User userData;
 
     public StartGameCommand(ServerWsActions wsActions, User userData) {

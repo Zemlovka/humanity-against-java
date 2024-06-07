@@ -1,6 +1,7 @@
 package com.zemlovka.haj.client.fx;
 
 import com.zemlovka.haj.client.ws.*;
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +13,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 /**
  * Controller for the lobby. Handles all the lobby logic.
@@ -24,7 +28,6 @@ public class LobbyController extends AbstractWsActionsSettingController {
 
     @FXML
     private Button backButton;
-
     @FXML
     private VBox dialogForm;
     @FXML
@@ -43,7 +46,7 @@ public class LobbyController extends AbstractWsActionsSettingController {
     private VBox myCardsSection;
 
     private final AppState appState = AppState.getInstance();
-    private Lobby lobby = appState.getCurrentLobby();
+    private final Lobby lobby = appState.getCurrentLobby();
     private static final Logger log = LoggerFactory.getLogger(LobbyController.class);
 
     private enum State {
@@ -52,14 +55,15 @@ public class LobbyController extends AbstractWsActionsSettingController {
         VOTING
     }
 
-    private State waiting = State.WAITING;
-    private State choosing = State.CHOOSING;
-    private State voting = State.VOTING;
+    private final State waiting = State.WAITING;
+    private final State choosing = State.CHOOSING;
+    private final State voting = State.VOTING;
 
     @FXML
     private void initialize() {
         log.info("Lobby controller started.");
         LayoutUtil.fadeInTransition(dialogForm);
+
         /*
         We really need these 4 lines. Bug caused by the requestLayout() method which is set/called via ScrollPaneBehavior
         More: https://stackoverflow.com/questions/53603250/javafx-how-to-prevent-label-text-resize-during-scrollpane-focus
@@ -68,12 +72,8 @@ public class LobbyController extends AbstractWsActionsSettingController {
         answerCardsContainer.setOnMousePressed(Event::consume);
         playerCardsScroll.setOnMousePressed(Event::consume);
         myCardsSection.setOnMousePressed(Event::consume);
-
-        renderQuestionCard();
-        renderPlayers(createPlayerList());
-        //renderAnswerCards(answerPlaceholderStrings());
+        renderPlayers(appState.getCurrentLobby().getPlayers());
         showSpinner();
-        renderPlayerCards(answerPlaceholderStrings());
     }
 
     /**
@@ -95,6 +95,7 @@ public class LobbyController extends AbstractWsActionsSettingController {
     }
 
     private void renderPlayers(List<Player> playerList) {
+        log.info("Rendering players: " + playerList.stream().map(Player::getUsername).collect(Collectors.joining(", ")));
         playersContainer.getChildren().clear();
 
         for (Player player : playerList) {
@@ -104,6 +105,7 @@ public class LobbyController extends AbstractWsActionsSettingController {
 
             //controller.setLobby(lobby);
             Label playerComponent = new Label(player.getUsername());
+            log.info("redndering {}", player.getUsername());
             if (player.isClient()) {
                 playerComponent.setText(playerComponent.getText() + " (You)");
             }
@@ -113,8 +115,21 @@ public class LobbyController extends AbstractWsActionsSettingController {
         }
     }
 
-    private List<Player> createPlayerList() {
-        return AppState.getInstance().currentLobby.getPlayers();
+    private void registerFetchPlayer() {
+        wsActions.fetchPlayers().thenApply(f -> {Platform.runLater(() -> {
+
+            renderPlayers(LayoutUtil.mapPlayers(f.players(), appState.getCurrentPlayer()));
+            if (f.awaitNewPlayers()) {
+                registerFetchPlayer();
+            } else {
+                //todo start game
+            }
+        });
+        return null;
+        }).exceptionally(e -> {
+            log.error("Error fetching players", e);
+            return null;
+        });
     }
 
     @FXML
@@ -191,4 +206,13 @@ public class LobbyController extends AbstractWsActionsSettingController {
         }
     }
 
+    @Override
+    void setWsActions(LobbyWSActions wsActions) {
+        super.setWsActions(wsActions);
+//        renderQuestionCard();
+        registerFetchPlayer();
+        //renderAnswerCards(answerPlaceholderStrings());
+
+//        renderPlayerCards(answerPlaceholderStrings());
+    }
 }

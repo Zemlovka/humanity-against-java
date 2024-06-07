@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 public class FetchPlayersCommand extends AbstractServerCommand<FetchPlayersDTO, FetchPlayersResponseDTO> {
     private static final Logger logger = LoggerFactory.getLogger(FetchPlayersCommand.class);
-    private static final String NAME = CommandNameEnum.JOIN_LOBBY.name();
+    private static final String NAME = CommandNameEnum.FETCH_PLAYERS.name();
     private final User userData;
 
     public FetchPlayersCommand(ServerWsActions wsActions, User userData) {
@@ -23,7 +23,7 @@ public class FetchPlayersCommand extends AbstractServerCommand<FetchPlayersDTO, 
     @Override
     public void execute(FetchPlayersDTO argument, ConnectionHeader clientHeader) {
         final Lobby lobby = userData.getCurrentLobby();
-        lobby.getFlags().getNewPlayerFlag().thenApply(f -> {
+        lobby.getFlags().getNewPlayerFlag().thenApplyAsync(f -> {
             final boolean awaitNewPlayers = lobby.getUsers().size() < lobby.getCapacity();
             send(new FetchPlayersResponseDTO(DtoMapper.mapPlayers(lobby.getUsers().values()), awaitNewPlayers), clientHeader);
             lobby.getFlags().clearNewPlayerFlag();

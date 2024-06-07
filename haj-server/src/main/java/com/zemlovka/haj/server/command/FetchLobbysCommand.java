@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 public class FetchLobbysCommand extends AbstractServerCommand<FetchLobbysDTO, LobbyListDTO> {
     private static final Logger logger = LoggerFactory.getLogger(FetchLobbysCommand.class);
-    private static final String NAME = CommandNameEnum.FETCH_LOBBY.name();
+    private static final String NAME = CommandNameEnum.FETCH_LOBBIES.name();
     private final ConcurrentHashMap<String, Lobby> lobbies;
 
     public FetchLobbysCommand(ServerWsActions wsActions, ConcurrentHashMap<String, Lobby> lobbies) {

@@ -1,6 +1,9 @@
 package com.zemlovka.haj.client.fx;
 
 import com.zemlovka.haj.client.ws.Lobby;
+import com.zemlovka.haj.client.ws.Player;
+import com.zemlovka.haj.utils.dto.secondary.LobbyDTO;
+import com.zemlovka.haj.utils.dto.server.JoinLobbyResponseDTO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,6 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 /**
  * Controller for the lobby component, which is a single lobby in the lobby list
@@ -64,9 +69,16 @@ public class LobbyComponentController extends AbstractWsActionsSettingController
     private void onJoinLobbyClick() {
         log.info("Join lobby button clicked");
         try {
-            appState.setCurrentLobby(lobby);
-            LayoutUtil.changeLayoutWithFadeTransition((Stage) joinLobbyButton.getScene().getWindow(), "/com/zemlovka/haj/client/lobby.fxml", wsActions);
-        } catch (IOException e) {
+            //wsActions.joinLobby(lobby, "").get();
+            JoinLobbyResponseDTO joinLobbyResponse= wsActions.joinLobby(lobby, "").get();
+            if(joinLobbyResponse.joinState() == JoinLobbyResponseDTO.JoinState.SUCCESS){
+                LobbyDTO lobbyDTO = joinLobbyResponse.lobby();
+                appState.setCurrentLobby(new Lobby(lobbyDTO.getName(), LayoutUtil.mapPlayers(lobbyDTO.getPlayers(), appState.getCurrentPlayer())));
+                LayoutUtil.changeLayoutWithFadeTransition((Stage) joinLobbyButton.getScene().getWindow(), "/com/zemlovka/haj/client/lobby.fxml", wsActions);
+            } else {
+                //todo not connected to lobby error
+            }
+        } catch (Exception e) {
             log.error("Error changing layout: ", e);
         }
     }

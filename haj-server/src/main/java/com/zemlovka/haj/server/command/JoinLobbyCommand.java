@@ -30,16 +30,19 @@ public class JoinLobbyCommand extends AbstractServerCommand<JoinLobbyDTO, JoinLo
         Lobby lobby = lobbies.get(argument.lobbyName());
         final JoinLobbyResponseDTO response;
         if (lobby == null) {
-            response = new JoinLobbyResponseDTO(false, null);
+            response = new JoinLobbyResponseDTO(JoinLobbyResponseDTO.JoinState.LOBBY_DOES_NOT_EXIST, null);
         }
         else if (!lobby.getPassword().equals(argument.password())) {
-            response = new JoinLobbyResponseDTO(false, null);
+            response = new JoinLobbyResponseDTO(JoinLobbyResponseDTO.JoinState.WRONG_PASSWORD, null);
+        }
+        else if (lobby.getCapacity() <= lobby.getUsers().size()) {
+            response = new JoinLobbyResponseDTO(JoinLobbyResponseDTO.JoinState.LOBBY_FULL, null);
         }
         else{
             userData.setCurrentLobby(lobby);
             lobby.getUsers().put(userData.getUuid(), userData);
             lobby.getFlags().getNewPlayerFlag().complete(null);
-            response = new JoinLobbyResponseDTO(true, DtoMapper.mapLobby(lobby));
+            response = new JoinLobbyResponseDTO(JoinLobbyResponseDTO.JoinState.SUCCESS, DtoMapper.mapLobby(lobby));
         }
         send(response, clientHeader);
     }

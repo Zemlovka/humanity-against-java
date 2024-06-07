@@ -6,11 +6,10 @@ import com.zemlovka.haj.utils.dto.client.FetchLobbysDTO;
 import com.zemlovka.haj.utils.dto.server.LobbyListDTO;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 
 
 public class FetchLobbyClientCommand extends AbstractClientCommand<FetchLobbysDTO, LobbyListDTO> {
-    private static final String COMMAND_NAME = CommandNameEnum.FETCH_LOBBY.name();
+    private static final String COMMAND_NAME = CommandNameEnum.FETCH_LOBBIES.name();
     public FetchLobbyClientCommand(LobbyClient client) {
         super(client, COMMAND_NAME);
     }

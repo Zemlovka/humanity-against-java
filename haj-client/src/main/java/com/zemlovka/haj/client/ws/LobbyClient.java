@@ -2,6 +2,7 @@ package com.zemlovka.haj.client.ws;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zemlovka.haj.client.ws.commands.CompletableFutureCastingWrapper;
 import com.zemlovka.haj.utils.CommunicationObject;
 import com.zemlovka.haj.utils.ConnectionHeader;
 import com.zemlovka.haj.utils.ResourceObjectMapperFactory;
@@ -47,7 +48,7 @@ public class LobbyClient extends Thread {
         }
     }
 
-    public Future<Resource> sendRequest(Resource request, String commandName) {
+    public CompletableFutureCastingWrapper<Resource> sendRequest(Resource request, String commandName) {
         final UUID uuid = UUID.randomUUID();
         final ConnectionHeader header = new ConnectionHeader(clientId, uuid, request.getClass().getSimpleName(), commandName);
         final CommunicationObject communicationObject = new CommunicationObject(header, request);
@@ -55,7 +56,7 @@ public class LobbyClient extends Thread {
         futureConcurrentHashMap.put(uuid, completableFuture);
         try {
             pw.println(objectMapper.writeValueAsString(communicationObject));
-            return completableFuture;
+            return new CompletableFutureCastingWrapper<>(completableFuture);
         } catch (JsonProcessingException e) {
             //todo
             throw new RuntimeException(e);

@@ -7,7 +7,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 
-public abstract class AbstractClientCommand<V extends Resource, R extends Resource> implements ClientCommand<V, Future<R>> {
+public abstract class AbstractClientCommand<V extends Resource, R extends Resource> implements ClientCommand<V, CompletableFuture<R>> {
     protected final LobbyClient client;
     private final String commandName;
     public AbstractClientCommand(LobbyClient client, String commandName) {
@@ -15,10 +15,8 @@ public abstract class AbstractClientCommand<V extends Resource, R extends Resour
         this.commandName = commandName;
     }
 
-    public CompletableFutureCastingWrapper<R> sendRequest(Resource argument) {
-        return new CompletableFutureCastingWrapper<>(
-                client.sendRequest(argument, commandName)
-        );
+    public CompletableFuture<R> sendRequest(Resource argument) {
+        return (CompletableFutureCastingWrapper<R>) client.sendRequest(argument, commandName);
     }
 
 

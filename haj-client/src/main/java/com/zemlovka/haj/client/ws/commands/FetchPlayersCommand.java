@@ -9,7 +9,7 @@ import java.util.concurrent.CompletableFuture;
 
 
 public class FetchPlayersCommand extends AbstractClientCommand<FetchPlayersDTO, FetchPlayersResponseDTO> {
-    private static final String COMMAND_NAME = CommandNameEnum.JOIN_LOBBY.name();
+    private static final String COMMAND_NAME = CommandNameEnum.FETCH_PLAYERS.name();
     public FetchPlayersCommand(LobbyClient client) {
         super(client, COMMAND_NAME);
     }

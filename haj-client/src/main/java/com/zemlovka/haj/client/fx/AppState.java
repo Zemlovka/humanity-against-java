@@ -7,7 +7,6 @@ import javafx.scene.Scene;
 import java.util.Stack;
 
 public final class AppState {
-
     Player currentPlayer;
     Lobby currentLobby;
     private final static AppState INSTANCE = new AppState();
