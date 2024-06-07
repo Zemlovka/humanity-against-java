@@ -19,16 +19,15 @@ public class StartGameCommand extends AbstractServerCommand<StartGameDTO, StartG
     private static final Logger logger = LoggerFactory.getLogger(LoginCommand.class);
     private static final String NAME = CommandNameEnum.LOGIN.name();
     private final User userData;
-    private final Lobby lobby;
 
     public StartGameCommand(ServerWsActions wsActions, User userData) {
         super(wsActions);
         this.userData = userData;
-        this.lobby = userData.getCurrentLobby();
     }
 
     @Override
     public void execute(StartGameDTO argument, ConnectionHeader clientHeader) {
+        final Lobby lobby = userData.getCurrentLobby();
         lobby.getFlags().getLobbyReadyFlag().thenApply(f -> {
             CardDTO questionCard = lobby.selectRandomQuestionCard();
             List<CardDTO> answerCard = lobby.selectRandomAnswerCards(Lobby.DEFAULT_PLAYER_CARDS_NUMBER);

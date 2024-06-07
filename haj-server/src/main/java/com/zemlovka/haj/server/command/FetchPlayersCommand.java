@@ -14,14 +14,15 @@ import org.slf4j.LoggerFactory;
 public class FetchPlayersCommand extends AbstractServerCommand<FetchPlayersDTO, FetchPlayersResponseDTO> {
     private static final Logger logger = LoggerFactory.getLogger(FetchPlayersCommand.class);
     private static final String NAME = CommandNameEnum.JOIN_LOBBY.name();
-    private final Lobby lobby;
+    private final User userData;
 
     public FetchPlayersCommand(ServerWsActions wsActions, User userData) {
         super(wsActions);
-        this.lobby = userData.getCurrentLobby();
+        this.userData = userData;
     }
     @Override
     public void execute(FetchPlayersDTO argument, ConnectionHeader clientHeader) {
+        final Lobby lobby = userData.getCurrentLobby();
         lobby.getFlags().getNewPlayerFlag().thenApply(f -> {
             final boolean awaitNewPlayers = lobby.getUsers().size() < lobby.getCapacity();
             send(new FetchPlayersResponseDTO(DtoMapper.mapPlayers(lobby.getUsers().values()), awaitNewPlayers), clientHeader);
