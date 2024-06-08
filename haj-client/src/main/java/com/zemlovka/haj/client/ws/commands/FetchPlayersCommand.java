@@ -5,8 +5,6 @@ import com.zemlovka.haj.utils.dto.CommandNameEnum;
 import com.zemlovka.haj.utils.dto.client.FetchPlayersDTO;
 import com.zemlovka.haj.utils.dto.server.FetchPlayersResponseDTO;
 
-import java.util.concurrent.CompletableFuture;
-
 
 public class FetchPlayersCommand extends AbstractClientCommand<FetchPlayersDTO, FetchPlayersResponseDTO> {
     private static final String COMMAND_NAME = CommandNameEnum.FETCH_PLAYERS.name();
@@ -15,7 +13,7 @@ public class FetchPlayersCommand extends AbstractClientCommand<FetchPlayersDTO, 
     }
 
     @Override
-    public CompletableFuture<FetchPlayersResponseDTO> run(FetchPlayersDTO argument) {
+    public JavaFxAsyncFutureWrapper<FetchPlayersResponseDTO> run(FetchPlayersDTO argument) {
         return sendRequest(argument);
     }
 }

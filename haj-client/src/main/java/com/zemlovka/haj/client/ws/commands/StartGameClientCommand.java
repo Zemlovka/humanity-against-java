@@ -16,7 +16,7 @@ public class StartGameClientCommand extends AbstractClientCommand<StartGameDTO, 
     }
 
     @Override
-    public CompletableFuture<StartGameResponseDTO> run(StartGameDTO argument) {
+    public JavaFxAsyncFutureWrapper<StartGameResponseDTO> run(StartGameDTO argument) {
         return sendRequest(argument);
     }
 }

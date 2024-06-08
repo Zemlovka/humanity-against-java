@@ -16,7 +16,7 @@ public class LogoutClientCommand extends AbstractClientCommand<LogoutDTO, Logout
     }
 
     @Override
-    public CompletableFuture<LogoutResponseDTO> run(LogoutDTO argument) {
+    public JavaFxAsyncFutureWrapper<LogoutResponseDTO> run(LogoutDTO argument) {
         return sendRequest(argument);
     }
 }

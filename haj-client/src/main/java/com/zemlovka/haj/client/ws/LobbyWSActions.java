@@ -21,31 +21,31 @@ public class LobbyWSActions {
     }
 
 
-    public CompletableFuture<LoginResponseDTO> login(String username) {
+    public JavaFxAsyncFutureWrapper<LoginResponseDTO> login(String username) {
         return commands.login.run(new LoginDTO(username, client.getClientId()));
     }
 
-    public CompletableFuture<LogoutResponseDTO> logout() {
+    public JavaFxAsyncFutureWrapper<LogoutResponseDTO> logout() {
         return commands.logout.run(new LogoutDTO());
     }
 
-    public CompletableFuture<CreateLobbyResponseDTO> createLobby(Lobby lobby) {
+    public JavaFxAsyncFutureWrapper<CreateLobbyResponseDTO> createLobby(Lobby lobby) {
         return commands.createLobby.run(
                 new CreateLobbyDTO(lobby.getName(), lobby.getPassword(), lobby.getSize())
         );
     }
 
-    public CompletableFuture<LobbyListDTO> fetchLobbyList() {
+    public JavaFxAsyncFutureWrapper<LobbyListDTO> fetchLobbyList() {
         return commands.fetchLobby.run(new FetchLobbysDTO());
     }
 
-    public CompletableFuture<JoinLobbyResponseDTO> joinLobby(Lobby lobby, String password) {
+    public JavaFxAsyncFutureWrapper<JoinLobbyResponseDTO> joinLobby(Lobby lobby, String password) {
         return commands.joinLobby.run(new JoinLobbyDTO(lobby.getName(), password));
     }
-    public CompletableFuture<StartGameResponseDTO> startGame() {
+    public JavaFxAsyncFutureWrapper<StartGameResponseDTO> startGame() {
         return commands.startGame.run(new StartGameDTO());
     }
-    public CompletableFuture<FetchPlayersResponseDTO> fetchPlayers() {
+    public JavaFxAsyncFutureWrapper<FetchPlayersResponseDTO> fetchPlayers() {
         return commands.fetchPlayers.run(new FetchPlayersDTO());
     }
 

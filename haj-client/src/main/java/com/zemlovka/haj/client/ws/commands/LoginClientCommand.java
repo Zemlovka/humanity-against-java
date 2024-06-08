@@ -16,7 +16,7 @@ public class LoginClientCommand extends AbstractClientCommand<LoginDTO, LoginRes
     }
 
     @Override
-    public CompletableFuture<LoginResponseDTO> run(LoginDTO argument) {
+    public JavaFxAsyncFutureWrapper<LoginResponseDTO> run(LoginDTO argument) {
         return sendRequest(argument);
     }
 

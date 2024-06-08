@@ -2,12 +2,11 @@ package com.zemlovka.haj.client.ws;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zemlovka.haj.client.ws.commands.CompletableFutureCastingWrapper;
+import com.zemlovka.haj.client.ws.commands.JavaFxAsyncFutureWrapper;
 import com.zemlovka.haj.utils.CommunicationObject;
 import com.zemlovka.haj.utils.ConnectionHeader;
 import com.zemlovka.haj.utils.ResourceObjectMapperFactory;
 import com.zemlovka.haj.utils.dto.Resource;
-import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,9 +15,6 @@ import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.stream.Collectors;
 
 
 public class LobbyClient extends Thread {
@@ -48,7 +44,7 @@ public class LobbyClient extends Thread {
         }
     }
 
-    public CompletableFutureCastingWrapper<Resource> sendRequest(Resource request, String commandName) {
+    public JavaFxAsyncFutureWrapper<Resource> sendRequest(Resource request, String commandName) {
         final UUID uuid = UUID.randomUUID();
         final ConnectionHeader header = new ConnectionHeader(clientId, uuid, request.getClass().getSimpleName(), commandName);
         final CommunicationObject communicationObject = new CommunicationObject(header, request);
@@ -56,7 +52,7 @@ public class LobbyClient extends Thread {
         futureConcurrentHashMap.put(uuid, completableFuture);
         try {
             pw.println(objectMapper.writeValueAsString(communicationObject));
-            return new CompletableFutureCastingWrapper<>(completableFuture);
+            return new JavaFxAsyncFutureWrapper<>(completableFuture);
         } catch (JsonProcessingException e) {
             //todo
             throw new RuntimeException(e);

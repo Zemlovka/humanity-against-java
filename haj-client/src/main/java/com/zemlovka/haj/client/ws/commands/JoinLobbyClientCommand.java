@@ -16,7 +16,7 @@ public class JoinLobbyClientCommand extends AbstractClientCommand<JoinLobbyDTO, 
     }
 
     @Override
-    public CompletableFuture<JoinLobbyResponseDTO> run(JoinLobbyDTO argument) {
+    public JavaFxAsyncFutureWrapper<JoinLobbyResponseDTO> run(JoinLobbyDTO argument) {
         return sendRequest(argument);
     }
 }
