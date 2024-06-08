@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 
 public class LogoutCommand extends AbstractServerCommand<LogoutDTO, LogoutResponseDTO> {
-    private static final Logger logger = LoggerFactory.getLogger(LoginCommand.class);
+    private static final Logger logger = LoggerFactory.getLogger(LogoutCommand.class);
     private static final String NAME = CommandNameEnum.LOGOUT.name();
     private final User userData;
 

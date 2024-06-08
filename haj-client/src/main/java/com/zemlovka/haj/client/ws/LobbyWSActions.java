@@ -29,6 +29,10 @@ public class LobbyWSActions {
         return commands.logout.run(new LogoutDTO());
     }
 
+    public JavaFxAsyncFutureWrapper<LeaveLobbyResponseDTO> leaveLobby() {
+        return commands.leaveLobby.run(new LeaveLobbyDTO());
+    }
+
     public JavaFxAsyncFutureWrapper<CreateLobbyResponseDTO> createLobby(Lobby lobby) {
         return commands.createLobby.run(
                 new CreateLobbyDTO(lobby.getName(), lobby.getPassword(), lobby.getSize())
@@ -51,16 +55,18 @@ public class LobbyWSActions {
 
     static class Commands {
 
-        LoginClientCommand login;
-        LogoutClientCommand logout;
-        CreateLobbyClientCommand createLobby;
-        FetchLobbyClientCommand fetchLobby;
-        JoinLobbyClientCommand joinLobby;
-        StartGameClientCommand startGame;
-        FetchPlayersCommand fetchPlayers;
+        final LoginClientCommand login;
+        final LogoutClientCommand logout;
+        final LeaveLobbyCommand leaveLobby;
+        final CreateLobbyClientCommand createLobby;
+        final FetchLobbyClientCommand fetchLobby;
+        final JoinLobbyClientCommand joinLobby;
+        final StartGameClientCommand startGame;
+        final FetchPlayersCommand fetchPlayers;
         public Commands(LobbyClient client) {
             login = new LoginClientCommand(client);
             logout = new LogoutClientCommand(client);
+            leaveLobby = new LeaveLobbyCommand(client);
             createLobby = new CreateLobbyClientCommand(client);
             fetchLobby = new FetchLobbyClientCommand(client);
             joinLobby = new JoinLobbyClientCommand(client);
