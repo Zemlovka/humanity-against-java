@@ -23,6 +23,9 @@ public class FetchPlayersCommand extends AbstractServerCommand<FetchPlayersDTO, 
     @Override
     public void execute(FetchPlayersDTO argument, ConnectionHeader clientHeader) {
         final Lobby lobby = userData.getCurrentLobby();
+        // if the lobby is full returns right away
+        if (lobby.getUsers().size() >= lobby.getCapacity())
+            send(new FetchPlayersResponseDTO(DtoMapper.mapPlayers(lobby.getUsers().values()), false), clientHeader);
         lobby.getFlags().getNewPlayerFlag().thenApplyAsync(f -> {
             final boolean awaitNewPlayers = lobby.getUsers().size() < lobby.getCapacity();
             send(new FetchPlayersResponseDTO(DtoMapper.mapPlayers(lobby.getUsers().values()), awaitNewPlayers), clientHeader);
