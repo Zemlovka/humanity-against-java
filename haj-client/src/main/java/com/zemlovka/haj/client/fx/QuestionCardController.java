@@ -33,7 +33,7 @@ public class QuestionCardController {
         log.info("QuestionCard component initialized.");
         addHoverAnimation(questionCard);
         questionCard.setOnMouseClicked(mouseEvent -> {
-            log.info("Answer card clicked");
+            log.info("Question card clicked");
         });
     }
 

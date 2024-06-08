@@ -14,13 +14,14 @@ import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
 
 
 public class LobbyClient extends Thread {
     private static final Logger log = LoggerFactory.getLogger(LobbyClient.class);
     private final ObjectMapper objectMapper;
     private Socket clientSocket;
-    private ConcurrentHashMap<UUID, CompletableFuture<Resource>> futureConcurrentHashMap;
+    private ConcurrentHashMap<UUID, JavaFxAsyncFutureWrapper<Resource>> futureConcurrentHashMap;
     private UUID clientId;
     private PrintWriter pw;
     public LobbyClient() {
@@ -47,15 +48,16 @@ public class LobbyClient extends Thread {
         final UUID uuid = UUID.randomUUID();
         final ConnectionHeader header = new ConnectionHeader(clientId, uuid, request.getClass().getSimpleName(), commandName);
         final CommunicationObject communicationObject = new CommunicationObject(header, request);
-        CompletableFuture<Resource> completableFuture = new CompletableFuture<>();
+        JavaFxAsyncFutureWrapper<Resource> completableFuture = new JavaFxAsyncFutureWrapper<>();
         futureConcurrentHashMap.put(uuid, completableFuture);
-        try {
-            pw.println(objectMapper.writeValueAsString(communicationObject));
-            return new JavaFxAsyncFutureWrapper<>(completableFuture);
-        } catch (JsonProcessingException e) {
-            //todo
-            throw new RuntimeException(e);
-        }
+        CompletableFuture.runAsync(() -> {
+            try {
+                pw.println(objectMapper.writeValueAsString(communicationObject));
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        return completableFuture;
     }
 
     class ClientServerOutputReader extends Thread {

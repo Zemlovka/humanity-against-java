@@ -1,5 +1,6 @@
 package com.zemlovka.haj.client.fx;
 
+import com.zemlovka.haj.client.ws.AnswerCard;
 import javafx.animation.TranslateTransition;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -16,32 +17,37 @@ import org.slf4j.LoggerFactory;
  * @author Korotov Nikita
  * @version 1.0
  */
-public class PlayerCardController {
+public class PlayerCardController extends AbstractWsActionsSettingController{
     private static final Logger log = LoggerFactory.getLogger(PlayerCardController.class);
     @FXML
     private Label answerText;
     @FXML
-    private AnchorPane answerCard;
+    private AnchorPane answerCardPane;
+
+    private AnswerCard playerCard;
 
     @FXML
     private void initialize() {
         log.info("AnswerCard component initialized.");
-        addHoverAnimation(answerCard);
+        renderCard();
+        addHoverAnimation(answerCardPane);
     }
 
     /**
      * Sets the answer to be displayed on the card
      *
-     * @param answer the answer to be displayed
      */
-    public void setCard(String answer) {
-        answerText.setText(answer);
+    public void setCard(AnswerCard answerCard) {
+        this.playerCard = answerCard;
+    }
+    public void renderCard(){
+        answerText.setText(playerCard.getText());
     }
     public static void addHoverAnimation(Node node) {
         TranslateTransition transitionIn = new TranslateTransition(Duration.seconds(0.2), node);
         TranslateTransition transitionOut = new TranslateTransition(Duration.seconds(0.2), node);
 
-        transitionIn.setToY(-40);
+        transitionIn.setToY(-60);
         transitionOut.setToY(0);
 
         node.setOnMouseEntered(event -> {
@@ -56,7 +62,10 @@ public class PlayerCardController {
     }
     @FXML
     private void onCardClick(Event event){
-        log.info("PLAYER CARD");
+        log.info("PLAYER CARD was clicked{}", answerText.getText());
+        wsActions.chooseCard(playerCard);
+        answerCardPane.setOpacity(0);
+
     }
 
 }

@@ -1,7 +1,10 @@
 package com.zemlovka.haj.client.fx;
 
+import com.zemlovka.haj.client.ws.AnswerCard;
 import com.zemlovka.haj.client.ws.LobbyWSActions;
 import com.zemlovka.haj.client.ws.Player;
+import com.zemlovka.haj.client.ws.QuestionCard;
+import com.zemlovka.haj.utils.dto.secondary.CardDTO;
 import com.zemlovka.haj.utils.dto.secondary.PlayerDTO;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXMLLoader;
@@ -125,5 +128,13 @@ public class LayoutUtil {
             else
                 return new Player(p.getName(), null, false);
         }).collect(Collectors.toList());
+    }
+
+    public static QuestionCard mapQuestionCard(CardDTO cardDTO) {
+        return new QuestionCard(cardDTO.getId(), cardDTO.getText());
+    }
+
+    public static List<AnswerCard> mapAnswerCards(List<CardDTO> cardDTOList) {
+        return cardDTOList.stream().map(c -> new AnswerCard(c.getId(), c.getText())).collect(Collectors.toList());
     }
 }

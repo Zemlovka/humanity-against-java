@@ -14,6 +14,10 @@ public class JavaFxAsyncFutureWrapper<T extends Resource> {
         this.parentFuture = parentFuture;
     }
 
+    public JavaFxAsyncFutureWrapper() {
+        this(new CompletableFuture<>());
+    }
+
     public T get() throws InterruptedException, ExecutionException {
         return parentFuture.get();
     }
@@ -36,5 +40,9 @@ public class JavaFxAsyncFutureWrapper<T extends Resource> {
      */
     public <U> CompletableFuture<U> thenApplyAsync(Function<? super T, ? extends U> fn) {
         return parentFuture.thenApplyAsync(fn);
+    }
+
+    public void complete(T value) {
+        parentFuture.complete(value);
     }
 }

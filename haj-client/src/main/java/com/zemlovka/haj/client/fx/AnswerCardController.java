@@ -1,12 +1,11 @@
 package com.zemlovka.haj.client.fx;
 
-import com.zemlovka.haj.client.ws.Lobby;
+import com.zemlovka.haj.client.ws.AnswerCard;
 import javafx.animation.TranslateTransition;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 import org.slf4j.Logger;
@@ -18,17 +17,18 @@ import org.slf4j.LoggerFactory;
  * @author Korotov Nikita
  * @version 1.0
  */
-public class AnswerCardController {
+public class AnswerCardController extends AbstractWsActionsSettingController {
     private static final Logger log = LoggerFactory.getLogger(AnswerCardController.class);
     @FXML
     private Label answerText;
     @FXML
-    private AnchorPane answerCard;
+    private AnchorPane answerCardPane;
+    private AnswerCard answerCard;
 
     @FXML
     private void initialize() {
         log.info("AnswerCard component initialized.");
-        addHoverAnimation(answerCard);
+        addHoverAnimation(answerCardPane);
     }
 
     /**
@@ -58,7 +58,8 @@ public class AnswerCardController {
     }
     @FXML
     private void onCardClick(Event event){
-        log.info("ANSWER CARD");
+        log.info("ANSWER CARD was clicked {}", answerText.getText());
+
     }
 
 }

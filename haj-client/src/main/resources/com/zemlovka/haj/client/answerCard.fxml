@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="answerCard" maxHeight="210.0" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onCardClick" prefHeight="180.0" prefWidth="150.0" style="-fx-background-color: rgba(227, 113, 7, 1)rgba(227, 113, 7, 1); -fx-background-radius: 20;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="answerCardPane" maxHeight="210.0" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onCardClick" prefHeight="180.0" prefWidth="150.0" style="-fx-background-color: rgba(227, 113, 7, 1)rgba(227, 113, 7, 1); -fx-background-radius: 20;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox alignment="TOP_CENTER" layoutX="13.0" layoutY="14.0" spacing="5.0">
          <children>

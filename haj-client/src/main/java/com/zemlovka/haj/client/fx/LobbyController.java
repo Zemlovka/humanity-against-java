@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -77,15 +78,15 @@ public class LobbyController extends AbstractWsActionsSettingController {
     /**
      * @param
      */
-    private void renderQuestionCard() {
+    private void renderQuestionCard(QuestionCard questionCard) {
         questionCardContainer.getChildren().clear();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/questionCard.fxml"));
-            Pane questionCard = loader.load();
+            Pane questionCardPane = loader.load();
             QuestionCardController controller = loader.getController();
-            lobby.setQuestionCard(new QuestionCard(1, "What is Batman's guilty pleasure?"));
+            lobby.setQuestionCard(questionCard);
             controller.setCard(lobby.getQuestionCard().getText());
-            questionCardContainer.getChildren().add(questionCard);
+            questionCardContainer.getChildren().add(questionCardPane);
         } catch (IOException e) {
             log.error("Error loading lobby component", e);
         }
@@ -103,7 +104,7 @@ public class LobbyController extends AbstractWsActionsSettingController {
 
             //controller.setLobby(lobby);
             Label playerComponent = new Label(player.getUsername());
-            log.info("redndering {}", player.getUsername());
+            log.info("rendering {}", player.getUsername());
             if (player.isClient()) {
                 playerComponent.setText(playerComponent.getText() + " (You)");
             }
@@ -121,6 +122,7 @@ public class LobbyController extends AbstractWsActionsSettingController {
                 registerFetchPlayer();
             } else {
                 //todo start game
+                startGame();
             }
         });
         return null;
@@ -129,15 +131,30 @@ public class LobbyController extends AbstractWsActionsSettingController {
             return null;
         });
     }
+    private void startGame(){
+        wsActions.startGame().thenApply(f -> {
+            Platform.runLater(() -> {
+                removeSpinner();
+                renderQuestionCard(LayoutUtil.mapQuestionCard(f.questionCard()));
+                renderPlayerCards(LayoutUtil.mapAnswerCards(f.answerCards()));
+            });
+            return null;
+        }).exceptionally(e -> {
+            log.error("Error starting game", e);
+            return null;
+        });
+    }
+
 
     @FXML
-    private void renderAnswerCards(List<Card> answerCards) {
+    private void renderAnswerCards(List<AnswerCard> answerCards) {
         answerCardsContainer.getChildren().clear();
         for (Card card : answerCards) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/answerCard.fxml"));
                 AnswerCardController controller = new AnswerCardController();
                 loader.setController(controller); //defining controller since there are 2 controllers for answerCards.fxml
+                controller.setWsActions(wsActions);
                 Pane answerCard = loader.load();
                 controller.setCard(card.getText());
                 answerCardsContainer.getChildren().add(answerCard);
@@ -148,15 +165,18 @@ public class LobbyController extends AbstractWsActionsSettingController {
     }
 
     @FXML
-    private void renderPlayerCards(List<Card> answersCards) {
+    private void renderPlayerCards(List<AnswerCard> answersCards) {
         playerCardsContainer.getChildren().clear();
-        for (Card card : answersCards) {
+        for (AnswerCard card : answersCards) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/answerCard.fxml"));
                 PlayerCardController controller = new PlayerCardController();
                 loader.setController(controller); //defining controller since there are 2 controllers for answerCards.fxml
+                controller.setCard(card);
+                controller.setWsActions(wsActions);
+
                 Pane answerCard = loader.load();
-                controller.setCard(card.getText());
+
                 playerCardsContainer.getChildren().add(answerCard);
             } catch (IOException e) {
                 log.error("Error loading lobby component", e);
@@ -186,7 +206,12 @@ public class LobbyController extends AbstractWsActionsSettingController {
         answerCardsContainer.getChildren().clear();
         container.getChildren().add(spinner);
         container.getChildren().add(label);
+        container.setId("spinner");
         answerCardsContainer.getChildren().add(container);
+    }
+    private void removeSpinner(){
+        Node spinnerNode = answerCardsContainer.lookup("#spinner");
+        answerCardsContainer.getChildren().remove(spinnerNode);
     }
 
 
