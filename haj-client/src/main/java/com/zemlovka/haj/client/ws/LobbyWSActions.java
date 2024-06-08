@@ -4,8 +4,7 @@ import com.zemlovka.haj.client.ws.commands.*;
 import com.zemlovka.haj.utils.dto.client.*;
 import com.zemlovka.haj.utils.dto.server.*;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
+import static com.zemlovka.haj.utils.dto.CommandNameEnum.*;
 
 
 public class LobbyWSActions {
@@ -40,7 +39,7 @@ public class LobbyWSActions {
     }
 
     public JavaFxAsyncFutureWrapper<LobbyListDTO> fetchLobbyList() {
-        return commands.fetchLobby.run(new FetchLobbysDTO());
+        return commands.fetchLobbyList.run(new FetchLobbyListDTO());
     }
 
     public JavaFxAsyncFutureWrapper<JoinLobbyResponseDTO> joinLobby(Lobby lobby, String password) {
@@ -52,26 +51,36 @@ public class LobbyWSActions {
     public JavaFxAsyncFutureWrapper<FetchPlayersResponseDTO> fetchPlayers() {
         return commands.fetchPlayers.run(new FetchPlayersDTO());
     }
+    public JavaFxAsyncFutureWrapper<VoteCardResponseDTO> voteCard(AnswerCard votedCard) {
+        return commands.voteCard.run(new VoteCardDTO(votedCard.getId()));
+    }
+    public JavaFxAsyncFutureWrapper<ChooseCardResponseDTO> chooseCard(AnswerCard answerCard) {
+        return commands.chooseCard.run(new ChooseCardDTO(answerCard.getId()));
+    }
 
     static class Commands {
 
-        final LoginClientCommand login;
-        final LogoutClientCommand logout;
-        final LeaveLobbyCommand leaveLobby;
-        final CreateLobbyClientCommand createLobby;
-        final FetchLobbyClientCommand fetchLobby;
-        final JoinLobbyClientCommand joinLobby;
-        final StartGameClientCommand startGame;
-        final FetchPlayersCommand fetchPlayers;
+        final ClientCommandImpl<LoginDTO, LoginResponseDTO> login;
+        final ClientCommandImpl<LogoutDTO, LogoutResponseDTO> logout;
+        final ClientCommandImpl<LeaveLobbyDTO, LeaveLobbyResponseDTO> leaveLobby;
+        final ClientCommandImpl<CreateLobbyDTO, CreateLobbyResponseDTO> createLobby;
+        final ClientCommandImpl<FetchLobbyListDTO, LobbyListDTO> fetchLobbyList;
+        final ClientCommandImpl<JoinLobbyDTO, JoinLobbyResponseDTO> joinLobby;
+        final ClientCommandImpl<StartGameDTO, StartGameResponseDTO> startGame;
+        final ClientCommandImpl<FetchPlayersDTO, FetchPlayersResponseDTO> fetchPlayers;
+        final ClientCommandImpl<VoteCardDTO, VoteCardResponseDTO> voteCard;
+        final ClientCommandImpl<ChooseCardDTO, ChooseCardResponseDTO> chooseCard;
         public Commands(LobbyClient client) {
-            login = new LoginClientCommand(client);
-            logout = new LogoutClientCommand(client);
-            leaveLobby = new LeaveLobbyCommand(client);
-            createLobby = new CreateLobbyClientCommand(client);
-            fetchLobby = new FetchLobbyClientCommand(client);
-            joinLobby = new JoinLobbyClientCommand(client);
-            startGame = new StartGameClientCommand(client);
-            fetchPlayers = new FetchPlayersCommand(client);
+            login = new ClientCommandImpl<>(client, LOGIN);
+            logout = new ClientCommandImpl<>(client, LOGOUT);
+            leaveLobby = new ClientCommandImpl<>(client, LEAVE_LOBBY);
+            createLobby = new ClientCommandImpl<>(client, CREATE_LOBBY);
+            fetchLobbyList = new ClientCommandImpl<>(client, FETCH_LOBBY_LIST);
+            joinLobby = new ClientCommandImpl<>(client, JOIN_LOBBY);
+            startGame = new ClientCommandImpl<>(client, START_GAME);
+            fetchPlayers = new ClientCommandImpl<>(client, FETCH_PLAYERS);
+            voteCard = new ClientCommandImpl<>(client, VOTE_CARD);
+            chooseCard = new ClientCommandImpl<>(client, CHOOSE_CARD);
         }
     }
 }

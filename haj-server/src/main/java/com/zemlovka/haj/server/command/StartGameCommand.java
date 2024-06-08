@@ -29,8 +29,9 @@ public class StartGameCommand extends AbstractServerCommand<StartGameDTO, StartG
     public void execute(StartGameDTO argument, ConnectionHeader clientHeader) {
         final Lobby lobby = userData.getCurrentLobby();
         lobby.getFlags().getLobbyReadyFlag().thenApply(f -> {
-            CardDTO questionCard = lobby.selectRandomQuestionCard();
-            List<CardDTO> answerCard = lobby.selectRandomAnswerCards(Lobby.DEFAULT_PLAYER_CARDS_NUMBER);
+            CardDTO questionCard = lobby.getCurrentRound().getQuestionCard();
+            lobby.refreshAnswerCards(userData);
+            List<CardDTO> answerCard = lobby.getAnswerCards(userData).values().stream().toList();
             send(new StartGameResponseDTO(answerCard, questionCard), clientHeader);
             lobby.getFlags().clearLobbyReadyFlag();
             return null;

@@ -1,4 +1,4 @@
-package com.zemlovka.haj.client.ws.commands;
+package com.zemlovka.haj.client.ws;
 
 import com.zemlovka.haj.utils.dto.Resource;
 import javafx.application.Platform;

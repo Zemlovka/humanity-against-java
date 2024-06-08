@@ -13,9 +13,9 @@ import com.zemlovka.haj.utils.dto.server.*;
 )
 @JsonSubTypes({
         //client
-        @JsonSubTypes.Type(value = BeginDTO.class),
+        @JsonSubTypes.Type(value = ChooseCardDTO.class),
         @JsonSubTypes.Type(value = CreateLobbyDTO.class),
-        @JsonSubTypes.Type(value = FetchLobbysDTO.class),
+        @JsonSubTypes.Type(value = FetchLobbyListDTO.class),
         @JsonSubTypes.Type(value = FetchPlayersDTO.class),
         @JsonSubTypes.Type(value = JoinLobbyDTO.class),
         @JsonSubTypes.Type(value = LeaveLobbyDTO.class),
@@ -26,6 +26,7 @@ import com.zemlovka.haj.utils.dto.server.*;
         @JsonSubTypes.Type(value = StartGameDTO.class),
         @JsonSubTypes.Type(value = VoteCardDTO.class),
         //server
+        @JsonSubTypes.Type(value = ChooseCardResponseDTO.class),
         @JsonSubTypes.Type(value = CreateLobbyResponseDTO.class),
         @JsonSubTypes.Type(value = FetchPlayersResponseDTO.class),
         @JsonSubTypes.Type(value = GameEndDTO.class),
@@ -41,6 +42,7 @@ import com.zemlovka.haj.utils.dto.server.*;
         @JsonSubTypes.Type(value = RoundVoteDTO.class),
         @JsonSubTypes.Type(value = StartGameResponseDTO.class),
         @JsonSubTypes.Type(value = StartRoundDTO.class),
+        @JsonSubTypes.Type(value = VoteCardResponseDTO.class),
         @JsonSubTypes.Type(value = WhiteCardsDTO.class),
         //shared
         @JsonSubTypes.Type(value = AcceptDTO.class),

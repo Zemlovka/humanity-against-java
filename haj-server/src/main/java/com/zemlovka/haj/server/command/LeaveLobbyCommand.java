@@ -22,7 +22,7 @@ public class LeaveLobbyCommand extends AbstractServerCommand<LeaveLobbyDTO, Leav
     @Override
     public void execute(LeaveLobbyDTO argument, ConnectionHeader clientHeader) {
         final LeaveLobbyResponseDTO response;
-        userData.getCurrentLobby().getUsers().remove(userData.getUuid());
+        userData.getCurrentLobby().removeUser(userData);
         userData.getCurrentLobby().getFlags().getNewPlayerFlag().complete(null);
         userData.setCurrentLobby(null);
         userData.setReady(false);

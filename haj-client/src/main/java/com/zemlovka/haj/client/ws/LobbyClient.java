@@ -2,7 +2,6 @@ package com.zemlovka.haj.client.ws;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zemlovka.haj.client.ws.commands.JavaFxAsyncFutureWrapper;
 import com.zemlovka.haj.utils.CommunicationObject;
 import com.zemlovka.haj.utils.ConnectionHeader;
 import com.zemlovka.haj.utils.ResourceObjectMapperFactory;
