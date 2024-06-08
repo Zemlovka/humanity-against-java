@@ -33,6 +33,7 @@ import com.zemlovka.haj.utils.dto.server.*;
         @JsonSubTypes.Type(value = JoinLobbyResponseDTO.class),
         @JsonSubTypes.Type(value = LobbyCreatedDTO.class),
         @JsonSubTypes.Type(value = LobbyListDTO.class),
+        @JsonSubTypes.Type(value = LeaveLobbyResponseDTO.class),
         @JsonSubTypes.Type(value = LoginResponseDTO.class),
         @JsonSubTypes.Type(value = LogoutResponseDTO.class),
         @JsonSubTypes.Type(value = ReconnectAnswerDTO.class),
