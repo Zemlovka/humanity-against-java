@@ -33,13 +33,12 @@ public class GetChosenCardsCommand extends AbstractServerCommand<GetChosenCardsD
             send(new GetChosenCardsResponseDTO(chosenCards), clientHeader);
             return null;
         });
-        userData.setReady(true);
         Collection<User> users = lobby.getUsers().values();
         int userNumber = users.size();
-        int readyUsers = (int) users.stream().filter(User::isReady).count();
-        if (userNumber == readyUsers) {
+        int chosenCards = lobby.getCurrentRound().getChosenCards().size();
+        if (userNumber == chosenCards) {
             lobby.nextRound();
-            lobby.getFlags().lobbyReady().signal();
+            lobby.getFlags().chooseCards().signal();
         }
     }
 
