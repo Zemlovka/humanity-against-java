@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,7 @@ public class PlayerCardController extends AbstractWsActionsSettingController{
     private AnchorPane answerCardPane;
 
     private AnswerCard playerCard;
+    private AppState appState = AppState.getInstance();
 
     @FXML
     private void initialize() {
@@ -61,12 +63,22 @@ public class PlayerCardController extends AbstractWsActionsSettingController{
         });
     }
     @FXML
-    private void onCardClick(Event event){
-        log.info("PLAYER CARD was clicked{}", answerText.getText());
-        wsActions.chooseCard(playerCard);
-        answerCardPane.getParent().getChildrenUnmodifiable().remove(answerCardPane);
-        //answerCardPane.setOpacity(0);
-
+    private void onCardClick(Event event) {
+        log.info("PLAYER CARD was clicked {}", answerText.getText());
+        if(appState.getCurrentState() == AppState.State.CHOOSING && appState.isCanChoose()){
+            appState.setCanChoose(false);
+            wsActions.chooseCard(playerCard);
+            removeCardPaneFromParent();
+        }
     }
 
+    /**
+     * Removes the answerCardPane from its parent container.
+     */
+    private void removeCardPaneFromParent() {
+        Pane parent = (Pane) answerCardPane.getParent();
+        if (parent != null) {
+            parent.getChildren().remove(answerCardPane);
+        }
+    }
 }

@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,11 @@ public class AnswerCardController extends AbstractWsActionsSettingController {
     private Label answerText;
     @FXML
     private AnchorPane answerCardPane;
+    @FXML
+    private Label logo;
+
+    private AppState appState = AppState.getInstance();
+
     private AnswerCard answerCard;
 
     @FXML
@@ -34,16 +40,31 @@ public class AnswerCardController extends AbstractWsActionsSettingController {
     /**
      * Sets the answer to be displayed on the card
      *
-     * @param answer the answer to be displayed
      */
-    public void setCard(String answer) {
-        answerText.setText(answer);
+    public void setCard(AnswerCard answerCard, AppState.State state) {
+        this.answerCard = answerCard;
+        if (state == AppState.State.CHOOSING) {
+            answerText.setText("HUMANITY AGAINST JAVA");
+            removeLogo();
+        } else {
+            answerText.setText(answerCard.getText());
+        }
+    }
+
+    /**
+     * Removes the logo from its parent container (card).
+     */
+    private void removeLogo() {
+        Pane parent = (Pane) logo.getParent();
+        if (parent != null) {
+            parent.getChildren().remove(logo);
+        }
     }
     public static void addHoverAnimation(Node node) {
         TranslateTransition transitionIn = new TranslateTransition(Duration.seconds(0.2), node);
         TranslateTransition transitionOut = new TranslateTransition(Duration.seconds(0.2), node);
 
-        transitionIn.setToY(-10);
+        transitionIn.setToY(-3);
         transitionOut.setToY(0);
 
         node.setOnMouseEntered(event -> {
@@ -59,6 +80,10 @@ public class AnswerCardController extends AbstractWsActionsSettingController {
     @FXML
     private void onCardClick(Event event){
         log.info("ANSWER CARD was clicked {}", answerText.getText());
+        if(appState.getCurrentState() == AppState.State.VOTING && appState.isCanVote()){
+            appState.setCanVote(false);
+            wsActions.voteCard(answerCard);
+        }
 
     }
 

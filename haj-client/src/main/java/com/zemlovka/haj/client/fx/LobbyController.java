@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.zemlovka.haj.client.fx.AppState.State.CHOOSING;
+import static com.zemlovka.haj.client.fx.AppState.State.VOTING;
+
 /**
  * Controller for the lobby. Handles all the lobby logic.
  * <p>
@@ -49,15 +52,6 @@ public class LobbyController extends AbstractWsActionsSettingController {
     private final Lobby lobby = appState.getCurrentLobby();
     private static final Logger log = LoggerFactory.getLogger(LobbyController.class);
 
-    private enum State {
-        WAITING,
-        CHOOSING,
-        VOTING
-    }
-
-    private final State waiting = State.WAITING;
-    private final State choosing = State.CHOOSING;
-    private final State voting = State.VOTING;
 
     @FXML
     private void initialize() {
@@ -116,10 +110,11 @@ public class LobbyController extends AbstractWsActionsSettingController {
     }
 
     private void registerFetchPlayer() {
-        wsActions.fetchPlayers().thenApply(f -> {Platform.runLater(() -> {
-            renderPlayers(LayoutUtil.mapPlayers(f.players(), appState.getCurrentPlayer()));
-        });
-        return null;
+        wsActions.fetchPlayers().thenApply(f -> {
+            Platform.runLater(() -> {
+                renderPlayers(LayoutUtil.mapPlayers(f.players(), appState.getCurrentPlayer()));
+            });
+            return null;
         }).exceptionally(e -> {
             log.error("Error fetching players", e);
             return null;
@@ -127,29 +122,33 @@ public class LobbyController extends AbstractWsActionsSettingController {
         startGame();
     }
 
-    /**
-     * Handle the response from fetching players.
-     *
-     * @param f The fetched players response
-     */
-    private void handleFetchPlayersResponse(FetchPlayersResponseDTO f) {
-        // Render players on the UI
-        renderPlayers(LayoutUtil.mapPlayers(f.players(), appState.getCurrentPlayer()));
-
-        // Check if we should continue fetching new players
-        if (f.awaitNewPlayers()) {
-            registerFetchPlayer(); // Recursively fetch players if needed
-        } else {
-            startGame(); // Start the game if no more players are expected
-        }
+    private void registerChosenCards() {
+        wsActions.getChosenCards().thenApply(f -> {
+            Platform.runLater(() -> {
+                if(!f.awaitFurtherCards()){
+                    appState.setCurrentState(VOTING);
+                    log.info("VOTINGGGGGG!!!!");
+                }
+                renderAnswerCards(LayoutUtil.mapAnswerCards(f.cards()));
+            });
+            return null;
+        }).exceptionally(e -> {
+            log.error("Error fetching answered cards", e);
+            return null;
+        });
     }
 
     private void startGame() {
         wsActions.startGame().thenApply(f -> {
             Platform.runLater(() -> {
+                appState.setCurrentState(CHOOSING);
+                appState.setCanVote(false);
+                appState.setCanChoose(true);
                 removeSpinner();
                 renderQuestionCard(LayoutUtil.mapQuestionCard(f.questionCard()));
                 renderPlayerCards(LayoutUtil.mapAnswerCards(f.answerCards()));
+                registerChosenCards();
+
             });
             return null;
         }).exceptionally(e -> {
@@ -162,18 +161,21 @@ public class LobbyController extends AbstractWsActionsSettingController {
     @FXML
     private void renderAnswerCards(List<AnswerCard> answerCards) {
         answerCardsContainer.getChildren().clear();
-        for (Card card : answerCards) {
+        for (AnswerCard card : answerCards) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/answerCard.fxml"));
+                String url = "/com/zemlovka/haj/client/answerCard.fxml";
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(url));
                 AnswerCardController controller = new AnswerCardController();
                 loader.setController(controller); //defining controller since there are 2 controllers for answerCards.fxml
                 controller.setWsActions(wsActions);
                 Pane answerCard = loader.load();
-                controller.setCard(card.getText());
+                controller.setCard(card, appState.getCurrentState());
                 answerCardsContainer.getChildren().add(answerCard);
+
             } catch (IOException e) {
                 log.error("Error loading lobby component", e);
             }
+
         }
     }
 
@@ -222,7 +224,8 @@ public class LobbyController extends AbstractWsActionsSettingController {
         container.setId("spinner");
         answerCardsContainer.getChildren().add(container);
     }
-    private void removeSpinner(){
+
+    private void removeSpinner() {
         Node spinnerNode = answerCardsContainer.lookup("#spinner");
         answerCardsContainer.getChildren().remove(spinnerNode);
     }
@@ -245,10 +248,6 @@ public class LobbyController extends AbstractWsActionsSettingController {
     @Override
     void setWsActions(WSActions wsActions) {
         super.setWsActions(wsActions);
-//        renderQuestionCard();
         registerFetchPlayer();
-        //renderAnswerCards(answerPlaceholderStrings());
-
-//        renderPlayerCards(answerPlaceholderStrings());
     }
 }
