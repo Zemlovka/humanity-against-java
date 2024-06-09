@@ -72,7 +72,6 @@ public class LobbyController extends AbstractWsActionsSettingController {
         answerCardsContainer.setOnMousePressed(Event::consume);
         playerCardsScroll.setOnMousePressed(Event::consume);
         myCardsSection.setOnMousePressed(Event::consume);
-
         renderPlayers(appState.getCurrentLobby().getPlayers());
         showSpinner();
     }
@@ -117,20 +116,15 @@ public class LobbyController extends AbstractWsActionsSettingController {
     }
 
     private void registerFetchPlayer() {
-        // Fetch players asynchronously
-        wsActions.fetchPlayers()
-                .thenApply(f -> {
-                    // Use Platform.runLater to ensure UI updates occur on the JavaFX Application Thread
-                    Platform.runLater(() -> {
-                        handleFetchPlayersResponse(f);
-                    });
-                    return null;
-                })
-                .exceptionally(e -> {
-                    // Log error if fetching players fails
-                    log.error("Error fetching players", e);
-                    return null;
-                });
+        wsActions.fetchPlayers().thenApply(f -> {Platform.runLater(() -> {
+            renderPlayers(LayoutUtil.mapPlayers(f.players(), appState.getCurrentPlayer()));
+        });
+        return null;
+        }).exceptionally(e -> {
+            log.error("Error fetching players", e);
+            return null;
+        });
+        startGame();
     }
 
     /**
@@ -156,7 +150,6 @@ public class LobbyController extends AbstractWsActionsSettingController {
                 removeSpinner();
                 renderQuestionCard(LayoutUtil.mapQuestionCard(f.questionCard()));
                 renderPlayerCards(LayoutUtil.mapAnswerCards(f.answerCards()));
-                renderAnswerCards(answerPlaceholderStrings());
             });
             return null;
         }).exceptionally(e -> {
@@ -204,7 +197,7 @@ public class LobbyController extends AbstractWsActionsSettingController {
         }
     }
 
-    private List<AnswerCard> answerPlaceholderStrings() {
+    private List<Card> answerPlaceholderStrings() {
         return List.of(new AnswerCard(1, "Bad life choices."),
                 new AnswerCard(2, "Alcoholism."),
                 new AnswerCard(3, "Therapy."),
@@ -229,8 +222,7 @@ public class LobbyController extends AbstractWsActionsSettingController {
         container.setId("spinner");
         answerCardsContainer.getChildren().add(container);
     }
-
-    private void removeSpinner() {
+    private void removeSpinner(){
         Node spinnerNode = answerCardsContainer.lookup("#spinner");
         answerCardsContainer.getChildren().remove(spinnerNode);
     }

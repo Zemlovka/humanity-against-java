@@ -1,20 +1,25 @@
 package com.zemlovka.haj.client.ws;
 
 import com.zemlovka.haj.utils.dto.Resource;
-import javafx.application.Platform;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.*;
 import java.util.function.Function;
 
 
-public class JavaFxAsyncFutureWrapper<T extends Resource> {
-    private final CompletableFuture<T> parentFuture;
+public class CommandCallback<T extends Resource> {
+    private CompletableFuture<T> parentFuture;
+    private final Set<Function<? super T, ?>> thenApplySet;
     private final String commandName;
+    private final UUID uuid;
 
-    public JavaFxAsyncFutureWrapper(String commandName) {
+    public CommandCallback(String commandName, UUID uuid) {
         this.parentFuture = new CompletableFuture<>();
         this.commandName = commandName;
+        this.uuid = uuid;
+        thenApplySet = new HashSet<>();
     }
 
     public T get() throws InterruptedException, ExecutionException {
@@ -29,7 +34,8 @@ public class JavaFxAsyncFutureWrapper<T extends Resource> {
      * If used in the javaFX thread, and you pass some javafxRendering in here then you must
      * wrap it with the Platform.runLater(), otherwise it will not run
      */
-    public <U> CompletableFuture<U> thenApply(Function<? super T, ? extends U> fn) {
+    public CompletableFuture<?> thenApply(Function<? super T, ?> fn) {
+        thenApplySet.add(fn);
         return parentFuture.thenApply(fn);
     }
 
@@ -37,15 +43,28 @@ public class JavaFxAsyncFutureWrapper<T extends Resource> {
      * If used in the javaFX thread, and you pass some javafxRendering in here then you must
      * wrap it with the Platform.runLater(), otherwise it will not run
      */
-    public <U> CompletableFuture<U> thenApplyAsync(Function<? super T, ? extends U> fn) {
+    public CompletableFuture<?> thenApplyAsync(Function<? super T, ?> fn) {
+        thenApplySet.add(fn);
         return parentFuture.thenApplyAsync(fn);
     }
 
-    public void complete(T value) {
+    public synchronized void complete(T value, boolean resubmit) {
         parentFuture.complete(value);
+        if (resubmit) {
+            parentFuture = new CompletableFuture<>();
+            thenApplySet.forEach(f -> parentFuture.thenApply(f));
+        }
     }
 
     public String getCommandName() {
         return commandName;
+    }
+
+    @Override
+    public String toString() {
+        return "Callback{" +
+                "commandName='" + commandName + '\'' +
+                ", uuid=" + uuid +
+                '}';
     }
 }

@@ -37,10 +37,9 @@ public class CreateLobbyCommand extends AbstractServerCommand<CreateLobbyDTO, Cr
             logger.info("Lobby with name: {} was not created because this name has already been used for another lobby", argument.name());
             response = new CreateLobbyResponseDTO(false);
         } else {
-            ConcurrentHashMap<UUID, User> users = new ConcurrentHashMap<>();
-            users.put(userData.getUuid(), userData);
-            Lobby lobby = new Lobby(argument.size(), argument.name(), argument.password(), users);
+            Lobby lobby = new Lobby(argument.size(), argument.name(), argument.password());
             userData.setCurrentLobby(lobby);
+            lobby.addUser(userData);
             lobbies.put(lobby.getName(), lobby);
             //todo add sender for when new users are joining
             logger.info("Lobby: {} was created by user: {}", lobby.getName(), userData.getUsername());

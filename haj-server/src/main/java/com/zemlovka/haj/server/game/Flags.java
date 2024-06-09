@@ -8,8 +8,8 @@ public class Flags {
 
     public Flags() {
         lobbyReadyFlag = new Flag();
-        newPlayerFlag = new Flag();
-        chooseCardsFlag = new Flag();
+        newPlayerFlag = new ResubmittingFlag();
+        chooseCardsFlag = new ResubmittingFlag();
     }
 
     public Flag lobbyReady() {

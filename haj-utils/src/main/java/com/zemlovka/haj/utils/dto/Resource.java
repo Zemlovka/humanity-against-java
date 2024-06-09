@@ -1,5 +1,6 @@
 package com.zemlovka.haj.utils.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.zemlovka.haj.utils.dto.client.*;
@@ -52,5 +53,12 @@ import com.zemlovka.haj.utils.dto.server.*;
         @JsonSubTypes.Type(value = PingDTO.class),
 })
 public interface Resource {
-
+    @JsonIgnore
+    default boolean isPolling() {
+        return false;
+    }
+//
+//    default boolean hasPollingKillConditionBeenMet() {
+//        return true;
+//    }
 }

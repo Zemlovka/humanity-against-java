@@ -22,11 +22,11 @@ public class Lobby {
     private Round currentRound = null;
 
 
-    public Lobby(int capacity, String name, String password, ConcurrentHashMap<UUID, User> users) {
+    public Lobby(int capacity, String name, String password) {
         this.capacity = capacity;
         this.name = name;
         this.password = password;
-        this.users = users;
+        this.users = new ConcurrentHashMap<>();
         this.flags = new Flags();
         questionCardsPool = CardsSupplier.getQuestionCardPool();
         answerCardsPool = CardsSupplier.getAnswerCardPool();

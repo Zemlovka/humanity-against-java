@@ -27,7 +27,6 @@ public abstract class AbstractServerCommand<V extends Resource, R extends Resour
     }
 
     void send(R body, ConnectionHeader clientHeader) {
-        log.info("Sending response of type {} to command {}, to client with UUID{}", body.getClass().getSimpleName(), getName(), clientHeader.clientID());
         wsActions.sendMessage(body, clientHeader);
     }
 

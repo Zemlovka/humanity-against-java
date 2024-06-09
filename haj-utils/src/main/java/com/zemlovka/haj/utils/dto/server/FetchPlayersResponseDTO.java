@@ -7,4 +7,14 @@ import java.util.Set;
 
 
 public record FetchPlayersResponseDTO(Set<PlayerDTO> players, boolean awaitNewPlayers) implements Resource {
+    @Override
+    public boolean isPolling() {
+        return true;
+    }
+//
+//
+//    @Override
+//    public boolean hasPollingKillConditionBeenMet() {
+//        return !awaitNewPlayers;
+//    }
 }

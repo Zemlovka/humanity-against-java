@@ -9,25 +9,31 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 
-/**
- * Flags for synchronization, when the signal executes it sets flag to null until the next onSignal is used
- */
-public class Flag {
-    private static final Logger logger = LoggerFactory.getLogger(Flag.class);
+public class ResubmittingFlag extends Flag{
+    private static final Logger logger = LoggerFactory.getLogger(ResubmittingFlag.class);
     private CompletableFuture<?> flag;
+    private final Set<Function<Object, ?>> thenApplySet;
 
+    public ResubmittingFlag() {
+        thenApplySet = new HashSet<>();
+    }
+
+    @Override
     public synchronized void onSignal(Function<Object, ?> executeOnSignal) {
         if (flag == null)
             flag = new CompletableFuture<>();
+        thenApplySet.add(executeOnSignal);
         flag.thenApply(executeOnSignal);
     }
 
-
+    @Override
     public synchronized void signal() {
         try {
-            if (flag != null)
+            if (flag != null) {
                 flag.complete(null);
-            flag = null;
+                flag = new CompletableFuture<>();
+                thenApplySet.forEach(f -> flag.thenApply(f));
+            }
         } catch (Exception e) {
             logger.error("Error while executing flag executable", e);
         }

@@ -7,7 +7,6 @@ public class User {
     private String username;
     private UUID uuid;
     private Lobby currentLobby;
-    private boolean isReady;
 
     public boolean isLoggedIn() {
         return username != null;
@@ -37,11 +36,4 @@ public class User {
         this.currentLobby = currentLobby;
     }
 
-    public boolean isReady() {
-        return isReady;
-    }
-
-    public void setReady(boolean ready) {
-        isReady = ready;
-    }
 }

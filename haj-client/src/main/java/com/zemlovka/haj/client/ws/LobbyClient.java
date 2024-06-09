@@ -14,7 +14,6 @@ import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executors;
 
 import static com.zemlovka.haj.utils.GlobalUtils.compileUUID;
 
@@ -23,7 +22,7 @@ public class LobbyClient extends Thread {
     private static final Logger log = LoggerFactory.getLogger(LobbyClient.class);
     private final ObjectMapper objectMapper;
     private Socket clientSocket;
-    private ConcurrentHashMap<UUID, JavaFxAsyncFutureWrapper<Resource>> futureConcurrentHashMap;
+    private ConcurrentHashMap<UUID, CommandCallback<Resource>> futureConcurrentHashMap;
     private UUID clientId;
     private PrintWriter pw;
     public LobbyClient() {
@@ -46,11 +45,11 @@ public class LobbyClient extends Thread {
         }
     }
 
-    public JavaFxAsyncFutureWrapper<Resource> sendRequest(Resource request, String commandName) {
+    public CommandCallback<Resource> sendRequest(Resource request, String commandName) {
         final UUID uuid = UUID.randomUUID();
         final ConnectionHeader header = new ConnectionHeader(clientId, uuid, request.getClass().getSimpleName(), commandName);
         final CommunicationObject communicationObject = new CommunicationObject(header, request);
-        JavaFxAsyncFutureWrapper<Resource> completableFuture = new JavaFxAsyncFutureWrapper<>(commandName);
+        CommandCallback<Resource> completableFuture = new CommandCallback<>(commandName, uuid);
         log.info("Posting a callback for command {} with uuid {}", commandName, compileUUID(uuid));
         futureConcurrentHashMap.put(uuid, completableFuture);
         CompletableFuture.runAsync(() -> {
@@ -77,12 +76,14 @@ public class LobbyClient extends Thread {
                     String content = br.readLine();
                     CommunicationObject communicationObject = objectMapper.readValue(content, CommunicationObject.class);
                     futureConcurrentHashMap.forEach((uuid, commandCallback) -> {
-                                if (uuid.equals(communicationObject.header().communicationUuid())) {
-                                    log.info("Completing a callback for command {} with uuid {}", commandCallback.getCommandName(), compileUUID(uuid));
-                                    commandCallback.complete(communicationObject.body());
+                            if (uuid.equals(communicationObject.header().communicationUuid())) {
+                                log.info("Completing a callback for command {} with uuid {}", commandCallback.getCommandName(), compileUUID(uuid));
+                                commandCallback.complete(communicationObject.body(), communicationObject.body().isPolling());
+                                if (!communicationObject.body().isPolling())
                                     futureConcurrentHashMap.remove(communicationObject.header().communicationUuid());
-                                }
-                            });
+                                log.info("Current unresolved callbacks ({}): {}", futureConcurrentHashMap.size(), futureConcurrentHashMap.values());
+                            }
+                        });
                 }
             } catch (IOException e) {
                 log.error("Exception occurred while listening for incoming communication.", e);

@@ -30,16 +30,11 @@ public class GetChosenCardsCommand extends AbstractServerCommand<GetChosenCardsD
         final Lobby lobby = userData.getCurrentLobby();
         lobby.getFlags().chooseCards().onSignal(f -> {
             List<CardDTO> chosenCards = lobby.getCurrentRound().getChosenCards().values().stream().toList();
-            send(new GetChosenCardsResponseDTO(chosenCards), clientHeader);
+            send(new GetChosenCardsResponseDTO(chosenCards,
+                    lobby.getUsers().size() < lobby.getCurrentRound().getChosenCards().size()),
+                    clientHeader);
             return null;
         });
-        Collection<User> users = lobby.getUsers().values();
-        int userNumber = users.size();
-        int chosenCards = lobby.getCurrentRound().getChosenCards().size();
-        if (userNumber == chosenCards) {
-            lobby.nextRound();
-            lobby.getFlags().chooseCards().signal();
-        }
     }
 
     @Override

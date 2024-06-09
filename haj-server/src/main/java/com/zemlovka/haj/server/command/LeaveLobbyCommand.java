@@ -25,7 +25,6 @@ public class LeaveLobbyCommand extends AbstractServerCommand<LeaveLobbyDTO, Leav
         userData.getCurrentLobby().removeUser(userData);
         userData.getCurrentLobby().getFlags().newPlayer().signal();
         userData.setCurrentLobby(null);
-        userData.setReady(false);
         response = new LeaveLobbyResponseDTO();
         send(response, clientHeader);
     }

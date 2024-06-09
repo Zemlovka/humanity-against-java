@@ -11,10 +11,12 @@ import com.zemlovka.haj.utils.ResourceObjectMapperFactory;
 import com.zemlovka.haj.utils.dto.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.ls.LSOutput;
 
 import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.zemlovka.haj.utils.GlobalUtils.compileUUID;
@@ -69,6 +71,7 @@ public class ServerWsActions {
 
 
     public void sendMessage(Resource body, ConnectionHeader clientHeader) {
+        log.info("Sending response of type {} to command {} with communication id {}, to client {}", body.getClass().getSimpleName(), clientHeader.commandName(), compileUUID(clientHeader.communicationUuid()), compileUUID(clientHeader.clientID()));
         ConnectionHeader responseHeader = new ConnectionHeader(
                 clientHeader.clientID(),
                 clientHeader.communicationUuid(),

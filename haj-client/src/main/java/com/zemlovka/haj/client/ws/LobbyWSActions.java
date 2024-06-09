@@ -23,44 +23,44 @@ public class LobbyWSActions {
     }
 
 
-    public JavaFxAsyncFutureWrapper<LoginResponseDTO> login(String username) {
+    public CommandCallback<LoginResponseDTO> login(String username) {
         return commands.login.run(new LoginDTO(username, client.getClientId()));
     }
 
-    public JavaFxAsyncFutureWrapper<LogoutResponseDTO> logout() {
+    public CommandCallback<LogoutResponseDTO> logout() {
         return commands.logout.run(new LogoutDTO());
     }
 
-    public JavaFxAsyncFutureWrapper<LeaveLobbyResponseDTO> leaveLobby() {
+    public CommandCallback<LeaveLobbyResponseDTO> leaveLobby() {
         return commands.leaveLobby.run(new LeaveLobbyDTO());
     }
 
-    public JavaFxAsyncFutureWrapper<CreateLobbyResponseDTO> createLobby(Lobby lobby) {
+    public CommandCallback<CreateLobbyResponseDTO> createLobby(Lobby lobby) {
         return commands.createLobby.run(
                 new CreateLobbyDTO(lobby.getName(), lobby.getPassword(), lobby.getSize())
         );
     }
 
-    public JavaFxAsyncFutureWrapper<LobbyListDTO> fetchLobbyList() {
+    public CommandCallback<LobbyListDTO> fetchLobbyList() {
         return commands.fetchLobbyList.run(new FetchLobbyListDTO());
     }
 
-    public JavaFxAsyncFutureWrapper<JoinLobbyResponseDTO> joinLobby(Lobby lobby, String password) {
+    public CommandCallback<JoinLobbyResponseDTO> joinLobby(Lobby lobby, String password) {
         return commands.joinLobby.run(new JoinLobbyDTO(lobby.getName(), password));
     }
-    public JavaFxAsyncFutureWrapper<StartGameResponseDTO> startGame() {
+    public CommandCallback<StartGameResponseDTO> startGame() {
         return commands.startGame.run(new StartGameDTO());
     }
-    public JavaFxAsyncFutureWrapper<FetchPlayersResponseDTO> fetchPlayers() {
+    public CommandCallback<FetchPlayersResponseDTO> fetchPlayers() {
         return commands.fetchPlayers.run(new FetchPlayersDTO());
     }
-    public JavaFxAsyncFutureWrapper<VoteCardResponseDTO> voteCard(AnswerCard votedCard) {
+    public CommandCallback<VoteCardResponseDTO> voteCard(AnswerCard votedCard) {
         return commands.voteCard.run(new VoteCardDTO(votedCard.getId()));
     }
-    public JavaFxAsyncFutureWrapper<ChooseCardResponseDTO> chooseCard(AnswerCard answerCard) {
+    public CommandCallback<ChooseCardResponseDTO> chooseCard(AnswerCard answerCard) {
         return commands.chooseCard.run(new ChooseCardDTO(answerCard.getId()));
     }
-    public JavaFxAsyncFutureWrapper<GetChosenCardsResponseDTO> getChosenCards() {
+    public CommandCallback<GetChosenCardsResponseDTO> getChosenCards() {
         return commands.getChosenCards.run(new GetChosenCardsDTO());
     }
 
