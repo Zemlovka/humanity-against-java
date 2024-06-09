@@ -16,6 +16,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 
+import static com.zemlovka.haj.utils.GlobalUtils.compileUUID;
+
 
 public class LobbyClient extends Thread {
     private static final Logger log = LoggerFactory.getLogger(LobbyClient.class);
@@ -48,7 +50,8 @@ public class LobbyClient extends Thread {
         final UUID uuid = UUID.randomUUID();
         final ConnectionHeader header = new ConnectionHeader(clientId, uuid, request.getClass().getSimpleName(), commandName);
         final CommunicationObject communicationObject = new CommunicationObject(header, request);
-        JavaFxAsyncFutureWrapper<Resource> completableFuture = new JavaFxAsyncFutureWrapper<>();
+        JavaFxAsyncFutureWrapper<Resource> completableFuture = new JavaFxAsyncFutureWrapper<>(commandName);
+        log.info("Posting a callback for command {} with uuid {}", commandName, compileUUID(uuid));
         futureConcurrentHashMap.put(uuid, completableFuture);
         CompletableFuture.runAsync(() -> {
             try {
@@ -75,6 +78,7 @@ public class LobbyClient extends Thread {
                     CommunicationObject communicationObject = objectMapper.readValue(content, CommunicationObject.class);
                     futureConcurrentHashMap.forEach((uuid, commandCallback) -> {
                                 if (uuid.equals(communicationObject.header().communicationUuid())) {
+                                    log.info("Completing a callback for command {} with uuid {}", commandCallback.getCommandName(), compileUUID(uuid));
                                     commandCallback.complete(communicationObject.body());
                                     futureConcurrentHashMap.remove(communicationObject.header().communicationUuid());
                                 }

@@ -3,19 +3,18 @@ package com.zemlovka.haj.client.ws;
 import com.zemlovka.haj.utils.dto.Resource;
 import javafx.application.Platform;
 
+import java.util.UUID;
 import java.util.concurrent.*;
 import java.util.function.Function;
 
 
 public class JavaFxAsyncFutureWrapper<T extends Resource> {
     private final CompletableFuture<T> parentFuture;
-    public JavaFxAsyncFutureWrapper(CompletableFuture<T> parentFuture) {
-        super();
-        this.parentFuture = parentFuture;
-    }
+    private final String commandName;
 
-    public JavaFxAsyncFutureWrapper() {
-        this(new CompletableFuture<>());
+    public JavaFxAsyncFutureWrapper(String commandName) {
+        this.parentFuture = new CompletableFuture<>();
+        this.commandName = commandName;
     }
 
     public T get() throws InterruptedException, ExecutionException {
@@ -44,5 +43,9 @@ public class JavaFxAsyncFutureWrapper<T extends Resource> {
 
     public void complete(T value) {
         parentFuture.complete(value);
+    }
+
+    public String getCommandName() {
+        return commandName;
     }
 }

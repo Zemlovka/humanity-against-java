@@ -5,9 +5,9 @@ import com.zemlovka.haj.server.game.Lobby;
 import com.zemlovka.haj.server.game.User;
 import com.zemlovka.haj.utils.ConnectionHeader;
 import com.zemlovka.haj.utils.dto.CommandNameEnum;
-import com.zemlovka.haj.utils.dto.client.StartGameDTO;
+import com.zemlovka.haj.utils.dto.client.GetChosenCardsDTO;
 import com.zemlovka.haj.utils.dto.secondary.CardDTO;
-import com.zemlovka.haj.utils.dto.server.StartGameResponseDTO;
+import com.zemlovka.haj.utils.dto.server.GetChosenCardsResponseDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,24 +15,22 @@ import java.util.Collection;
 import java.util.List;
 
 
-public class StartGameCommand extends AbstractServerCommand<StartGameDTO, StartGameResponseDTO> {
-    private static final Logger logger = LoggerFactory.getLogger(StartGameCommand.class);
-    private static final String NAME = CommandNameEnum.START_GAME.name();
+public class GetChosenCardsCommand extends AbstractServerCommand<GetChosenCardsDTO, GetChosenCardsResponseDTO> {
+    private static final Logger logger = LoggerFactory.getLogger(GetChosenCardsCommand.class);
+    private static final String NAME = CommandNameEnum.GET_CHOSEN_CARDS.name();
     private final User userData;
 
-    public StartGameCommand(ServerWsActions wsActions, User userData) {
+    public GetChosenCardsCommand(ServerWsActions wsActions, User userData) {
         super(wsActions);
         this.userData = userData;
     }
 
     @Override
-    public void execute(StartGameDTO argument, ConnectionHeader clientHeader) {
+    public void execute(GetChosenCardsDTO argument, ConnectionHeader clientHeader) {
         final Lobby lobby = userData.getCurrentLobby();
-        lobby.getFlags().lobbyReady().onSignal(f -> {
-            CardDTO questionCard = lobby.getCurrentRound().getQuestionCard();
-            lobby.refreshAnswerCards(userData);
-            List<CardDTO> answerCard = lobby.getAnswerCards(userData).values().stream().toList();
-            send(new StartGameResponseDTO(answerCard, questionCard), clientHeader);
+        lobby.getFlags().chooseCards().onSignal(f -> {
+            List<CardDTO> chosenCards = lobby.getCurrentRound().getChosenCards().values().stream().toList();
+            send(new GetChosenCardsResponseDTO(chosenCards), clientHeader);
             return null;
         });
         userData.setReady(true);

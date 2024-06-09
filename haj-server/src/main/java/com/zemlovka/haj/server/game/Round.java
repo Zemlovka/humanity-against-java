@@ -19,6 +19,10 @@ public class Round {
         userToChosenCardsMap.put(user, chosenCard);
     }
 
+    public Map<User, CardDTO> getChosenCards() {
+        return userToChosenCardsMap;
+    }
+
     public CardDTO getQuestionCard() {
         return questionCard;
     }

@@ -11,4 +11,5 @@ public enum CommandNameEnum {
     START_GAME,
     VOTE_CARD,
     CHOOSE_CARD,
+    GET_CHOSEN_CARDS,
 }

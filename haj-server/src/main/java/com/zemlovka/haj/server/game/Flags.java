@@ -1,28 +1,26 @@
 package com.zemlovka.haj.server.game;
 
-import java.util.concurrent.CompletableFuture;
-
 
 public class Flags {
-    private CompletableFuture<?> lobbyReadyFlag;
-    private CompletableFuture<?> newPlayerFlag;
+    private final Flag lobbyReadyFlag;
+    private final Flag newPlayerFlag;
+    private final Flag chooseCardsFlag;
 
-    public CompletableFuture<?> getLobbyReadyFlag() {
-        if (lobbyReadyFlag == null)
-            lobbyReadyFlag = new CompletableFuture<>();
+    public Flags() {
+        lobbyReadyFlag = new Flag();
+        newPlayerFlag = new Flag();
+        chooseCardsFlag = new Flag();
+    }
+
+    public Flag lobbyReady() {
         return lobbyReadyFlag;
     }
 
-    public CompletableFuture<?> getNewPlayerFlag() {
-        if (newPlayerFlag == null)
-            newPlayerFlag = new CompletableFuture<>();
+    public Flag newPlayer() {
         return newPlayerFlag;
     }
 
-    public void clearLobbyReadyFlag() {
-        lobbyReadyFlag = null;
-    }
-    public void clearNewPlayerFlag() {
-        newPlayerFlag = null;
+    public Flag chooseCards() {
+        return chooseCardsFlag;
     }
 }

@@ -17,6 +17,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.zemlovka.haj.utils.GlobalUtils.compileUUID;
+
 
 public class ServerWsActions {
     private static final Logger log = LoggerFactory.getLogger(ServerWsActions.class);
@@ -53,12 +55,12 @@ public class ServerWsActions {
     public void resolveAndSendCommand(String message) throws JsonProcessingException {
         CommunicationObject clientCommunicationObject = objectMapper.readValue(message, CommunicationObject.class);
         ConnectionHeader clientHeader = clientCommunicationObject.header();
-        log.debug("Command {} received from client {} with object type and communicationId {}",
-                clientHeader.commandName(), clientHeader.clientID(), clientHeader.communicationUuid());
+        log.info("Command {} received from client {} with object type and communicationId {}",
+                clientHeader.commandName(), compileUUID(clientHeader.clientID()), compileUUID(clientHeader.communicationUuid()));
         for (ServerCommand command : commandSet) {
             if (command.resolve(clientCommunicationObject)) {
-                log.debug("Command with communicationId {} resolved to server command {}",
-                        clientHeader.communicationUuid(), command.getName());
+                log.info("Command with communicationId {} resolved to server command {}",
+                        compileUUID(clientHeader.communicationUuid()), command.getName());
                 command.execute(clientCommunicationObject.body(), clientHeader);
                 break;
             }

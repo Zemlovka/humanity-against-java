@@ -3,11 +3,14 @@ package com.zemlovka.haj.client.ws;
 import com.zemlovka.haj.client.ws.commands.*;
 import com.zemlovka.haj.utils.dto.client.*;
 import com.zemlovka.haj.utils.dto.server.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.zemlovka.haj.utils.dto.CommandNameEnum.*;
 
 
 public class LobbyWSActions {
+    private static final Logger logger = LoggerFactory.getLogger(LoggerFactory.class);
 
     private final Commands commands;
     private final LobbyClient client;
@@ -57,6 +60,9 @@ public class LobbyWSActions {
     public JavaFxAsyncFutureWrapper<ChooseCardResponseDTO> chooseCard(AnswerCard answerCard) {
         return commands.chooseCard.run(new ChooseCardDTO(answerCard.getId()));
     }
+    public JavaFxAsyncFutureWrapper<GetChosenCardsResponseDTO> getChosenCards() {
+        return commands.getChosenCards.run(new GetChosenCardsDTO());
+    }
 
     static class Commands {
 
@@ -70,6 +76,7 @@ public class LobbyWSActions {
         final ClientCommandImpl<FetchPlayersDTO, FetchPlayersResponseDTO> fetchPlayers;
         final ClientCommandImpl<VoteCardDTO, VoteCardResponseDTO> voteCard;
         final ClientCommandImpl<ChooseCardDTO, ChooseCardResponseDTO> chooseCard;
+        final ClientCommandImpl<GetChosenCardsDTO, GetChosenCardsResponseDTO> getChosenCards;
         public Commands(LobbyClient client) {
             login = new ClientCommandImpl<>(client, LOGIN);
             logout = new ClientCommandImpl<>(client, LOGOUT);
@@ -81,6 +88,7 @@ public class LobbyWSActions {
             fetchPlayers = new ClientCommandImpl<>(client, FETCH_PLAYERS);
             voteCard = new ClientCommandImpl<>(client, VOTE_CARD);
             chooseCard = new ClientCommandImpl<>(client, CHOOSE_CARD);
+            getChosenCards = new ClientCommandImpl<>(client, GET_CHOSEN_CARDS);
         }
     }
 }
