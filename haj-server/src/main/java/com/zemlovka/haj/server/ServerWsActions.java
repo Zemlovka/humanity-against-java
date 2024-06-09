@@ -52,6 +52,7 @@ public class ServerWsActions {
         commandSet.add(new StartGameCommand(this, userData));
         commandSet.add(new FetchPlayersCommand(this, userData));
         commandSet.add(new ChooseCardCommand(this, userData));
+        commandSet.add(new GetChosenCardsCommand(this, userData));
         commandSet.add(new VoteCardCommand(this, userData));
     }
 
@@ -65,9 +66,11 @@ public class ServerWsActions {
                 log.info("Command with communicationId {} resolved to server command {}",
                         compileUUID(clientHeader.communicationUuid()), command.getName());
                 command.execute(clientCommunicationObject.body(), clientHeader);
-                break;
+                return;
             }
         }
+        log.error("Command {} with communicationId {} wasn't resolved", clientHeader.commandName(),
+                compileUUID(clientHeader.communicationUuid()));
     }
 
 
