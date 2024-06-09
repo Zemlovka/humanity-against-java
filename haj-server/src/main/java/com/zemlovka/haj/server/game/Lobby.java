@@ -79,7 +79,7 @@ public class Lobby {
 
     public synchronized void nextRound() {
         Random random = new Random();
-        currentRound = new Round(questionCardsPool.remove(random.nextInt(questionCardsPool.size())));
+        currentRound = new Round(questionCardsPool.remove(random.nextInt(questionCardsPool.size())), this);
         rounds.add(currentRound);
     }
 

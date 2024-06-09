@@ -5,11 +5,13 @@ public class Flags {
     private final Flag lobbyReadyFlag;
     private final Flag newPlayerFlag;
     private final Flag chooseCardsFlag;
+    private final Flag voteCardsFlag;
 
     public Flags() {
-        lobbyReadyFlag = new Flag();
+        lobbyReadyFlag = new SimpleFlag();
         newPlayerFlag = new ResubmittingFlag();
         chooseCardsFlag = new ResubmittingFlag();
+        voteCardsFlag = new SimpleFlag();
     }
 
     public Flag lobbyReady() {
@@ -22,5 +24,9 @@ public class Flags {
 
     public Flag chooseCards() {
         return chooseCardsFlag;
+    }
+
+    public Flag voteCards() {
+        return voteCardsFlag;
     }
 }

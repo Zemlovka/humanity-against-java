@@ -1,7 +1,7 @@
 package com.zemlovka.haj.client.fx;
 
 import com.zemlovka.haj.client.ws.Lobby;
-import com.zemlovka.haj.client.ws.LobbyWSActions;
+import com.zemlovka.haj.client.ws.WSActions;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,10 +17,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 
 /**
@@ -140,7 +137,7 @@ public class FindLobbyController extends AbstractWsActionsSettingController {
     }
 
     @Override
-    void setWsActions(LobbyWSActions wsActions) {
+    void setWsActions(WSActions wsActions) {
         super.setWsActions(wsActions);
         lobbyList = createLobbyList();
         renderLobbyComponents(lobbyList);

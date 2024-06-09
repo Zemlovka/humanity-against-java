@@ -1,6 +1,6 @@
 package com.zemlovka.haj.client.fx;
 
-import com.zemlovka.haj.client.ws.LobbyWSActions;
+import com.zemlovka.haj.client.ws.WSActions;
 import com.zemlovka.haj.client.ws.Player;
 import com.zemlovka.haj.utils.dto.server.LoginResponseDTO;
 import javafx.event.ActionEvent;
@@ -18,13 +18,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.concurrent.CompletableFuture;
 
 
 /**
  * Controller for the login screen. Handles the login process (just a simple username input for now).
  * <p>
- * Uses the {@link LobbyWSActions} to connect to the server and send the username.
+ * Uses the {@link WSActions} to connect to the server and send the username.
  *
  * @author Nikita Korotov
  * @version 1.0

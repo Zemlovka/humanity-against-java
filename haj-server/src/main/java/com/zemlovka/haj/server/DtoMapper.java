@@ -19,6 +19,6 @@ public class DtoMapper {
     }
 
     public static Set<PlayerDTO> mapPlayers(Collection<User> players) {
-        return players.stream().map(u -> new PlayerDTO(u.getUsername())).collect(Collectors.toSet());
+        return players.stream().map(u -> new PlayerDTO(u.getUsername(), u.getUuid())).collect(Collectors.toSet());
     }
 }

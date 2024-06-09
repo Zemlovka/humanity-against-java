@@ -1,13 +1,13 @@
 package com.zemlovka.haj.client.fx;
 
-import com.zemlovka.haj.client.ws.LobbyWSActions;
+import com.zemlovka.haj.client.ws.WSActions;
 
 /**
  * Abstract class for setting WSActions to controllers
  */
 public abstract class AbstractWsActionsSettingController {
-    protected LobbyWSActions wsActions;
-    void setWsActions(LobbyWSActions wsActions) {
+    protected WSActions wsActions;
+    void setWsActions(WSActions wsActions) {
         this.wsActions = wsActions;
     }
 }

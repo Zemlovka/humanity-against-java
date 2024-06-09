@@ -9,17 +9,17 @@ import org.slf4j.LoggerFactory;
 import static com.zemlovka.haj.utils.dto.CommandNameEnum.*;
 
 
-public class LobbyWSActions {
+public class WSActions {
     private static final Logger logger = LoggerFactory.getLogger(LoggerFactory.class);
 
     private final Commands commands;
-    private final LobbyClient client;
+    private final Client client;
 
-    public LobbyWSActions() {
-        LobbyClient lobbyClient = new LobbyClient();
-        lobbyClient.start();
-        this.client = lobbyClient;
-        commands = new Commands(lobbyClient);
+    public WSActions() {
+        Client client = new Client();
+        client.start();
+        this.client = client;
+        commands = new Commands(client);
     }
 
 
@@ -77,7 +77,7 @@ public class LobbyWSActions {
         final ClientCommandImpl<VoteCardDTO, VoteCardResponseDTO> voteCard;
         final ClientCommandImpl<ChooseCardDTO, ChooseCardResponseDTO> chooseCard;
         final ClientCommandImpl<GetChosenCardsDTO, GetChosenCardsResponseDTO> getChosenCards;
-        public Commands(LobbyClient client) {
+        public Commands(Client client) {
             login = new ClientCommandImpl<>(client, LOGIN);
             logout = new ClientCommandImpl<>(client, LOGOUT);
             leaveLobby = new ClientCommandImpl<>(client, LEAVE_LOBBY);

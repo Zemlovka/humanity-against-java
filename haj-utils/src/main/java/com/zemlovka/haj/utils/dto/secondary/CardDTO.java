@@ -25,4 +25,19 @@ public class CardDTO {
     public void setText(String text) {
         this.text = text;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CardDTO cardDTO = (CardDTO) o;
+
+        return getId() == cardDTO.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return getId();
+    }
 }

@@ -1,7 +1,7 @@
 package com.zemlovka.haj.client.fx;
 
 import com.zemlovka.haj.client.ws.AnswerCard;
-import com.zemlovka.haj.client.ws.LobbyWSActions;
+import com.zemlovka.haj.client.ws.WSActions;
 import com.zemlovka.haj.client.ws.Player;
 import com.zemlovka.haj.client.ws.QuestionCard;
 import com.zemlovka.haj.utils.dto.secondary.CardDTO;
@@ -40,9 +40,9 @@ public class LayoutUtil {
      * @param fxml  The fxml file to load
      * @throws IOException If the fxml file cannot be loaded
      */
-    public static void changeLayoutWithFadeTransition(Stage stage, String fxml, LobbyWSActions lobbyWSActions) throws IOException {
+    public static void changeLayoutWithFadeTransition(Stage stage, String fxml, WSActions WSActions) throws IOException {
         Parent currentRoot = stage.getScene().getRoot();
-        Parent newRoot = loadFXML(fxml, lobbyWSActions);
+        Parent newRoot = loadFXML(fxml, WSActions);
         fadeOutTransition(currentRoot, newRoot, stage);
     }
 
@@ -69,12 +69,12 @@ public class LayoutUtil {
      * @return The parent node of the fxml file
      * @throws IOException If the fxml file cannot be loaded
      */
-    private static Parent loadFXML(String fxml, LobbyWSActions lobbyWSActions) throws IOException {
+    private static Parent loadFXML(String fxml, WSActions WSActions) throws IOException {
         FXMLLoader loader = new FXMLLoader(LayoutUtil.class.getResource(fxml));
         if (loader.getController() != null)
-            ((AbstractWsActionsSettingController) loader.getController()).setWsActions(lobbyWSActions);
+            ((AbstractWsActionsSettingController) loader.getController()).setWsActions(WSActions);
         Parent parent = loader.load();
-        ((AbstractWsActionsSettingController) loader.getController()).setWsActions(lobbyWSActions);
+        ((AbstractWsActionsSettingController) loader.getController()).setWsActions(WSActions);
         return parent;
     }
 

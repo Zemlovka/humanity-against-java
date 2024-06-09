@@ -243,7 +243,7 @@ public class LobbyController extends AbstractWsActionsSettingController {
     }
 
     @Override
-    void setWsActions(LobbyWSActions wsActions) {
+    void setWsActions(WSActions wsActions) {
         super.setWsActions(wsActions);
 //        renderQuestionCard();
         registerFetchPlayer();

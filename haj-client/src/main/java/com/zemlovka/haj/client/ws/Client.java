@@ -18,14 +18,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import static com.zemlovka.haj.utils.GlobalUtils.compileUUID;
 
 
-public class LobbyClient extends Thread {
-    private static final Logger log = LoggerFactory.getLogger(LobbyClient.class);
+public class Client extends Thread {
+    private static final Logger log = LoggerFactory.getLogger(Client.class);
     private final ObjectMapper objectMapper;
     private Socket clientSocket;
     private ConcurrentHashMap<UUID, CommandCallback<Resource>> futureConcurrentHashMap;
     private UUID clientId;
     private PrintWriter pw;
-    public LobbyClient() {
+    public Client() {
         this.objectMapper = ResourceObjectMapperFactory.getObjectMapper();
         futureConcurrentHashMap = new ConcurrentHashMap<>();
         clientId = UUID.randomUUID();

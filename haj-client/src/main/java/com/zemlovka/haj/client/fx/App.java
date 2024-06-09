@@ -1,17 +1,12 @@
 package com.zemlovka.haj.client.fx;
 
-import com.zemlovka.haj.client.ws.Player;
-import com.zemlovka.haj.client.ws.LobbyWSActions;
+import com.zemlovka.haj.client.ws.WSActions;
 import javafx.application.Application;
-import javafx.collections.ObservableList;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -45,7 +40,7 @@ public class App extends Application {
         primaryStage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("/com/zemlovka/haj/client/logo.png"))));
 
         //primaryStage.setResizable(false);
-        LobbyWSActions wsActions = new LobbyWSActions();
+        WSActions wsActions = new WSActions();
         LoginController loginController = loginLoader.getController();
         loginController.setWsActions(wsActions);
 
