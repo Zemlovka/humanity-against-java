@@ -64,7 +64,8 @@ public class PlayerCardController extends AbstractWsActionsSettingController{
     private void onCardClick(Event event){
         log.info("PLAYER CARD was clicked{}", answerText.getText());
         wsActions.chooseCard(playerCard);
-        answerCardPane.setOpacity(0);
+        answerCardPane.getParent().getChildrenUnmodifiable().remove(answerCardPane);
+        //answerCardPane.setOpacity(0);
 
     }
 

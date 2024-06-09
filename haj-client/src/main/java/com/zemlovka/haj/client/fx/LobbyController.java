@@ -1,6 +1,7 @@
 package com.zemlovka.haj.client.fx;
 
 import com.zemlovka.haj.client.ws.*;
+import com.zemlovka.haj.utils.dto.server.FetchPlayersResponseDTO;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -71,6 +72,7 @@ public class LobbyController extends AbstractWsActionsSettingController {
         answerCardsContainer.setOnMousePressed(Event::consume);
         playerCardsScroll.setOnMousePressed(Event::consume);
         myCardsSection.setOnMousePressed(Event::consume);
+
         renderPlayers(appState.getCurrentLobby().getPlayers());
         showSpinner();
     }
@@ -115,28 +117,46 @@ public class LobbyController extends AbstractWsActionsSettingController {
     }
 
     private void registerFetchPlayer() {
-        wsActions.fetchPlayers().thenApply(f -> {Platform.runLater(() -> {
-
-            renderPlayers(LayoutUtil.mapPlayers(f.players(), appState.getCurrentPlayer()));
-            if (f.awaitNewPlayers()) {
-                registerFetchPlayer();
-            } else {
-                //todo start game
-                startGame();
-            }
-        });
-        return null;
-        }).exceptionally(e -> {
-            log.error("Error fetching players", e);
-            return null;
-        });
+        // Fetch players asynchronously
+        wsActions.fetchPlayers()
+                .thenApply(f -> {
+                    // Use Platform.runLater to ensure UI updates occur on the JavaFX Application Thread
+                    Platform.runLater(() -> {
+                        handleFetchPlayersResponse(f);
+                    });
+                    return null;
+                })
+                .exceptionally(e -> {
+                    // Log error if fetching players fails
+                    log.error("Error fetching players", e);
+                    return null;
+                });
     }
-    private void startGame(){
+
+    /**
+     * Handle the response from fetching players.
+     *
+     * @param f The fetched players response
+     */
+    private void handleFetchPlayersResponse(FetchPlayersResponseDTO f) {
+        // Render players on the UI
+        renderPlayers(LayoutUtil.mapPlayers(f.players(), appState.getCurrentPlayer()));
+
+        // Check if we should continue fetching new players
+        if (f.awaitNewPlayers()) {
+            registerFetchPlayer(); // Recursively fetch players if needed
+        } else {
+            startGame(); // Start the game if no more players are expected
+        }
+    }
+
+    private void startGame() {
         wsActions.startGame().thenApply(f -> {
             Platform.runLater(() -> {
                 removeSpinner();
                 renderQuestionCard(LayoutUtil.mapQuestionCard(f.questionCard()));
                 renderPlayerCards(LayoutUtil.mapAnswerCards(f.answerCards()));
+                renderAnswerCards(answerPlaceholderStrings());
             });
             return null;
         }).exceptionally(e -> {
@@ -184,7 +204,7 @@ public class LobbyController extends AbstractWsActionsSettingController {
         }
     }
 
-    private List<Card> answerPlaceholderStrings() {
+    private List<AnswerCard> answerPlaceholderStrings() {
         return List.of(new AnswerCard(1, "Bad life choices."),
                 new AnswerCard(2, "Alcoholism."),
                 new AnswerCard(3, "Therapy."),
@@ -209,7 +229,8 @@ public class LobbyController extends AbstractWsActionsSettingController {
         container.setId("spinner");
         answerCardsContainer.getChildren().add(container);
     }
-    private void removeSpinner(){
+
+    private void removeSpinner() {
         Node spinnerNode = answerCardsContainer.lookup("#spinner");
         answerCardsContainer.getChildren().remove(spinnerNode);
     }
