@@ -5,6 +5,10 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -24,7 +28,17 @@ public class App extends Application {
         primaryStage = stage;
 
         FXMLLoader loginLoader = new FXMLLoader(App.class.getResource("/com/zemlovka/haj/client/login.fxml"));
-        Scene loginScene = new Scene(loginLoader.load(), 900, 600);
+        Scene loginScene = new Scene(loginLoader.load(), 1200, 800);
+
+        final KeyCombination FullScreenKeyCombo = new KeyCodeCombination(KeyCode.ENTER, KeyCombination.ALT_DOWN);
+
+        loginScene.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+            if (FullScreenKeyCombo.match(event)) {
+                stage.setFullScreen(!stage.isFullScreen());
+                event.consume();
+            }
+        });
+
         loginScene.getStylesheets().add(CSS);
 
         Font.loadFont(getClass().getResourceAsStream("/com/zemlovka/haj/client/Montserrat/static/Montserrat-Regular.ttf"), 14); // Load font collection
@@ -35,8 +49,8 @@ public class App extends Application {
 
         primaryStage.setTitle("Humanity Against Java");
         primaryStage.setScene(loginScene);
-        primaryStage.setMinWidth(900);
-        primaryStage.setMinHeight(600);
+        primaryStage.setMinWidth(loginScene.getWidth());
+        primaryStage.setMinHeight(loginScene.getHeight());
         primaryStage.getIcons().add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("/com/zemlovka/haj/client/logo.png"))));
 
         //primaryStage.setResizable(false);
