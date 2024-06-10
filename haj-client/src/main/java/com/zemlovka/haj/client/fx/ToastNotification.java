@@ -6,9 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Popup;
 import javafx.util.Duration;
@@ -18,11 +16,12 @@ public class ToastNotification {
         CENTER,
         RIGHT_BOTTOM
     }
+
     public static void showToast(VBox owner, String message) {
-        showToast(owner, message, Position.CENTER, true);
+        showToast(owner, message, Position.CENTER, true, false);
     }
 
-    public static void showToast(VBox owner, String message, Position position, boolean autoHide) {
+    public static void showToast(VBox owner, String message, Position position, boolean autoHide, boolean canClose) {
         Platform.runLater(() -> {
             Popup popup = new Popup();
             double x = 0;
@@ -39,26 +38,25 @@ public class ToastNotification {
             notificationBox.setSpacing(10);
 
             if (autoHide) {
-                popup.getContent().add(notificationBox);
                 //popup.setAutoHide(true);
                 FadeTransition fadeTransition = new FadeTransition(Duration.seconds(4), notificationBox);
                 fadeTransition.setFromValue(1.0);
                 fadeTransition.setToValue(0.0);
                 fadeTransition.setOnFinished(event -> popup.hide());
                 fadeTransition.play();
-            } else {
+            }
+            if (canClose) {
                 notificationBox.getChildren().add(createCloseButton(popup));
-                popup.getContent().add(notificationBox);
-
             }
-            if(position == Position.RIGHT_BOTTOM) {
-                y = owner.getScene().getWindow().getHeight()-100;
-                x = owner.getScene().getWindow().getWidth()-60;
+            if (position == Position.RIGHT_BOTTOM) {
+                y = owner.getScene().getWindow().getHeight() - 100;
+                x = owner.getScene().getWindow().getWidth() - 60;
             }
-            if(position == Position.CENTER) {
+            if (position == Position.CENTER) {
                 y = owner.getScene().getWindow().getY() + 80;
                 x = owner.getScene().getWindow().getWidth() / 2;
             }
+            popup.getContent().add(notificationBox);
             popup.setX(x);
             popup.setY(y);
             popup.show(owner.getScene().getWindow());
