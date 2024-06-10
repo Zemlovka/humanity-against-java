@@ -30,7 +30,7 @@ public class StartGameCommand extends AbstractServerCommand<StartGameDTO, StartG
     public void execute(StartGameDTO argument, ConnectionHeader clientHeader) {
         final Lobby lobby = userData.getCurrentLobby();
         lobby.getFlags().lobbyReady().onSignal(f -> {
-            if (lobby.nextRound()) {
+            if (lobby.isRoundPlayable()) {
                 logger.info("Signal received for StartGame flag for user {}, sending...", GlobalUtils.compileUUID(clientHeader.clientID()));
                 CardDTO questionCard = lobby.getCurrentRound().getQuestionCard();
                 lobby.refreshAnswerCards(userData);
@@ -43,6 +43,7 @@ public class StartGameCommand extends AbstractServerCommand<StartGameDTO, StartG
         });
         Collection<User> users = lobby.getUsers().values();
         if (users.size() == lobby.getCapacity()) {
+            lobby.nextRound();
             logger.info("Signaling flag StartGame from user {}", GlobalUtils.compileUUID(clientHeader.clientID()));
             lobby.getFlags().lobbyReady().signal();
         }
