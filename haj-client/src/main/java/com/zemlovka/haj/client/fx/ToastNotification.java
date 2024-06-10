@@ -23,14 +23,14 @@ public class ToastNotification {
     private final boolean autoHide;
     private final boolean canClose;
     private final boolean isError;
-    private List<Popup> popups;
+    private List<ToastNotification> popups;
 
     public enum Position {
         CENTER,
         RIGHT_BOTTOM
     }
 
-    public ToastNotification(List<Popup> popups, Popup popup, Window owner, String message, Position position, boolean autoHide, boolean canClose, boolean isError) {
+    public ToastNotification(List<ToastNotification> popups, Popup popup, Window owner, String message, Position position, boolean autoHide, boolean canClose, boolean isError) {
         this.popups = popups;
         this.popup = popup;
         this.owner = owner;
@@ -75,13 +75,13 @@ public class ToastNotification {
             }
 
             //dynamic resize
-            owner.xProperty().addListener((observable, oldValue, newValue) -> updatePopupPosition());
-            owner.yProperty().addListener((observable, oldValue, newValue) -> updatePopupPosition());
-            owner.widthProperty().addListener((observable, oldValue, newValue) -> updatePopupPosition());
-            owner.heightProperty().addListener((observable, oldValue, newValue) -> updatePopupPosition());
+            owner.xProperty().addListener((observable, oldValue, newValue) -> updatePopupPosition(popup));
+            owner.yProperty().addListener((observable, oldValue, newValue) -> updatePopupPosition(popup));
+            owner.widthProperty().addListener((observable, oldValue, newValue) -> updatePopupPosition(popup));
+            owner.heightProperty().addListener((observable, oldValue, newValue) -> updatePopupPosition(popup));
 
             popup.getContent().add(notificationBox);
-            popups.add(popup);
+            popups.add(this);
             System.out.println("Popups: " + popups.size());
 
             // Add listener to hide notification when application loses focus
@@ -99,9 +99,9 @@ public class ToastNotification {
 
     public void showToast() {
         Platform.runLater(() -> {
-            if (popups.contains(popup) && !popup.isShowing()) {
+            if (popups.contains(this) && !popup.isShowing()) {
                 popup.show(owner);
-                updatePopupPosition();
+                updatePopupPosition(popup);
             }
         });
     }
@@ -125,7 +125,12 @@ public class ToastNotification {
 
     public void closeToast() {
         hideToast(true);
-        popups.remove(popup);
+        popups.remove(this);
+        popups.forEach(toastNotification -> {
+            if (this.getPosition() == Position.RIGHT_BOTTOM) {
+                toastNotification.updatePopupPosition(toastNotification.popup);
+            }
+        });
     }
 
     private Button createCloseButton() {
@@ -135,53 +140,30 @@ public class ToastNotification {
         return closeButton;
     }
 
-//    private void updatePopupPosition() {
-//        double x = 0;
-//        double y = 0;
-//
-//        if (position == Position.CENTER) {
-//            x = owner.getX() + owner.getWidth() / 2 - this.popup.getWidth() / 2;
-//            y = owner.getY() + 80;
-//        }
-//        if (position == Position.RIGHT_BOTTOM) {
-//            x = owner.getX() + owner.getWidth() - this.popup.getWidth() - 40;
-//            y = owner.getY() + owner.getHeight() - this.popup.getHeight() - 40;
-//        }
-//        popup.setX(x);
-//        popup.setY(y);
-//    }
-
-
-    private void updatePopupPosition() {
+    private void updatePopupPosition(Popup popup) {
         double x = 0;
         double y = 0;
-
         if (position == Position.RIGHT_BOTTOM) {
             double gap = 10;
-            double totalHeight = 0;
+            x = owner.getX() + owner.getWidth() - popup.getWidth() - 40;
+            int index = popups.indexOf(this);
+            y = owner.getY() + owner.getHeight() - popup.getHeight() - 40 - (popup.getHeight() + gap) * index;
 
-            x = owner.getX() + owner.getWidth() - this.popup.getWidth() - 40;
-
-            for (Popup p : popups) {
-                totalHeight += p.getHeight() + gap;
-                System.out.println("Total height: " + totalHeight);
-            }
-
-            y = owner.getY() + owner.getHeight() - totalHeight - 40;
             if (y < owner.getY()) {
                 y = owner.getY() + 40;
             }
-
             popup.setX(x);
             popup.setY(y);
         }
-
         if (position == Position.CENTER) {
-            x = owner.getX() + owner.getWidth() / 2 - this.popup.getWidth() / 2;
+            x = owner.getX() + owner.getWidth() / 2 - popup.getWidth() / 2;
             y = owner.getY() + 80;
-
             popup.setX(x);
             popup.setY(y);
         }
+    }
+
+    public Position getPosition() {
+        return position;
     }
 }

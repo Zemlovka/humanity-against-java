@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationService {
-    private List<Popup> popups;
+    private List<ToastNotification> popups;
     public NotificationService() {
         popups = new ArrayList<>();
     }
