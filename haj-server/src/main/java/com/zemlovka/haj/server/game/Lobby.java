@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Lobby {
     private static final int DEFAULT_PLAYER_CARDS_NUMBER = 5;
+    private static final int MAX_ROUND_NUMBER = 5;
     private final int capacity;
     private final String name;
     private final String password;
@@ -77,10 +78,15 @@ public class Lobby {
         }
     }
 
-    public synchronized void nextRound() {
+    /**
+     *
+     * @return if the next rounds is playable or if it's the ond of the game
+     */
+    public synchronized boolean nextRound() {
         Random random = new Random();
         currentRound = new Round(questionCardsPool.remove(random.nextInt(questionCardsPool.size())), this);
         rounds.add(currentRound);
+        return rounds.size() != MAX_ROUND_NUMBER;
     }
 
     public synchronized Round getCurrentRound() {
