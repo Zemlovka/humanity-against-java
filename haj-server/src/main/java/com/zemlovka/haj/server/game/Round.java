@@ -42,7 +42,9 @@ public class Round {
             }
         }
         CardDTO finalWinner = winner;
-        return userToChosenCardsMap.entrySet().stream().filter(entry -> entry.getValue().equals(finalWinner)).findFirst().orElseThrow();
+        Map.Entry<User, CardDTO> winnerEntry = userToChosenCardsMap.entrySet().stream().filter(entry -> entry.getValue().equals(finalWinner)).findFirst().orElseThrow();
+        lobby.addPoints(winnerEntry.getKey());
+        return winnerEntry;
     }
 
     public synchronized void addChosenCard(User user, CardDTO chosenCard) {

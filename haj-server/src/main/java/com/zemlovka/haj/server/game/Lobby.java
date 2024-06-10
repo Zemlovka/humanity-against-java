@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Lobby {
     private static final int DEFAULT_PLAYER_CARDS_NUMBER = 5;
     private static final int MAX_ROUND_NUMBER = 5;
+    private static final int POINTS_FOR_WIN = 5;
     private final int capacity;
     private final String name;
     private final String password;
@@ -20,6 +21,7 @@ public class Lobby {
     private final List<CardDTO> answerCardsPool;
     private final List<Round> rounds;
     private final Map<UUID, Map<Integer, CardDTO>> userToCardsMap;
+    private final Map<UUID, Integer> userToPoints;
     private Round currentRound = null;
 
 
@@ -33,6 +35,7 @@ public class Lobby {
         answerCardsPool = CardsSupplier.getAnswerCardPool();
         rounds = new ArrayList<>();
         userToCardsMap = new HashMap<>();
+        userToPoints = new HashMap<>();
     }
 
     public int getCapacity() {
@@ -56,6 +59,7 @@ public class Lobby {
     }
     public synchronized void addUser(User user) {
         users.put(user.getUuid(), user);
+        userToPoints.put(user.getUuid(), 0);
         userToCardsMap.put(user.getUuid(), new HashMap<>());
     }
 
@@ -86,6 +90,14 @@ public class Lobby {
         Random random = new Random();
         currentRound = new Round(questionCardsPool.remove(random.nextInt(questionCardsPool.size())), this);
         rounds.add(currentRound);
+    }
+
+    public int getPoints(User user) {
+        return userToPoints.get(user.getUuid());
+    }
+
+    public int addPoints(User user) {
+        return userToPoints.put(user.getUuid(), userToPoints.get(user.getUuid()) + MAX_ROUND_NUMBER);
     }
 
     public boolean isRoundPlayable() {

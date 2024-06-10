@@ -14,6 +14,7 @@ public class CommandCallback<T extends Resource> {
     private final Set<Function<? super T, ?>> thenApplySet;
     private final String commandName;
     private final UUID uuid;
+    private boolean killResubmit;
 
     public CommandCallback(String commandName, UUID uuid) {
         this.parentFuture = new CompletableFuture<>();

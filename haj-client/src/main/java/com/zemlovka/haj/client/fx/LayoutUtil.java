@@ -127,8 +127,8 @@ public class LayoutUtil {
                 return new Player(p.getName(), null, false);
         }).collect(Collectors.toList());
     }
-    public static List<Lobby> mapLobbies(Set<LobbyDTO> lobbyDTOSet, Lobby currentLobby) {
-        return lobbyDTOSet.stream().map(c -> new Lobby(c.getName(), mapPlayers(c.getPlayers(), null))).collect(Collectors.toList());
+    public static List<Lobby> mapLobbies(Set<LobbyDTO> lobbyDTOSet, Player currentPlayer) {
+        return lobbyDTOSet.stream().map(c -> new Lobby(c.getName(), mapPlayers(c.getPlayers(), currentPlayer))).collect(Collectors.toList());
     }
 
 

@@ -2,6 +2,7 @@ package com.zemlovka.haj.client.fx;
 
 import com.zemlovka.haj.client.ws.Lobby;
 import com.zemlovka.haj.client.ws.WSActions;
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -86,25 +87,13 @@ public class FindLobbyController extends AbstractWsActionsSettingController {
      *
      * @return List of lobbies
      */
-    private List<Lobby> createLobbyList() {
-        try {
-            return wsActions.fetchLobbyList().get().lobbies().stream().map(dto -> new Lobby(dto.getName(), null, dto.getCapacity())).toList();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        }
-
-        //        wsActions.fetchLobbyList().thenApply(f -> {
-//            Platform.runLater(() -> {
-//                this.lobbyList = LayoutUtil.mapLobbies(f.lobbies(), null);
-//                renderLobbyComponents(lobbyList);
-//            });
-//            return null;
-//        }).exceptionally(e -> {
-//            log.error("Error fetching lobby list", e);
-//            return null;
-//        });
+    private void registerPollLobbyList() {
+        wsActions.fetchLobbyList().thenApply(f -> {
+            Platform.runLater(() -> {
+                renderLobbyComponents(LayoutUtil.mapLobbies(f.lobbies(), AppState.getInstance().getCurrentPlayer()));
+            });
+            return null;
+        });
     }
 
     /**
@@ -150,7 +139,6 @@ public class FindLobbyController extends AbstractWsActionsSettingController {
     @Override
     void setWsActions(WSActions wsActions) {
         super.setWsActions(wsActions);
-        lobbyList = createLobbyList();
-        renderLobbyComponents(lobbyList);
+        registerPollLobbyList();
     }
 }

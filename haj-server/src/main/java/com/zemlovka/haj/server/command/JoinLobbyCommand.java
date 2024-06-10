@@ -27,6 +27,7 @@ public class JoinLobbyCommand extends AbstractServerCommand<JoinLobbyDTO, JoinLo
     }
     @Override
     public void execute(JoinLobbyDTO argument, ConnectionHeader clientHeader) {
+        userData.shutdownLobbyPollingExecutor();
         Lobby lobby = lobbies.get(argument.lobbyName());
         final JoinLobbyResponseDTO response;
         if (lobby == null) {

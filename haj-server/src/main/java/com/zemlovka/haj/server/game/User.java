@@ -1,12 +1,15 @@
 package com.zemlovka.haj.server.game;
 
 import java.util.UUID;
+import java.util.concurrent.ScheduledExecutorService;
 
 
 public class User {
     private String username;
     private UUID uuid;
     private Lobby currentLobby;
+
+    private ScheduledExecutorService lobbyPollingExecutor;
 
     public boolean isLoggedIn() {
         return username != null;
@@ -36,4 +39,12 @@ public class User {
         this.currentLobby = currentLobby;
     }
 
+    public void setLobbyPollingExecutor(ScheduledExecutorService lobbyPollingExecutor) {
+        this.lobbyPollingExecutor = lobbyPollingExecutor;
+    }
+
+    public void shutdownLobbyPollingExecutor() {
+        if (lobbyPollingExecutor != null)
+            lobbyPollingExecutor.shutdown();
+    }
 }

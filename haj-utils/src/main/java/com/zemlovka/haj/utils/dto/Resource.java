@@ -19,6 +19,7 @@ import com.zemlovka.haj.utils.dto.server.*;
         @JsonSubTypes.Type(value = FetchLobbyListDTO.class),
         @JsonSubTypes.Type(value = FetchPlayersDTO.class),
         @JsonSubTypes.Type(value = GetChosenCardsDTO.class),
+        @JsonSubTypes.Type(value = GetWinnerCardDTO.class),
         @JsonSubTypes.Type(value = JoinLobbyDTO.class),
         @JsonSubTypes.Type(value = LeaveLobbyDTO.class),
         @JsonSubTypes.Type(value = LoginDTO.class),
@@ -34,6 +35,7 @@ import com.zemlovka.haj.utils.dto.server.*;
         @JsonSubTypes.Type(value = GameEndDTO.class),
         @JsonSubTypes.Type(value = GameStartDTO.class),
         @JsonSubTypes.Type(value = GetChosenCardsResponseDTO.class),
+        @JsonSubTypes.Type(value = GetWinnerCardResponseDTO.class),
         @JsonSubTypes.Type(value = JoinLobbyResponseDTO.class),
         @JsonSubTypes.Type(value = LobbyCreatedDTO.class),
         @JsonSubTypes.Type(value = LobbyListDTO.class),
@@ -57,8 +59,5 @@ public interface Resource {
     default boolean isPolling() {
         return false;
     }
-//
-//    default boolean hasPollingKillConditionBeenMet() {
-//        return true;
-//    }
+
 }

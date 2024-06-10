@@ -28,6 +28,7 @@ public class CreateLobbyCommand extends AbstractServerCommand<CreateLobbyDTO, Cr
 
     @Override
     public void execute(CreateLobbyDTO argument, ConnectionHeader clientHeader) {
+        userData.shutdownLobbyPollingExecutor();
         final CreateLobbyResponseDTO response;
         if (!userData.isLoggedIn()) {
             logger.info("Lobby with name: {} was not created because user is not logged in", argument.name());

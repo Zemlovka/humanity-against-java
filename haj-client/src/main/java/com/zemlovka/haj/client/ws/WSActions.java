@@ -79,6 +79,7 @@ public class WSActions {
         final ClientCommandImpl<StartGameDTO, StartGameResponseDTO> startGame;
         final ClientCommandImpl<FetchPlayersDTO, FetchPlayersResponseDTO> fetchPlayers;
         final ClientCommandImpl<VoteCardDTO, VoteCardResponseDTO> voteCard;
+        final ClientCommandImpl<GetWinnerCardDTO, GetWinnerCardResponseDTO> getWinnerCard;
         final ClientCommandImpl<ChooseCardDTO, ChooseCardResponseDTO> chooseCard;
         final ClientCommandImpl<GetChosenCardsDTO, GetChosenCardsResponseDTO> getChosenCards;
         public Commands(Client client) {
@@ -91,6 +92,7 @@ public class WSActions {
             startGame = new ClientCommandImpl<>(client, START_GAME);
             fetchPlayers = new ClientCommandImpl<>(client, FETCH_PLAYERS);
             voteCard = new ClientCommandImpl<>(client, VOTE_CARD);
+            getWinnerCard = new ClientCommandImpl<>(client, GET_WINNER_CARD);
             chooseCard = new ClientCommandImpl<>(client, CHOOSE_CARD);
             getChosenCards = new ClientCommandImpl<>(client, GET_CHOSEN_CARDS);
         }

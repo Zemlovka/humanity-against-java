@@ -7,4 +7,9 @@ import java.util.Set;
 
 
 public record LobbyListDTO(Set<LobbyDTO> lobbies) implements Resource {
+
+    @Override
+    public boolean isPolling() {
+        return true;
+    }
 }

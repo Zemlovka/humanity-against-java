@@ -31,12 +31,6 @@ public class VoteCardCommand extends AbstractServerCommand<VoteCardDTO, VoteCard
     @Override
     public void execute(VoteCardDTO argument, ConnectionHeader clientHeader) {
         final Lobby lobby = userData.getCurrentLobby();
-        lobby.getFlags().voteCards().onSignal(f -> {
-            Map.Entry<User, CardDTO> winnerEntry = lobby.getCurrentRound().getWinner();
-            PlayerDTO winnerPlayer = new PlayerDTO(winnerEntry.getKey().getUsername(), winnerEntry.getKey().getUuid());
-            send(new VoteCardResponseDTO(winnerEntry.getValue(), winnerPlayer), clientHeader);
-            return null;
-        });
         lobby.getCurrentRound().voteCard(userData, argument.cardId());
         if (lobby.getCurrentRound().getVotedCards().size() == lobby.getUsers().size())
             lobby.getFlags().voteCards().signal();

@@ -48,7 +48,7 @@ public class ServerWsActions {
         commandSet.add(new LogoutCommand(this, userData));
         commandSet.add(new JoinLobbyCommand(this, lobbies, userData));
         commandSet.add(new CreateLobbyCommand(this, lobbies, userData));
-        commandSet.add(new FetchLobbysCommand(this, lobbies));
+        commandSet.add(new FetchLobbysCommand(this, lobbies, userData));
         commandSet.add(new StartGameCommand(this, userData));
         commandSet.add(new FetchPlayersCommand(this, userData));
         commandSet.add(new ChooseCardCommand(this, userData));

@@ -10,6 +10,7 @@ public enum CommandNameEnum {
     JOIN_LOBBY,
     START_GAME,
     VOTE_CARD,
+    GET_WINNER_CARD,
     CHOOSE_CARD,
     GET_CHOSEN_CARDS,
 }
