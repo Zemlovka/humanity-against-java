@@ -29,7 +29,9 @@ public class StartGameCommand extends AbstractServerCommand<StartGameDTO, StartG
     @Override
     public void execute(StartGameDTO argument, ConnectionHeader clientHeader) {
         final Lobby lobby = userData.getCurrentLobby();
+        userData.setReady(true);
         lobby.getFlags().lobbyReady().onSignal(f -> {
+            lobby.getUsers().values().forEach(u -> u.setReady(false));
             if (lobby.isRoundPlayable()) {
                 logger.info("Signal received for StartGame flag for user {}, sending...", GlobalUtils.compileUUID(clientHeader.clientID()));
                 CardDTO questionCard = lobby.getCurrentRound().getQuestionCard();
@@ -41,8 +43,8 @@ public class StartGameCommand extends AbstractServerCommand<StartGameDTO, StartG
             }
             return null;
         });
-        Collection<User> users = lobby.getUsers().values();
-        if (users.size() == lobby.getCapacity()) {
+        List<User> readyUsers = lobby.getUsers().values().stream().filter(User::isReady).toList();
+        if (readyUsers.size() == lobby.getCapacity()) {
             lobby.nextRound();
             logger.info("Signaling flag StartGame from user {}", GlobalUtils.compileUUID(clientHeader.clientID()));
             lobby.getFlags().lobbyReady().signal();

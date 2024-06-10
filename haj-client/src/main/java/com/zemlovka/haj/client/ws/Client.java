@@ -99,7 +99,7 @@ public class Client extends Thread {
     public CommandCallback<Resource> sendRequest(Resource request, String commandName) {
         final UUID uuid = UUID.randomUUID();
         final ConnectionHeader header = new ConnectionHeader(clientId, uuid, request.getClass().getSimpleName(), commandName);
-        final CommunicationObject communicationObject = new CommunicationObject(header, request);
+        final CommunicationObject<?> communicationObject = new CommunicationObject<>(header, request);
         CommandCallback<Resource> completableFuture = new CommandCallback<>(commandName, uuid);
         log.info("Posting a callback for command {} with uuid {}", commandName, compileUUID(uuid));
         futureConcurrentHashMap.put(uuid, completableFuture);
@@ -144,11 +144,11 @@ public class Client extends Thread {
                     if (content == null) {
                         throw new IOException("Disconnected");
                     }
-                    CommunicationObject communicationObject = objectMapper.readValue(content, CommunicationObject.class);
+                    CommunicationObject<Resource> communicationObject = objectMapper.readValue(content, CommunicationObject.class);
                     futureConcurrentHashMap.forEach((uuid, commandCallback) -> {
                         if (uuid.equals(communicationObject.header().communicationUuid())) {
                             log.info("Completing a callback for command {} with uuid {}", commandCallback.getCommandName(), compileUUID(uuid));
-                            commandCallback.complete(communicationObject.body(), communicationObject.body().isPolling());
+                            commandCallback.complete(communicationObject, futureConcurrentHashMap);
                             if (!communicationObject.body().isPolling())
                                 futureConcurrentHashMap.remove(communicationObject.header().communicationUuid());
                             log.info("Current unresolved callbacks ({}): {}", futureConcurrentHashMap.size(), futureConcurrentHashMap.values());

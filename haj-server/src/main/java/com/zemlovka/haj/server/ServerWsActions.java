@@ -76,13 +76,13 @@ public class ServerWsActions {
 
 
     public void sendMessage(Resource body, ConnectionHeader clientHeader) {
-        log.info("Sending response of type {} to command {} with communication id {}, to client {}", body.getClass().getSimpleName(), clientHeader.commandName(), compileUUID(clientHeader.communicationUuid()), compileUUID(clientHeader.clientID()));
+        log.info("Sending response of type {} to command {} with communication id {}, to client {}: {}", body.getClass().getSimpleName(), clientHeader.commandName(), compileUUID(clientHeader.communicationUuid()), compileUUID(clientHeader.clientID()), body);
         ConnectionHeader responseHeader = new ConnectionHeader(
                 clientHeader.clientID(),
                 clientHeader.communicationUuid(),
                 body.getClass().getSimpleName(),
                 clientHeader.commandName());
-        CommunicationObject responseObject = new CommunicationObject(responseHeader, body);
+        CommunicationObject<?> responseObject = new CommunicationObject<>(responseHeader, body);
         synchronized (workLock) {
             try {
                 writer.println(objectMapper.writeValueAsString(responseObject));

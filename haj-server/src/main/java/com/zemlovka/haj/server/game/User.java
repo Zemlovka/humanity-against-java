@@ -8,6 +8,11 @@ public class User {
     private String username;
     private UUID uuid;
     private Lobby currentLobby;
+    private boolean ready;
+
+    public User() {
+        ready = false;
+    }
 
     private ScheduledExecutorService lobbyPollingExecutor;
 
@@ -37,6 +42,14 @@ public class User {
 
     public void setCurrentLobby(Lobby currentLobby) {
         this.currentLobby = currentLobby;
+    }
+
+    public boolean isReady() {
+        return ready;
+    }
+
+    public void setReady(boolean ready) {
+        this.ready = ready;
     }
 
     public void setLobbyPollingExecutor(ScheduledExecutorService lobbyPollingExecutor) {

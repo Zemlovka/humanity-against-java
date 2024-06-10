@@ -75,7 +75,8 @@ public class Lobby {
         Map<Integer, CardDTO> userCards = userToCardsMap.get(user.getUuid());
         if (userCards.size() <= DEFAULT_PLAYER_CARDS_NUMBER) {
             Random random = new Random();
-            for (int i = 0; i < DEFAULT_PLAYER_CARDS_NUMBER - userCards.size(); i++) {
+            int currentNumberOfCards = userCards.size();
+            for (int i = 0; i < DEFAULT_PLAYER_CARDS_NUMBER - currentNumberOfCards; i++) {
                 CardDTO card = answerCardsPool.remove(random.nextInt(answerCardsPool.size()));
                 userCards.put(card.getId(), card);
             }
@@ -90,6 +91,10 @@ public class Lobby {
         Random random = new Random();
         currentRound = new Round(questionCardsPool.remove(random.nextInt(questionCardsPool.size())), this);
         rounds.add(currentRound);
+    }
+
+    public synchronized List<Round> getRounds() {
+        return rounds;
     }
 
     public int getPoints(User user) {
