@@ -14,11 +14,15 @@ public class ToastNotification {
             Popup popup = new Popup();
 
             Label label = new Label(message);
-            label.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-padding: 10px;");
+            label.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-padding: 10px; -fx-background-radius: 20px;");
             label.setFont(new Font("Arial", 16));
 
             popup.getContent().add(label);
             popup.setAutoHide(true);
+            double y = owner.getScene().getWindow().getY() + 80;
+            double x = owner.getScene().getWindow().getWidth() / 2;
+            popup.setX(x);
+            popup.setY(y);
 
             popup.show(owner.getScene().getWindow());
 
