@@ -11,8 +11,6 @@ import javafx.scene.text.Font;
 import javafx.stage.Popup;
 import javafx.stage.Window;
 import javafx.util.Duration;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class ToastNotification {
@@ -86,7 +84,7 @@ public class ToastNotification {
 
             // Add listener to hide notification when application loses focus
             owner.focusedProperty().addListener((observable, oldValue, newValue) -> {
-                if (!newValue) { // !newValue - false if application lost focus
+                if (!newValue) { // !newValue - false if application has lost focus
                     hideToast(false);
                 } else {
                     showToast();
@@ -102,6 +100,7 @@ public class ToastNotification {
             if (popups.contains(this) && !popup.isShowing()) {
                 popup.show(owner);
                 updatePopupPosition(popup);
+
             }
         });
     }
@@ -149,8 +148,11 @@ public class ToastNotification {
             int index = popups.indexOf(this);
             y = owner.getY() + owner.getHeight() - popup.getHeight() - 40 - (popup.getHeight() + gap) * index;
 
-            if (y < owner.getY()) {
-                y = owner.getY() + 40;
+            //System.out.println(popup.getY());
+            if (popup.getY()>owner.getHeight() - popup.getHeight() - 25) {
+                popup.hide();
+            } else {
+                popup.show(owner);
             }
             popup.setX(x);
             popup.setY(y);
@@ -158,6 +160,11 @@ public class ToastNotification {
         if (position == Position.CENTER) {
             x = owner.getX() + owner.getWidth() / 2 - popup.getWidth() / 2;
             y = owner.getY() + 80;
+            if (popup.getY()>owner.getHeight() - popup.getHeight() - 25) {
+                popup.hide();
+            } else {
+                popup.show(owner);
+            }
             popup.setX(x);
             popup.setY(y);
         }
