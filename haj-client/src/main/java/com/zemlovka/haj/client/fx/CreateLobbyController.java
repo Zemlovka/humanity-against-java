@@ -9,6 +9,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
@@ -44,6 +46,14 @@ public class CreateLobbyController extends AbstractWsActionsSettingController {
     @FXML
     private void initialize() {
         log.info("CreateLobby controller init.");
+        lobbyNameField.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                if (!event.isAltDown()) {
+                    onCreateLobbyClick(new ActionEvent());
+                    event.consume();
+                }
+            }
+        });
     }
 
     @FXML

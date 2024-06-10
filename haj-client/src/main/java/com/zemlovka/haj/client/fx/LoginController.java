@@ -45,8 +45,10 @@ public class LoginController extends AbstractWsActionsSettingController {
         // Event listener for the Enter key press event
         usernameInputField.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.ENTER) {
-                onButtonClick(new ActionEvent());
-                event.consume(); // Prevent further handling of the Enter key press event
+                if (!event.isAltDown()) {
+                    onButtonClick(new ActionEvent());
+                    event.consume();
+                }
             }
         });
     }
