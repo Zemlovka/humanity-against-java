@@ -82,10 +82,13 @@ public class Lobby {
      *
      * @return if the next rounds is playable or if it's the ond of the game
      */
-    public synchronized boolean nextRound() {
+    public synchronized void nextRound() {
         Random random = new Random();
         currentRound = new Round(questionCardsPool.remove(random.nextInt(questionCardsPool.size())), this);
         rounds.add(currentRound);
+    }
+
+    public boolean isRoundPlayable() {
         return rounds.size() != MAX_ROUND_NUMBER;
     }
 

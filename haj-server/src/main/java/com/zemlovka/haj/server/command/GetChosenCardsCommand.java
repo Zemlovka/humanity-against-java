@@ -31,7 +31,7 @@ public class GetChosenCardsCommand extends AbstractServerCommand<GetChosenCardsD
         lobby.getFlags().chooseCards().onSignal(f -> {
             List<CardDTO> chosenCards = lobby.getCurrentRound().getChosenCards().values().stream().toList();
             send(new GetChosenCardsResponseDTO(chosenCards,
-                    lobby.getUsers().size() < lobby.getCurrentRound().getChosenCards().size()),
+                    lobby.getUsers().size() > lobby.getCurrentRound().getChosenCards().size()),
                     clientHeader);
             return null;
         });

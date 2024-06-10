@@ -143,14 +143,18 @@ public class LobbyController extends AbstractWsActionsSettingController {
     private void startGame() {
         wsActions.startGame().thenApply(f -> {
             Platform.runLater(() -> {
-                log.info("The game in '{}' lobby was started", lobby.getName());
-                appState.setCurrentState(CHOOSING);
-                appState.setCanVote(false);
-                appState.setCanChoose(true);
-                removeSpinner();
-                renderQuestionCard(LayoutUtil.mapQuestionCard(f.questionCard()));
-                renderPlayerCards(LayoutUtil.mapAnswerCards(f.answerCards()));
-                registerChosenCards();
+                if (!f.gameEnd()) {
+                    log.info("The game in '{}' lobby was started", lobby.getName());
+                    appState.setCurrentState(CHOOSING);
+                    appState.setCanVote(false);
+                    appState.setCanChoose(true);
+                    removeSpinner();
+                    renderQuestionCard(LayoutUtil.mapQuestionCard(f.questionCard()));
+                    renderPlayerCards(LayoutUtil.mapAnswerCards(f.answerCards()));
+                    registerChosenCards();
+                } else {
+                    //todo end game
+                }
             });
             return null;
         }).exceptionally(e -> {
