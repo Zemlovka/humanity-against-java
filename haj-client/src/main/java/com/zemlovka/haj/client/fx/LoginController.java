@@ -3,6 +3,7 @@ package com.zemlovka.haj.client.fx;
 import com.zemlovka.haj.client.ws.WSActions;
 import com.zemlovka.haj.client.ws.Player;
 import com.zemlovka.haj.utils.dto.server.LoginResponseDTO;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,7 +34,7 @@ public class LoginController extends AbstractWsActionsSettingController {
 
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
-    private final AppState appState= AppState.getInstance();
+    private final AppState appState = AppState.getInstance();
     @FXML
     private TextField usernameInputField;
     @FXML
@@ -42,7 +43,6 @@ public class LoginController extends AbstractWsActionsSettingController {
     @FXML
     private void initialize() {
         log.info("Login controller started.");
-        // Event listener for the Enter key press event
         usernameInputField.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 if (!event.isAltDown()) {
@@ -51,6 +51,8 @@ public class LoginController extends AbstractWsActionsSettingController {
                 }
             }
         });
+        ToastNotification.showToast(dialogForm, "Welcome to Humanity Against Java!", ToastNotification.Position.RIGHT_BOTTOM, false);
+        ToastNotification.showToast(dialogForm, "Welcome to Humanity Against Java!");
     }
 
     /**
@@ -60,7 +62,7 @@ public class LoginController extends AbstractWsActionsSettingController {
      */
     @FXML
     private void onButtonClick(ActionEvent event) {
-        String username = usernameInputField.getText(); // Get the text from the TextField
+        String username = usernameInputField.getText();
         if (username == null || username.trim().isEmpty()) {
             log.error("Username is empty or null");
             LayoutUtil.showAlert(Alert.AlertType.ERROR, "Error", "Username cannot be empty");
@@ -68,19 +70,24 @@ public class LoginController extends AbstractWsActionsSettingController {
             Player player = new Player(username, "1", true);
             try {
                 //todo
-                LoginResponseDTO loginResponseDTO = wsActions.login(username).get();
-                if (loginResponseDTO.isSuccesful())
-                    log.info("Username set: {}", username);
+                wsActions.login(username).thenApply(f -> {
+                    Platform.runLater(() -> {
+                        appState.setCurrentPlayer(player);
+                        log.info("Username set: {}", username);
+                        try {
+                            LayoutUtil.changeLayoutWithFadeTransition((Stage) usernameInputField.getScene().getWindow(), "/com/zemlovka/haj/client/menu.fxml", wsActions);
+                        } catch (IOException e) {
+                            log.error("Failed to change layout", e);
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    return null;
+                }).exceptionally(e -> {
+                    log.error("Error starting game", e);
+                    return null;
+                });
+
             } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-            appState.setCurrentPlayer(player);
-            // Proceed with further actions
-            try {
-                //changeLayout();
-                LayoutUtil.changeLayoutWithFadeTransition((Stage) usernameInputField.getScene().getWindow(), "/com/zemlovka/haj/client/menu.fxml", wsActions);
-            } catch (IOException e) {
-                log.error("Failed to change layout", e);
                 throw new RuntimeException(e);
             }
         }
@@ -101,5 +108,4 @@ public class LoginController extends AbstractWsActionsSettingController {
         tacStage.setScene(scene);
         tacStage.show();
     }
-
 }
