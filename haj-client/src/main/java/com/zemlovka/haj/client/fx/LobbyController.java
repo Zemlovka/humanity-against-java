@@ -2,8 +2,7 @@ package com.zemlovka.haj.client.fx;
 
 import com.zemlovka.haj.client.ws.*;
 import com.zemlovka.haj.utils.dto.server.FetchPlayersResponseDTO;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -11,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.slf4j.Logger;
@@ -200,7 +200,7 @@ public class LobbyController extends AbstractWsActionsSettingController {
                 Platform.runLater(() -> {
                     appState.getNotificationService().createToast(dialogForm.getScene().getWindow(), "The winner is: " + f.winnerCard().getText(), ToastNotification.Position.RIGHT_BOTTOM, false, true, false).showToast();
                 });
-                startGame();
+                //startGame();
             }
             return null;
         }).exceptionally(e -> {
@@ -224,12 +224,32 @@ public class LobbyController extends AbstractWsActionsSettingController {
                         try {
                             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/answerCard.fxml"));
                             PlayerCardController controller = new PlayerCardController();
-                            loader.setController(controller); // Defining controller since there are 2 controllers for answerCards.fxml
+                            loader.setController(controller);
                             controller.setCard(card);
                             controller.setWsActions(wsActions);
 
                             Pane answerCard = loader.load();
+                            answerCard.setTranslateY(-1000); // Start off the screen above
+
                             playerCardsContainer.getChildren().add(answerCard);
+
+                            // Create translation animation
+                            TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(1), answerCard);
+                            translateTransition.setFromY(-1000);
+                            translateTransition.setToY(0);
+
+                            // Add slight rotation effect
+                            RotateTransition rotateTransition = new RotateTransition(Duration.seconds(1), answerCard);
+                            rotateTransition.setByAngle(10);
+                            rotateTransition.setCycleCount(2);
+                            rotateTransition.setAutoReverse(true);
+
+                            // Combine translation and rotation
+                            ParallelTransition parallelTransition = new ParallelTransition(answerCard, translateTransition, rotateTransition);
+                            parallelTransition.setInterpolator(Interpolator.EASE_OUT);
+
+                            parallelTransition.play();
+
                         } catch (IOException e) {
                             log.error("Error loading lobby component", e);
                         }
