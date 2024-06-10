@@ -14,7 +14,6 @@ public class GlobalUtils {
      */
     public static String compileUUID(UUID uuid) {
         String shortenedUUID = uuid.toString().substring(0,6).toUpperCase();
-        logger.debug("Shortened uuid {} to {}", uuid, shortenedUUID);
         return shortenedUUID;
     }
 }

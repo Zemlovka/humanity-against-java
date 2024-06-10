@@ -128,7 +128,7 @@ public class LobbyController extends AbstractWsActionsSettingController {
     private void registerChosenCards() {
         wsActions.getChosenCards().thenApply(f -> {
             Platform.runLater(() -> {
-                if(!f.awaitFurtherCards()){
+                if (!f.awaitFurtherCards()) {
                     startVoting();
                 }
                 renderAnswerCards(LayoutUtil.mapAnswerCards(f.cards()));
@@ -144,7 +144,8 @@ public class LobbyController extends AbstractWsActionsSettingController {
         wsActions.startGame().thenApply(f -> {
             Platform.runLater(() -> {
                 if (!f.gameEnd()) {
-                    log.info("The game in '{}' lobby was started", lobby.getName());
+                    clearAnswerCards();
+                    log.info("The round in '{}' lobby was started", lobby.getName());
                     appState.setCurrentState(CHOOSING);
                     appState.setCanVote(false);
                     appState.setCanChoose(true);
@@ -161,6 +162,10 @@ public class LobbyController extends AbstractWsActionsSettingController {
             log.error("Error starting game", e);
             return null;
         });
+    }
+    @FXML
+    private void clearAnswerCards(){
+        answerCardsContainer.getChildren().clear();
     }
 
     @FXML
@@ -180,13 +185,28 @@ public class LobbyController extends AbstractWsActionsSettingController {
             } catch (IOException e) {
                 log.error("Error loading lobby component", e);
             }
-
         }
     }
-    private void startVoting(){
+
+    private void startVoting() {
         appState.setCurrentState(VOTING);
-        //ToastNotification.showToast(dialogForm.getScene().getWindow(), "Choose the best answer!");
-        log.info("VOTINGGGGGG!!!!");
+        appState.setCanVote(true);
+        appState.setCanChoose(false);
+        appState.getNotificationService().createToast(dialogForm.getScene().getWindow(), "Choose the best answer!", ToastNotification.Position.RIGHT_BOTTOM, true, true, false).showToast();
+        log.info("Voting has been started in the lobby '{}'", lobby.getName());
+
+        wsActions.getWinnerCard().thenApply(f -> {
+            if (f.winnerCard() != null) {
+                Platform.runLater(() -> {
+                    appState.getNotificationService().createToast(dialogForm.getScene().getWindow(), "The winner is: " + f.winnerCard().getText(), ToastNotification.Position.RIGHT_BOTTOM, false, true, false).showToast();
+                });
+                startGame();
+            }
+            return null;
+        }).exceptionally(e -> {
+            log.error("Error fetching winner card", e);
+            return null;
+        });
     }
 
     @FXML

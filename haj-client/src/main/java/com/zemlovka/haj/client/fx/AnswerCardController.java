@@ -2,12 +2,17 @@ package com.zemlovka.haj.client.fx;
 
 import com.zemlovka.haj.client.ws.AnswerCard;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.effect.BoxBlur;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +44,6 @@ public class AnswerCardController extends AbstractWsActionsSettingController {
 
     /**
      * Sets the answer to be displayed on the card
-     *
      */
     public void setCard(AnswerCard answerCard, AppState.State state) {
         this.answerCard = answerCard;
@@ -57,6 +61,7 @@ public class AnswerCardController extends AbstractWsActionsSettingController {
     private void hideLogo() {
         logo.setOpacity(0);
     }
+
     public static void addHoverAnimation(Node node) {
         TranslateTransition transitionIn = new TranslateTransition(Duration.seconds(0.2), node);
         TranslateTransition transitionOut = new TranslateTransition(Duration.seconds(0.2), node);
@@ -74,12 +79,46 @@ public class AnswerCardController extends AbstractWsActionsSettingController {
             transitionOut.play();
         });
     }
+
     @FXML
-    private void onCardClick(Event event){
+    private void onCardClick(Event event) {
         log.info("ANSWER CARD was clicked {}", answerText.getText());
-        if(appState.getCurrentState() == AppState.State.VOTING && appState.isCanVote()){
+        if (appState.getCurrentState() == AppState.State.VOTING && appState.isCanVote()) {
             appState.setCanVote(false);
-            wsActions.voteCard(answerCard);
+            Platform.runLater(() -> {
+                //answerCardPane.setStyle("-fx-background-color: #FFD700; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.75), 10, 0.5, 0, 0);");
+
+                // Create a DropShadow effect
+                DropShadow dropShadow = new DropShadow();
+                dropShadow.setColor(Color.BLACK);
+                dropShadow.setRadius(10);
+                dropShadow.setSpread(0.5);
+                // Create a Glow effect
+                Glow glow = new Glow();
+                glow.setLevel(0.6);
+                // Combine the Glow and DropShadow effects
+                dropShadow.setInput(glow);
+
+                BoxBlur blurEffect = new BoxBlur();
+                blurEffect.setWidth(5);
+                blurEffect.setHeight(5);
+                blurEffect.setIterations(1);
+
+
+                // Apply the combined effect to the answerCardPane
+                answerCardPane.setEffect(dropShadow);
+                answerCardPane.getParent().getChildrenUnmodifiable().forEach(node -> {
+                    if (!(node == answerCardPane)) {
+                        node.setEffect(blurEffect);
+                    }
+                });
+            });
+            wsActions.voteCard(answerCard).thenApply(f -> {
+                return null;
+            }).exceptionally(e -> {
+                log.error("Error voting card", e);
+                return null;
+            });
         }
 
     }

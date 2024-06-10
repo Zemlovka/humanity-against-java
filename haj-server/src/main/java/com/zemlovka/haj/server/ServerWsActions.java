@@ -54,6 +54,7 @@ public class ServerWsActions {
         commandSet.add(new ChooseCardCommand(this, userData));
         commandSet.add(new GetChosenCardsCommand(this, userData));
         commandSet.add(new VoteCardCommand(this, userData));
+        commandSet.add(new GetWinnerCardCommand(this, userData));
     }
 
     public void resolveAndSendCommand(String message) throws JsonProcessingException {
