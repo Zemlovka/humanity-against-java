@@ -41,7 +41,7 @@ public class WSActions {
 
     public CommandCallback<CreateLobbyResponseDTO> createLobby(Lobby lobby) {
         return commands.createLobby.run(
-                new CreateLobbyDTO(lobby.getName(), lobby.getPassword(), lobby.getSize())
+                new CreateLobbyDTO(lobby.getName(), lobby.getPassword(), lobby.getCapacity())
         );
     }
 

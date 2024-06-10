@@ -1,31 +1,29 @@
 package com.zemlovka.haj.client.ws;
 
-import javafx.collections.ObservableList;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class Lobby {
     private final String name;
     private String password = null;
-    private final int size;
+    private final int capacity;
     private List<Player> players;
 
     private List<AnswerCard> answerCards;
     private List<AnswerCard> playerCards;
     private QuestionCard questionCard;
 
-    public Lobby(String name, String password, int size) {
+    public Lobby(String name, String password, int capacity) {
         this.name = name;
         this.password = password;
-        this.size = size;
+        this.capacity = capacity;
         this.players = new ArrayList<>();
         this.answerCards = new ArrayList<>();
         this.playerCards = new ArrayList<>();
     }
-    public Lobby(String name, List<Player> players) {
+    public Lobby(String name, List<Player> players, int capacity) {
         this.name = name;
-        this.size = players.size();
+        this.capacity = capacity;
         this.players = players;
         this.answerCards = new ArrayList<>();
         this.playerCards = new ArrayList<>();
@@ -55,8 +53,8 @@ public class Lobby {
         return password;
     }
 
-    public int getSize() {
-        return size;
+    public int getCapacity() {
+        return capacity;
     }
 
     public List<AnswerCard> getAnswerCards() {

@@ -198,9 +198,9 @@ public class LobbyController extends AbstractWsActionsSettingController {
         wsActions.getWinnerCard().thenApply(f -> {
             if (f.winnerCard() != null) {
                 Platform.runLater(() -> {
-                    appState.getNotificationService().createToast(dialogForm.getScene().getWindow(), "The winner is: " + f.winnerCard().getText(), ToastNotification.Position.RIGHT_BOTTOM, false, true, false).showToast();
+                    appState.getNotificationService().createToast(dialogForm.getScene().getWindow(), "The winner is: " + f.winnerPlayer().getName(), ToastNotification.Position.RIGHT_BOTTOM, false, true, false).showToast();
                 });
-                //startGame();
+                startGame();
             }
             return null;
         }).exceptionally(e -> {
