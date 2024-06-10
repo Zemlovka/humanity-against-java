@@ -2,6 +2,7 @@ package com.zemlovka.haj.client.ws;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zemlovka.haj.client.fx.ToastNotification;
 import com.zemlovka.haj.utils.CommunicationObject;
 import com.zemlovka.haj.utils.ConnectionHeader;
 import com.zemlovka.haj.utils.ResourceObjectMapperFactory;
@@ -25,6 +26,7 @@ public class Client extends Thread {
     private ConcurrentHashMap<UUID, CommandCallback<Resource>> futureConcurrentHashMap;
     private UUID clientId;
     private PrintWriter pw;
+    private static final int RECONNECT_INTERVAL_MS = 5000;
     public Client() {
         this.objectMapper = ResourceObjectMapperFactory.getObjectMapper();
         futureConcurrentHashMap = new ConcurrentHashMap<>();
@@ -34,14 +36,23 @@ public class Client extends Thread {
     @Override
     public void run() {
         log.info("Client started.");
-        try
-        {
-            this.clientSocket = new Socket("127.0.0.1", 8082);
-            this.pw = new PrintWriter(clientSocket.getOutputStream(), true);
-            Thread listenerThread = new ClientServerOutputReader(clientSocket);
-            listenerThread.start();
-        } catch (IOException e) {
-            log.error("Communication error.", e);
+        while (true) {
+            try {
+                this.clientSocket = new Socket("127.0.0.1", 8082);
+                this.pw = new PrintWriter(clientSocket.getOutputStream(), true);
+                Thread listenerThread = new ClientServerOutputReader(clientSocket);
+                listenerThread.start();
+                log.info("Connection with the server is established.");
+                break;
+            } catch (IOException e) {
+                log.error("Communication error.", e);
+                try {
+                    Thread.sleep(RECONNECT_INTERVAL_MS);
+                } catch (InterruptedException ex) {
+                    log.error("Reconnection thread interrupted.", ex);
+                    Thread.currentThread().interrupt();
+                }
+            }
         }
     }
 
