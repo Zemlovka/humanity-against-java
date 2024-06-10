@@ -8,15 +8,17 @@ import java.util.stream.Collectors;
 
 
 public class Round {
+    private final int roundNumber;
     private final Lobby lobby;
     private final CardDTO questionCard;
     private final Map<User, CardDTO> userToChosenCardsMap;
     private final Map<User, CardDTO> userToVotedCardsMap;
     private Map.Entry<User,CardDTO> winner = null;
 
-    public Round(CardDTO questionCard, Lobby lobby) {
+    public Round(CardDTO questionCard, Lobby lobby, int roundNumber) {
         this.lobby = lobby;
         this.questionCard = questionCard;
+        this.roundNumber = roundNumber;
         userToChosenCardsMap = new HashMap<>();
         userToVotedCardsMap = new HashMap<>();
     }
@@ -65,5 +67,9 @@ public class Round {
 
     public CardDTO getQuestionCard() {
         return questionCard;
+    }
+
+    public int getRoundNumber() {
+        return roundNumber;
     }
 }

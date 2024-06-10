@@ -59,5 +59,9 @@ public interface Resource {
     default boolean isPolling() {
         return false;
     }
+    @JsonIgnore
+    default boolean hasPollingKillConditionBeenMet() {
+        return true;
+    }
 
 }

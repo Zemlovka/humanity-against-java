@@ -43,7 +43,7 @@ public class ServerWsActions {
     }
 
     private void populateStaticCommandSet() {
-        commandSet.add(new LeaveLobbyCommand(this, userData));
+        commandSet.add(new LeaveLobbyCommand(this, lobbies, userData));
         commandSet.add(new LoginCommand(this, userData));
         commandSet.add(new LogoutCommand(this, userData));
         commandSet.add(new JoinLobbyCommand(this, lobbies, userData));

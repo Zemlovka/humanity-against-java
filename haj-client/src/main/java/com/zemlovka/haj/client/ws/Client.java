@@ -100,7 +100,7 @@ public class Client extends Thread {
         final UUID uuid = UUID.randomUUID();
         final ConnectionHeader header = new ConnectionHeader(clientId, uuid, request.getClass().getSimpleName(), commandName);
         final CommunicationObject<?> communicationObject = new CommunicationObject<>(header, request);
-        CommandCallback<Resource> completableFuture = new CommandCallback<>(commandName, uuid);
+        CommandCallback<Resource> completableFuture = new CommandCallback<>(commandName, uuid, futureConcurrentHashMap);
         log.info("Posting a callback for command {} with uuid {}", commandName, compileUUID(uuid));
         futureConcurrentHashMap.put(uuid, completableFuture);
 
@@ -148,9 +148,7 @@ public class Client extends Thread {
                     futureConcurrentHashMap.forEach((uuid, commandCallback) -> {
                         if (uuid.equals(communicationObject.header().communicationUuid())) {
                             log.info("Completing a callback for command {} with uuid {}", commandCallback.getCommandName(), compileUUID(uuid));
-                            commandCallback.complete(communicationObject, futureConcurrentHashMap);
-                            if (!communicationObject.body().isPolling())
-                                futureConcurrentHashMap.remove(communicationObject.header().communicationUuid());
+                            commandCallback.complete(communicationObject);
                             log.info("Current unresolved callbacks ({}): {}", futureConcurrentHashMap.size(), futureConcurrentHashMap.values());
                         }
                     });

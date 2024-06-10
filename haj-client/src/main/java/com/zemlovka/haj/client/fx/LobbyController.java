@@ -17,7 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.zemlovka.haj.client.fx.AppState.State.CHOOSING;
@@ -291,6 +291,7 @@ public class LobbyController extends AbstractWsActionsSettingController {
     private void goMenu() {
         try {
             if (LayoutUtil.showAlert(Alert.AlertType.CONFIRMATION, "You are about to leave the lobby", "Proceed leaving lobby?")) {
+                wsActions.leaveLobby();
                 LayoutUtil.changeLayoutWithFadeTransition((Stage) backButton.getScene().getWindow(), "/com/zemlovka/haj/client/menu.fxml", wsActions);
             }
         } catch (IOException e) {

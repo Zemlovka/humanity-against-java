@@ -11,4 +11,9 @@ public record GetChosenCardsResponseDTO(List<CardDTO> cards, boolean awaitFurthe
     public boolean isPolling() {
         return true;
     }
+
+    @Override
+    public boolean hasPollingKillConditionBeenMet() {
+        return !awaitFurtherCards;
+    }
 }

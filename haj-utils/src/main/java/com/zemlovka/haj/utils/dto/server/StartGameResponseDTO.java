@@ -6,5 +6,5 @@ import com.zemlovka.haj.utils.dto.secondary.CardDTO;
 import java.util.List;
 
 
-public record StartGameResponseDTO(boolean gameEnd, List<CardDTO> answerCards, CardDTO questionCard) implements Resource {
+public record StartGameResponseDTO(boolean gameEnd, List<CardDTO> answerCards, CardDTO questionCard, Integer roundNumber) implements Resource {
 }

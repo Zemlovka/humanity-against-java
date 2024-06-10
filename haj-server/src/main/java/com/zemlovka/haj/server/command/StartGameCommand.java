@@ -12,7 +12,6 @@ import com.zemlovka.haj.utils.dto.server.StartGameResponseDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collection;
 import java.util.List;
 
 
@@ -33,13 +32,17 @@ public class StartGameCommand extends AbstractServerCommand<StartGameDTO, StartG
         lobby.getFlags().lobbyReady().onSignal(f -> {
             lobby.getUsers().values().forEach(u -> u.setReady(false));
             if (lobby.isRoundPlayable()) {
-                logger.info("Signal received for StartGame flag for user {}, sending...", GlobalUtils.compileUUID(clientHeader.clientID()));
-                CardDTO questionCard = lobby.getCurrentRound().getQuestionCard();
-                lobby.refreshAnswerCards(userData);
-                List<CardDTO> answerCard = lobby.getAnswerCards(userData).values().stream().toList();
-                send(new StartGameResponseDTO(false, answerCard, questionCard), clientHeader);
+                try {
+                    logger.info("Signal received for StartGame flag for user {}, sending...", GlobalUtils.compileUUID(clientHeader.clientID()));
+                    CardDTO questionCard = lobby.getCurrentRound().getQuestionCard();
+                    lobby.refreshAnswerCards(userData);
+                    List<CardDTO> answerCard = lobby.getAnswerCards(userData).values().stream().toList();
+                    send(new StartGameResponseDTO(false, answerCard, questionCard, lobby.getCurrentRound().getRoundNumber()), clientHeader);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } else {
-                send(new StartGameResponseDTO(true, null, null), clientHeader);
+                send(new StartGameResponseDTO(true, null, null, null), clientHeader);
             }
             return null;
         });

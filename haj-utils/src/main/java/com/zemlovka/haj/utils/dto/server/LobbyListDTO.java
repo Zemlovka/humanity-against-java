@@ -12,4 +12,9 @@ public record LobbyListDTO(Set<LobbyDTO> lobbies) implements Resource {
     public boolean isPolling() {
         return true;
     }
+
+    @Override
+    public boolean hasPollingKillConditionBeenMet() {
+        return false;
+    }
 }

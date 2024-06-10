@@ -1,6 +1,5 @@
 package com.zemlovka.haj.server.game;
 
-import com.google.common.collect.ImmutableMap;
 import com.zemlovka.haj.server.CardsSupplier;
 import com.zemlovka.haj.utils.dto.secondary.CardDTO;
 
@@ -22,7 +21,7 @@ public class Lobby {
     private final List<Round> rounds;
     private final Map<UUID, Map<Integer, CardDTO>> userToCardsMap;
     private final Map<UUID, Integer> userToPoints;
-    private Round currentRound = null;
+    private int currentRoundNumber = -1;
 
 
     public Lobby(int capacity, String name, String password) {
@@ -71,6 +70,10 @@ public class Lobby {
         return userToCardsMap.get(user.getUuid());
     }
 
+    public synchronized CardDTO removeAnswerCards(User user, int cardId) {
+        return userToCardsMap.get(user.getUuid()).remove(cardId);
+    }
+
     public synchronized void refreshAnswerCards(User user) {
         Map<Integer, CardDTO> userCards = userToCardsMap.get(user.getUuid());
         if (userCards.size() <= DEFAULT_PLAYER_CARDS_NUMBER) {
@@ -88,9 +91,10 @@ public class Lobby {
      * @return if the next rounds is playable or if it's the ond of the game
      */
     public synchronized void nextRound() {
+        currentRoundNumber++;
         Random random = new Random();
-        currentRound = new Round(questionCardsPool.remove(random.nextInt(questionCardsPool.size())), this);
-        rounds.add(currentRound);
+        Round round = new Round(questionCardsPool.remove(random.nextInt(questionCardsPool.size())), this, currentRoundNumber+1);
+        rounds.add(round);
     }
 
     public synchronized List<Round> getRounds() {
@@ -102,14 +106,29 @@ public class Lobby {
     }
 
     public int addPoints(User user) {
-        return userToPoints.put(user.getUuid(), userToPoints.get(user.getUuid()) + MAX_ROUND_NUMBER);
+        return userToPoints.put(user.getUuid(), userToPoints.get(user.getUuid()) + POINTS_FOR_WIN);
     }
 
     public boolean isRoundPlayable() {
-        return rounds.size() != MAX_ROUND_NUMBER;
+        return rounds.size() <= MAX_ROUND_NUMBER;
     }
 
     public synchronized Round getCurrentRound() {
-        return currentRound;
+        return rounds.get(currentRoundNumber);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Lobby lobby = (Lobby) o;
+
+        return getName().equals(lobby.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return getName().hashCode();
     }
 }

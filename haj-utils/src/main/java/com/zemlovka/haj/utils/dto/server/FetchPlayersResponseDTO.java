@@ -12,4 +12,8 @@ public record FetchPlayersResponseDTO(Set<PlayerDTO> players, boolean awaitNewPl
         return true;
     }
 
+    @Override
+    public boolean hasPollingKillConditionBeenMet() {
+        return false;
+    }
 }

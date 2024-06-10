@@ -28,7 +28,7 @@ public class ChooseCardCommand extends AbstractServerCommand<ChooseCardDTO, Choo
             //todo
             logger.info("TODO CASE HAS BEEN ENCOUNTERED USER DOES NOT HAVE THE CARD THAT HE CHOSE");
         else {
-            lobby.getCurrentRound().addChosenCard(userData, lobby.getAnswerCards(userData).get(argument.cardId()));
+            lobby.getCurrentRound().addChosenCard(userData, lobby.removeAnswerCards(userData, argument.cardId()));
             lobby.getFlags().chooseCards().signal();
             send(new ChooseCardResponseDTO(), clientHeader);
         }

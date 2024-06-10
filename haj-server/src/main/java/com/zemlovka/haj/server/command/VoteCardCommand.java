@@ -34,6 +34,7 @@ public class VoteCardCommand extends AbstractServerCommand<VoteCardDTO, VoteCard
         lobby.getCurrentRound().voteCard(userData, argument.cardId());
         if (lobby.getCurrentRound().getVotedCards().size() == lobby.getUsers().size())
             lobby.getFlags().voteCards().signal();
+        send(new VoteCardResponseDTO(), clientHeader);
     }
 
     @Override
