@@ -49,7 +49,7 @@ public class PlayerCardController extends AbstractWsActionsSettingController{
         TranslateTransition transitionIn = new TranslateTransition(Duration.seconds(0.2), node);
         TranslateTransition transitionOut = new TranslateTransition(Duration.seconds(0.2), node);
 
-        transitionIn.setToY(-60);
+        transitionIn.setToY(-30);
         transitionOut.setToY(0);
 
         node.setOnMouseEntered(event -> {

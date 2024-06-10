@@ -45,7 +45,7 @@ public class AnswerCardController extends AbstractWsActionsSettingController {
         this.answerCard = answerCard;
         if (state == AppState.State.CHOOSING) {
             answerText.setText("HUMANITY AGAINST JAVA");
-            removeLogo();
+            hideLogo();
         } else {
             answerText.setText(answerCard.getText());
         }
@@ -54,11 +54,8 @@ public class AnswerCardController extends AbstractWsActionsSettingController {
     /**
      * Removes the logo from its parent container (card).
      */
-    private void removeLogo() {
-        Pane parent = (Pane) logo.getParent();
-        if (parent != null) {
-            parent.getChildren().remove(logo);
-        }
+    private void hideLogo() {
+        logo.setOpacity(0);
     }
     public static void addHoverAnimation(Node node) {
         TranslateTransition transitionIn = new TranslateTransition(Duration.seconds(0.2), node);

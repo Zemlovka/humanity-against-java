@@ -2,13 +2,14 @@ package com.zemlovka.haj.client.fx;
 
 import com.zemlovka.haj.client.ws.Lobby;
 import com.zemlovka.haj.client.ws.Player;
-import javafx.scene.Scene;
-
-import java.util.Stack;
 
 public final class AppState {
     Player currentPlayer;
     Lobby currentLobby;
+    NotificationService notificationService;
+    private AppState() {
+        this.notificationService = new NotificationService();
+    }
     private final static AppState INSTANCE = new AppState();
     public enum State {
         WAITING,
@@ -44,8 +45,6 @@ public final class AppState {
         return currentState;
     }
 
-    private AppState() {}
-
     public static AppState getInstance() {
         return INSTANCE;
     }
@@ -66,4 +65,7 @@ public final class AppState {
         this.currentLobby = currentLobby;
     }
 
+    public NotificationService getNotificationService() {
+        return notificationService;
+    }
 }

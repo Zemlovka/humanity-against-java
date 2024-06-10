@@ -51,8 +51,30 @@ public class LoginController extends AbstractWsActionsSettingController {
                 }
             }
         });
-        ToastNotification.showToast(dialogForm, "Welcome to Humanity Against Java!", ToastNotification.Position.RIGHT_BOTTOM, false);
-        ToastNotification.showToast(dialogForm, "Welcome to Humanity Against Java!");
+        Platform.runLater(() -> {
+            ToastNotification tn = appState.getNotificationService().createToast(dialogForm.getScene().getWindow(),
+                    "Welcome to Humanity Against Java!",
+                    ToastNotification.Position.RIGHT_BOTTOM,
+                    false,
+                    true,
+                    false);
+            ToastNotification tn2 = appState.getNotificationService().createToast(dialogForm.getScene().getWindow(),
+                    "2!",
+                    ToastNotification.Position.RIGHT_BOTTOM,
+                    false,
+                    true,
+                    false);
+            ToastNotification tn3 = appState.getNotificationService().createToast(dialogForm.getScene().getWindow(),
+                    "3!",
+                    ToastNotification.Position.RIGHT_BOTTOM,
+                    false,
+                    true,
+                    false);
+            tn.showToast();
+            tn2.showToast();
+            tn3.showToast();
+        });
+
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.zemlovka.haj.client.ws;
 
+import com.zemlovka.haj.client.fx.ConnectionLostNotifier;
 import com.zemlovka.haj.client.ws.commands.*;
 import com.zemlovka.haj.utils.dto.client.*;
 import com.zemlovka.haj.utils.dto.server.*;
@@ -14,11 +15,14 @@ public class WSActions {
 
     private final Commands commands;
     private final Client client;
+    private final ConnectionLostNotifier connectionStatusNotifier;
 
-    public WSActions() {
+    public WSActions(ConnectionLostNotifier connectionStatusNotifier) {
         Client client = new Client();
         client.start();
         this.client = client;
+        this.connectionStatusNotifier = connectionStatusNotifier;
+        client.setConnectionStatusListener(connectionStatusNotifier);
         commands = new Commands(client);
     }
 

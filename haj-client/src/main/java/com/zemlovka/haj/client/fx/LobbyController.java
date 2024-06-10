@@ -2,6 +2,8 @@ package com.zemlovka.haj.client.fx;
 
 import com.zemlovka.haj.client.ws.*;
 import com.zemlovka.haj.utils.dto.server.FetchPlayersResponseDTO;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -10,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -126,8 +129,7 @@ public class LobbyController extends AbstractWsActionsSettingController {
         wsActions.getChosenCards().thenApply(f -> {
             Platform.runLater(() -> {
                 if(!f.awaitFurtherCards()){
-                    appState.setCurrentState(VOTING);
-                    log.info("VOTINGGGGGG!!!!");
+                    startVoting();
                 }
                 renderAnswerCards(LayoutUtil.mapAnswerCards(f.cards()));
             });
@@ -141,6 +143,7 @@ public class LobbyController extends AbstractWsActionsSettingController {
     private void startGame() {
         wsActions.startGame().thenApply(f -> {
             Platform.runLater(() -> {
+                log.info("The game in '{}' lobby was started", lobby.getName());
                 appState.setCurrentState(CHOOSING);
                 appState.setCanVote(false);
                 appState.setCanChoose(true);
@@ -148,7 +151,6 @@ public class LobbyController extends AbstractWsActionsSettingController {
                 renderQuestionCard(LayoutUtil.mapQuestionCard(f.questionCard()));
                 renderPlayerCards(LayoutUtil.mapAnswerCards(f.answerCards()));
                 registerChosenCards();
-
             });
             return null;
         }).exceptionally(e -> {
@@ -156,7 +158,6 @@ public class LobbyController extends AbstractWsActionsSettingController {
             return null;
         });
     }
-
 
     @FXML
     private void renderAnswerCards(List<AnswerCard> answerCards) {
@@ -178,33 +179,42 @@ public class LobbyController extends AbstractWsActionsSettingController {
 
         }
     }
+    private void startVoting(){
+        appState.setCurrentState(VOTING);
+        //ToastNotification.showToast(dialogForm.getScene().getWindow(), "Choose the best answer!");
+        log.info("VOTINGGGGGG!!!!");
+    }
 
     @FXML
     private void renderPlayerCards(List<AnswerCard> answersCards) {
         playerCardsContainer.getChildren().clear();
-        for (AnswerCard card : answersCards) {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/answerCard.fxml"));
-                PlayerCardController controller = new PlayerCardController();
-                loader.setController(controller); //defining controller since there are 2 controllers for answerCards.fxml
-                controller.setCard(card);
-                controller.setWsActions(wsActions);
 
-                Pane answerCard = loader.load();
+        Timeline timeline = new Timeline();
+        Duration delayBetweenCards = Duration.millis(500); // Delay of 500ms between cards
 
-                playerCardsContainer.getChildren().add(answerCard);
-            } catch (IOException e) {
-                log.error("Error loading lobby component", e);
-            }
+        for (int i = 0; i < answersCards.size(); i++) {
+            AnswerCard card = answersCards.get(i);
+            KeyFrame keyFrame = new KeyFrame(
+                    delayBetweenCards.multiply(i),
+                    event -> {
+                        try {
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/answerCard.fxml"));
+                            PlayerCardController controller = new PlayerCardController();
+                            loader.setController(controller); // Defining controller since there are 2 controllers for answerCards.fxml
+                            controller.setCard(card);
+                            controller.setWsActions(wsActions);
+
+                            Pane answerCard = loader.load();
+                            playerCardsContainer.getChildren().add(answerCard);
+                        } catch (IOException e) {
+                            log.error("Error loading lobby component", e);
+                        }
+                    }
+            );
+            timeline.getKeyFrames().add(keyFrame);
         }
-    }
 
-    private List<Card> answerPlaceholderStrings() {
-        return List.of(new AnswerCard(1, "Bad life choices."),
-                new AnswerCard(2, "Alcoholism."),
-                new AnswerCard(3, "Therapy."),
-                new AnswerCard(4, "Prescription drugs."),
-                new AnswerCard(5, "A disappointing birthday party."));
+        timeline.play();
     }
 
     private void showSpinner() {
@@ -229,7 +239,6 @@ public class LobbyController extends AbstractWsActionsSettingController {
         Node spinnerNode = answerCardsContainer.lookup("#spinner");
         answerCardsContainer.getChildren().remove(spinnerNode);
     }
-
 
     /**
      * Function to return to the menu screen. Used by back button.

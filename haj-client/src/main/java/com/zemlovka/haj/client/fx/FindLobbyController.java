@@ -94,6 +94,17 @@ public class FindLobbyController extends AbstractWsActionsSettingController {
         } catch (ExecutionException e) {
             throw new RuntimeException(e);
         }
+
+        //        wsActions.fetchLobbyList().thenApply(f -> {
+//            Platform.runLater(() -> {
+//                this.lobbyList = LayoutUtil.mapLobbies(f.lobbies(), null);
+//                renderLobbyComponents(lobbyList);
+//            });
+//            return null;
+//        }).exceptionally(e -> {
+//            log.error("Error fetching lobby list", e);
+//            return null;
+//        });
     }
 
     /**

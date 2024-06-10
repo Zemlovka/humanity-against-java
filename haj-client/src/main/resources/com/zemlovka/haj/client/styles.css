@@ -9,10 +9,6 @@
     -fx-background-color: #191D2F;
 }
 
-#logo {
-    -fx-font-size: 40px; /* Font size */
-}
-
 .dialog-form {
     -fx-background-color: rgba(31, 28, 32, 0.9); /* Darkish, slightly transparent background */
     -fx-background-radius: 10px; /* Rounded corners */

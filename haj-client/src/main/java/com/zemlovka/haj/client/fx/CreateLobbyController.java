@@ -3,6 +3,7 @@ package com.zemlovka.haj.client.fx;
 import com.zemlovka.haj.client.ws.Lobby;
 import com.zemlovka.haj.client.ws.WSActions;
 import com.zemlovka.haj.client.ws.Player;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -51,16 +52,16 @@ public class CreateLobbyController extends AbstractWsActionsSettingController {
                 if (!event.isAltDown()) {
                     onCreateLobbyClick(new ActionEvent());
                     event.consume();
+
                 }
             }
         });
+        lobbyPasswordField.setDisable(true);
     }
 
     @FXML
     private void onCreateLobbyClick(ActionEvent event) {
-        String lobbyName = lobbyNameField.getText(); // Get the text from the TextField
-
-        lobbyPasswordField.setDisable(true);
+        String lobbyName = lobbyNameField.getText();
 
         String lobbyPassword = lobbyPasswordField.getText();
         int lobbySize = (int) lobbySlider.getValue();
@@ -69,7 +70,13 @@ public class CreateLobbyController extends AbstractWsActionsSettingController {
         log.info("Lobby size: {}", lobbySize);
         if (lobbyName == null || lobbyName.trim().isEmpty()) {
             log.error("Lobby name is empty or null");
-            LayoutUtil.showAlert(Alert.AlertType.ERROR, "Error", "Lobby name cannot be empty");
+            ToastNotification tn = appState.getNotificationService().createToast(dialogForm.getScene().getWindow(),
+                    "Lobby name cannot be empty",
+                    ToastNotification.Position.RIGHT_BOTTOM,
+                    false,
+                    true,
+                    true);
+            tn.showToast();
         } else {
             Lobby lobby = new Lobby(lobbyName, lobbyPassword, lobbySize);
             WSActions.createLobby(lobby);
@@ -86,6 +93,7 @@ public class CreateLobbyController extends AbstractWsActionsSettingController {
             }
         }
     }
+
     /**
      * Function to return to the menu screen. Used by back button.
      */
