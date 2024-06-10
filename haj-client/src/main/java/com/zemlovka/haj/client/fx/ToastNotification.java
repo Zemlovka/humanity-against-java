@@ -2,36 +2,79 @@ package com.zemlovka.haj.client.fx;
 
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Popup;
 import javafx.util.Duration;
 
 public class ToastNotification {
+    public enum Position {
+        CENTER,
+        RIGHT_BOTTOM
+    }
     public static void showToast(VBox owner, String message) {
+        showToast(owner, message, Position.CENTER, true);
+    }
+
+    public static void showToast(VBox owner, String message, Position position, boolean autoHide) {
         Platform.runLater(() -> {
             Popup popup = new Popup();
+            double x = 0;
+            double y = 0;
 
             Label label = new Label(message);
-            label.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-padding: 10px; -fx-background-radius: 20px;");
+            label.setStyle("-fx-text-fill: white;");
             label.setFont(new Font("Arial", 16));
 
-            popup.getContent().add(label);
-            popup.setAutoHide(true);
-            double y = owner.getScene().getWindow().getY() + 80;
-            double x = owner.getScene().getWindow().getWidth() / 2;
+            HBox notificationBox = new HBox();
+            notificationBox.getChildren().add(label);
+            notificationBox.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7); -fx-background-radius: 10; -fx-padding: 20px;");
+            notificationBox.setAlignment(Pos.CENTER);
+            notificationBox.setSpacing(10);
+
+            if (autoHide) {
+                popup.getContent().add(notificationBox);
+                //popup.setAutoHide(true);
+                FadeTransition fadeTransition = new FadeTransition(Duration.seconds(4), notificationBox);
+                fadeTransition.setFromValue(1.0);
+                fadeTransition.setToValue(0.0);
+                fadeTransition.setOnFinished(event -> popup.hide());
+                fadeTransition.play();
+            } else {
+                notificationBox.getChildren().add(createCloseButton(popup));
+                popup.getContent().add(notificationBox);
+
+            }
+            if(position == Position.RIGHT_BOTTOM) {
+                y = owner.getScene().getWindow().getHeight()-100;
+                x = owner.getScene().getWindow().getWidth()-60;
+            }
+            if(position == Position.CENTER) {
+                y = owner.getScene().getWindow().getY() + 80;
+                x = owner.getScene().getWindow().getWidth() / 2;
+            }
             popup.setX(x);
             popup.setY(y);
-
             popup.show(owner.getScene().getWindow());
-
-            FadeTransition fadeTransition = new FadeTransition(Duration.seconds(4), label);
-            fadeTransition.setFromValue(1.0);
-            fadeTransition.setToValue(0.0);
-            fadeTransition.setOnFinished(event -> popup.hide());
-
-            fadeTransition.play();
         });
+    }
+
+    private static Button createCloseButton(Popup popup) {
+        Button closeButton = new Button("X");
+        closeButton.setStyle("-fx-background-radius: 50%; -fx-font-size: 12;");
+        closeButton.setOnAction(event -> {
+            FadeTransition fadeOut = new FadeTransition(Duration.seconds(0.5), popup.getContent().get(0));
+            fadeOut.setFromValue(1.0);
+            fadeOut.setToValue(0.0);
+            fadeOut.setOnFinished(e -> popup.hide());
+            fadeOut.play();
+        });
+        return closeButton;
     }
 }
