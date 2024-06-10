@@ -61,6 +61,9 @@ public class WSActions {
     public CommandCallback<VoteCardResponseDTO> voteCard(AnswerCard votedCard) {
         return commands.voteCard.run(new VoteCardDTO(votedCard.getId()));
     }
+    public CommandCallback<GetWinnerCardResponseDTO> getWinnerCard() {
+        return commands.getWinnerCard.run(new GetWinnerCardDTO());
+    }
     public CommandCallback<ChooseCardResponseDTO> chooseCard(AnswerCard answerCard) {
         return commands.chooseCard.run(new ChooseCardDTO(answerCard.getId()));
     }
