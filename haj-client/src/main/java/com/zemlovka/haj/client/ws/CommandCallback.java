@@ -1,5 +1,6 @@
 package com.zemlovka.haj.client.ws;
 
+import com.zemlovka.haj.utils.CommunicationObject;
 import com.zemlovka.haj.utils.dto.Resource;
 
 import java.util.HashSet;
@@ -49,9 +50,9 @@ public class CommandCallback<T extends Resource> {
         return parentFuture.thenApplyAsync(fn);
     }
 
-    public synchronized void complete(T value, boolean resubmit) {
-        parentFuture.complete(value);
-        if (resubmit) {
+    public synchronized void complete(CommunicationObject<T> communicationObject, ConcurrentHashMap<UUID, CommandCallback<Resource>> callbacks) {
+        parentFuture.complete(communicationObject.body());
+        if (communicationObject.body().isPolling()) {
             parentFuture = new CompletableFuture<>();
             thenApplySet.forEach(f -> parentFuture.thenApply(f));
         }

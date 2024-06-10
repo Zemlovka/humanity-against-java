@@ -1,14 +1,7 @@
 package com.zemlovka.haj.server;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zemlovka.haj.server.command.*;
 import com.zemlovka.haj.server.game.Lobby;
 import com.zemlovka.haj.server.game.User;
-import com.zemlovka.haj.utils.CommunicationObject;
-import com.zemlovka.haj.utils.ConnectionHeader;
-import com.zemlovka.haj.utils.ResourceObjectMapperFactory;
-import com.zemlovka.haj.utils.dto.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,8 +10,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 
