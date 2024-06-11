@@ -9,7 +9,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Lobby {
     private static final int DEFAULT_PLAYER_CARDS_NUMBER = 5;
-    private static final int MAX_ROUND_NUMBER = 5;
     private static final int POINTS_FOR_WIN = 5;
     private final int capacity;
     private final String name;
@@ -22,14 +21,16 @@ public class Lobby {
     private final Map<UUID, Map<Integer, CardDTO>> userToCardsMap;
     private final Map<UUID, Integer> userToPoints;
     private int currentRoundNumber = -1;
+    private int roundNumber;
 
 
-    public Lobby(int capacity, String name, String password) {
+    public Lobby(int capacity, String name, String password, int roundNUmber) {
         this.capacity = capacity;
         this.name = name;
         this.password = password;
         this.users = new ConcurrentHashMap<>();
         this.flags = new Flags();
+        this.roundNumber = roundNUmber;
         questionCardsPool = CardsSupplier.getQuestionCardPool();
         answerCardsPool = CardsSupplier.getAnswerCardPool();
         rounds = new ArrayList<>();
@@ -110,7 +111,7 @@ public class Lobby {
     }
 
     public boolean isRoundPlayable() {
-        return rounds.size() <= MAX_ROUND_NUMBER;
+        return rounds.size() <= roundNumber;
     }
 
     public synchronized Round getCurrentRound() {
