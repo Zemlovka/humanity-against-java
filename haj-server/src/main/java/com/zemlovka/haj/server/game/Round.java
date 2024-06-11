@@ -46,6 +46,7 @@ public class Round {
         CardDTO finalWinner = winner;
         Map.Entry<User, CardDTO> winnerEntry = userToChosenCardsMap.entrySet().stream().filter(entry -> entry.getValue().equals(finalWinner)).findFirst().orElseThrow();
         lobby.addPoints(winnerEntry.getKey());
+        this.winner = winnerEntry;
         return winnerEntry;
     }
 

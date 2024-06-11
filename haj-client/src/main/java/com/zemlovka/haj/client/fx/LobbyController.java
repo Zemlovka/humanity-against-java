@@ -58,7 +58,6 @@ public class LobbyController extends AbstractWsActionsSettingController {
     private void initialize() {
         log.info("Lobby controller started.");
         LayoutUtil.fadeInTransition(dialogForm);
-
         /*
         We really need these 4 lines. Bug caused by the requestLayout() method which is set/called via ScrollPaneBehavior
         More: https://stackoverflow.com/questions/53603250/javafx-how-to-prevent-label-text-resize-during-scrollpane-focus
@@ -71,52 +70,12 @@ public class LobbyController extends AbstractWsActionsSettingController {
         showSpinner();
     }
 
-    /**
-     * @param
-     */
-    private void renderQuestionCard(QuestionCard questionCard) {
-        questionCardContainer.getChildren().clear();
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/questionCard.fxml"));
-            Pane questionCardPane = loader.load();
-            QuestionCardController controller = loader.getController();
-            lobby.setQuestionCard(questionCard);
-            controller.setCard(lobby.getQuestionCard().getText());
-            questionCardContainer.getChildren().add(questionCardPane);
-        } catch (IOException e) {
-            log.error("Error loading lobby component", e);
-        }
-
-    }
-
-    private void renderPlayers(List<Player> playerList) {
-        playersContainer.getChildren().clear();
-
-        for (Player player : playerList) {
-
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/playerComponent.fxml"));
-                Pane playerComponentPane = loader.load();
-                LobbyPlayerComponentController controller = loader.getController();
-                controller.setPlayer(player);
-
-//                if (player.isClient()) {
-//                    playerComponentPane.setText(playerComponent.getText() + " (You)");
-//                }
-                //playerComponent.setWrapText(true);
-                playersContainer.getChildren().add(playerComponentPane);
-
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            //Label playerComponent = new Label(player.getUsername());
-
-        }
-    }
 
     private void registerFetchPlayer() {
         wsActions.fetchPlayers().thenApply(f -> {
             Platform.runLater(() -> {
+                appState.getCurrentLobby().setPlayers(LayoutUtil.mapPlayers(f.players(), appState.getCurrentPlayer()));
+                //todo check if this is needed, maybe it's better to render players from appState list
                 renderPlayers(LayoutUtil.mapPlayers(f.players(), appState.getCurrentPlayer()));
             });
             return null;
@@ -152,6 +111,7 @@ public class LobbyController extends AbstractWsActionsSettingController {
                     appState.setCanVote(false);
                     appState.setCanChoose(true);
                     removeSpinner();
+                    //todo check if this is needed, maybe it's better to render from appState lists
                     renderQuestionCard(LayoutUtil.mapQuestionCard(f.questionCard()));
                     renderPlayerCards(LayoutUtil.mapAnswerCards(f.answerCards()));
                     registerChosenCards();
@@ -165,9 +125,127 @@ public class LobbyController extends AbstractWsActionsSettingController {
             return null;
         });
     }
+
+    private void startVoting() {
+        appState.setCurrentState(VOTING);
+        appState.setCanVote(true);
+        appState.setCanChoose(false);
+        appState.getNotificationService().createToast(dialogForm.getScene().getWindow(), "Choose the best answer!", ToastNotification.Position.RIGHT_BOTTOM, true, true, false).showToast();
+        log.info("Voting has been started in the lobby '{}'", lobby.getName());
+
+        wsActions.getWinnerCard().thenApply(f -> {
+            if (f.winnerCard() != null) {
+                Platform.runLater(() -> {
+                    appState.getCurrentLobby().getPlayers().forEach(p -> {
+                        if (p.getUsername().equals(f.winnerPlayer().getName())) {
+                            p.setScore(f.winnerPlayer().getPoints());
+                        }
+                    });
+                    renderPlayers(appState.getCurrentLobby().getPlayers());
+
+                    appState.getNotificationService().createToast(dialogForm.getScene().getWindow(),
+                            "The winner is: " + f.winnerPlayer().getName(),
+                            ToastNotification.Position.RIGHT_BOTTOM,
+                            false,
+                            true,
+                            false).showToast();
+                });
+                startGame();
+            }
+            return null;
+        }).exceptionally(e -> {
+            log.error("Error fetching winner card", e);
+            return null;
+        });
+    }
+
+
+
+    private void renderPlayers(List<Player> playerList) {
+        playersContainer.getChildren().clear();
+        //appState.getCurrentLobby().getPlayers().clear();
+        for (Player player : playerList) {
+            //appState.getCurrentLobby().getPlayers().add(player);
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/playerComponent.fxml"));
+                Pane playerComponentPane = loader.load();
+                LobbyPlayerComponentController controller = loader.getController();
+                controller.setPlayer(player);
+//                if (player.isClient()) {
+//                    playerComponentPane.setText(playerComponent.getText() + " (You)");
+//                }
+                //playerComponent.setWrapText(true);
+                playersContainer.getChildren().add(playerComponentPane);
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            //Label playerComponent = new Label(player.getUsername());
+
+        }
+    }
     @FXML
-    private void clearAnswerCards(){
-        answerCardsContainer.getChildren().clear();
+    private void renderPlayerCards(List<AnswerCard> answersCards) {
+        playerCardsContainer.getChildren().clear();
+
+        Timeline timeline = new Timeline();
+        Duration delayBetweenCards = Duration.millis(500); // Delay of 500ms between cards
+
+        for (int i = 0; i < answersCards.size(); i++) {
+            AnswerCard card = answersCards.get(i);
+            KeyFrame keyFrame = new KeyFrame(delayBetweenCards.multiply(i), event -> {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/answerCard.fxml"));
+                    PlayerCardController controller = new PlayerCardController();
+                    loader.setController(controller);
+                    controller.setCard(card);
+                    controller.setWsActions(wsActions);
+
+                    Pane answerCard = loader.load();
+                    answerCard.setTranslateY(-1000); // Start off the screen above
+
+                    playerCardsContainer.getChildren().add(answerCard);
+
+                    // Create translation animation
+                    TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(1), answerCard);
+                    translateTransition.setFromY(-1000);
+                    translateTransition.setToY(0);
+
+                    // Add slight rotation effect
+                    RotateTransition rotateTransition = new RotateTransition(Duration.seconds(1), answerCard);
+                    rotateTransition.setByAngle(10);
+                    rotateTransition.setCycleCount(2);
+                    rotateTransition.setAutoReverse(true);
+
+                    // Combine translation and rotation
+                    ParallelTransition parallelTransition = new ParallelTransition(answerCard, translateTransition, rotateTransition);
+                    parallelTransition.setInterpolator(Interpolator.EASE_OUT);
+
+                    parallelTransition.play();
+
+                } catch (IOException e) {
+                    log.error("Error loading lobby component", e);
+                }
+            });
+            timeline.getKeyFrames().add(keyFrame);
+        }
+
+        timeline.play();
+    }
+
+    private void renderQuestionCard(QuestionCard questionCard) {
+        questionCardContainer.getChildren().clear();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/questionCard.fxml"));
+            Pane questionCardPane = loader.load();
+            QuestionCardController controller = loader.getController();
+            lobby.setQuestionCard(questionCard);
+            controller.setCard(lobby.getQuestionCard().getText());
+            questionCardContainer.getChildren().add(questionCardPane);
+        } catch (IOException e) {
+            log.error("Error loading lobby component", e);
+        }
+
     }
 
     @FXML
@@ -189,78 +267,9 @@ public class LobbyController extends AbstractWsActionsSettingController {
             }
         }
     }
-
-    private void startVoting() {
-        appState.setCurrentState(VOTING);
-        appState.setCanVote(true);
-        appState.setCanChoose(false);
-        appState.getNotificationService().createToast(dialogForm.getScene().getWindow(), "Choose the best answer!", ToastNotification.Position.RIGHT_BOTTOM, true, true, false).showToast();
-        log.info("Voting has been started in the lobby '{}'", lobby.getName());
-
-        wsActions.getWinnerCard().thenApply(f -> {
-            if (f.winnerCard() != null) {
-                Platform.runLater(() -> {
-                    appState.getNotificationService().createToast(dialogForm.getScene().getWindow(), "The winner is: " + f.winnerPlayer().getName(), ToastNotification.Position.RIGHT_BOTTOM, false, true, false).showToast();
-                });
-                startGame();
-            }
-            return null;
-        }).exceptionally(e -> {
-            log.error("Error fetching winner card", e);
-            return null;
-        });
-    }
-
     @FXML
-    private void renderPlayerCards(List<AnswerCard> answersCards) {
-        playerCardsContainer.getChildren().clear();
-
-        Timeline timeline = new Timeline();
-        Duration delayBetweenCards = Duration.millis(500); // Delay of 500ms between cards
-
-        for (int i = 0; i < answersCards.size(); i++) {
-            AnswerCard card = answersCards.get(i);
-            KeyFrame keyFrame = new KeyFrame(
-                    delayBetweenCards.multiply(i),
-                    event -> {
-                        try {
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/answerCard.fxml"));
-                            PlayerCardController controller = new PlayerCardController();
-                            loader.setController(controller);
-                            controller.setCard(card);
-                            controller.setWsActions(wsActions);
-
-                            Pane answerCard = loader.load();
-                            answerCard.setTranslateY(-1000); // Start off the screen above
-
-                            playerCardsContainer.getChildren().add(answerCard);
-
-                            // Create translation animation
-                            TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(1), answerCard);
-                            translateTransition.setFromY(-1000);
-                            translateTransition.setToY(0);
-
-                            // Add slight rotation effect
-                            RotateTransition rotateTransition = new RotateTransition(Duration.seconds(1), answerCard);
-                            rotateTransition.setByAngle(10);
-                            rotateTransition.setCycleCount(2);
-                            rotateTransition.setAutoReverse(true);
-
-                            // Combine translation and rotation
-                            ParallelTransition parallelTransition = new ParallelTransition(answerCard, translateTransition, rotateTransition);
-                            parallelTransition.setInterpolator(Interpolator.EASE_OUT);
-
-                            parallelTransition.play();
-
-                        } catch (IOException e) {
-                            log.error("Error loading lobby component", e);
-                        }
-                    }
-            );
-            timeline.getKeyFrames().add(keyFrame);
-        }
-
-        timeline.play();
+    private void clearAnswerCards() {
+        answerCardsContainer.getChildren().clear();
     }
 
     private void showSpinner() {

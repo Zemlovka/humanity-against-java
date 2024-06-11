@@ -11,6 +11,12 @@ public class Player {
         this.avatar = avatar;
         this.isClient = isClient;
     }
+    public Player(String username, String avatar, boolean isClient, int score) {
+        this.username = username;
+        this.avatar = avatar;
+        this.isClient = isClient;
+        this.score = score;
+    }
 
     public String getUsername() {
         return username;

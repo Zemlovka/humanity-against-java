@@ -80,13 +80,22 @@ public class LoginController extends AbstractWsActionsSettingController {
                 //todo
                 wsActions.login(username).thenApply(f -> {
                     Platform.runLater(() -> {
-                        appState.setCurrentPlayer(player);
-                        log.info("Username set: {}", username);
-                        try {
-                            LayoutUtil.changeLayoutWithFadeTransition((Stage) usernameInputField.getScene().getWindow(), "/com/zemlovka/haj/client/menu.fxml", wsActions);
-                        } catch (IOException e) {
-                            log.error("Failed to change layout", e);
-                            throw new RuntimeException(e);
+                        if (!f.isSuccesful()) {
+                            appState.getNotificationService().createToast(dialogForm.getScene().getWindow(),
+                                    "Username is already taken",
+                                    ToastNotification.Position.RIGHT_BOTTOM,
+                                    false,
+                                    true,
+                                    true).showToast();
+                        } else {
+                            appState.setCurrentPlayer(player);
+                            log.info("Username set: {}", username);
+                            try {
+                                LayoutUtil.changeLayoutWithFadeTransition((Stage) usernameInputField.getScene().getWindow(), "/com/zemlovka/haj/client/menu.fxml", wsActions);
+                            } catch (IOException e) {
+                                log.error("Failed to change layout", e);
+                                throw new RuntimeException(e);
+                            }
                         }
                     });
                     return null;

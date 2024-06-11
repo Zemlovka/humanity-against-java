@@ -44,4 +44,13 @@ public class PlayerDTO {
     public void setPoints(int points) {
         this.points = points;
     }
+
+    @Override
+    public String toString() {
+        return "PlayerDTO{" +
+                "name='" + name + '\'' +
+                ", uuid=" + uuid +
+                ", points=" + points +
+                '}';
+    }
 }
