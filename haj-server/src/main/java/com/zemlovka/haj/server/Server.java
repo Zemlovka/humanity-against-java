@@ -30,6 +30,7 @@ public class Server {
 
         acceptor = new Acceptor(8082, this);
         sender = new Sender(this);
+        users = new ConcurrentHashMap<>();
     }
 
     public void terminate() {
