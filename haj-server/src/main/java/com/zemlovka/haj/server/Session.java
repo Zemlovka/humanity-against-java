@@ -28,7 +28,7 @@ public class Session {
     private ServerWsActions wsActions;
 
     public Session(Socket clientSocket, Server server, ConcurrentHashMap<String, Lobby> lobbies, Map<String, User> users) {
-        log.debug("Vytvarim objekt Session a pripravuji samostatna vlakna pro jeho obsluhu.");
+        log.debug("Creating a new session");
         this.clientSocket = clientSocket;
         this.server = server;
         userData = new User();
@@ -37,24 +37,24 @@ public class Session {
         closed = false;
 
 
-        log.debug("Vytvarim reader a writer objekty.");
+        log.debug("Creating reader and writer objects");
         try {
             reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             writer = new PrintWriter(clientSocket.getOutputStream(), true);
         } catch (IOException e) {
-            log.error("Doslo k vyjimce pri vytvareni session.", e);
+            log.error("An exception occurred while creating reader and writer objects", e);
             close();
         }
 
-        log.debug("Vytvarim nove vlakno pro obsluhu klienta.");
+        log.debug("Creating new thead for the session");
         Thread thread = new Thread(() -> {
-            log.debug("Vlakno pro novou session bylo spusteno.");
+            log.debug("A thread for the new session has been started");
 
             try {
                 startReceivingMessages();
             } catch (IOException e) {
                 if (keepAlive) {
-                    log.error("Doslo k vyjimce pri prijmu zpravy, ukoncuji session.", e);
+                    log.error("An exception happened during the message receiving, terminating session", e);
                 }
             } finally {
                 close();
@@ -72,12 +72,13 @@ public class Session {
                 return;
             }
 
-            log.debug("Uzaviram client-socket a ukoncuji obsluzna vlakna.");
+            log.debug("Closing client-socket and terminating all serving threads");
 
             try {
                 clientSocket.close();
+                userData.shutdownLobbyPollingExecutor();
             } catch (IOException e) {
-                log.debug("Doslo k vyjimce pri uzavirani client-socketu behem ukoncovani spojeni, neni treba resit.", e);
+                log.debug("An exception happened while closing server-socket", e);
             }
 
             closed = true;
@@ -85,10 +86,8 @@ public class Session {
     }
 
     public void terminate() {
-        log.info("Spojeni bylo ukonceno ze strany serveru.");
+        log.info("The connection was ended from the server side");
         keepAlive = false;
-
-//        sendMessage("ERR Server se ukoncuje, spojeni bude uzavreno.");
         close();
     }
     private void startReceivingMessages() throws IOException {

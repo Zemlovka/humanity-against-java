@@ -23,7 +23,7 @@ public class Acceptor implements Runnable {
 
 
     public Acceptor(int incomingPort, Server server) {
-        log.debug("Vytvarim objekt Acceptor a pripravuji samostatne vlakno pro jeho beh.");
+        log.debug("Creating an Acceptor object and preparing its thread");
         keepAlive = true;
         closed = false;
 
@@ -31,34 +31,33 @@ public class Acceptor implements Runnable {
         this.server = server;
 
         Thread thread = new Thread(this);
-        // thread.setDaemon(true);
         thread.start();
     }
 
     @Override
     public void run() {
-        log.info("Startuji Acceptor vlakno.");
+        log.info("Starting Acceptor thread");
 
         try {
             serverSocket = new ServerSocket(incomingPort);
 
             while (keepAlive) {
-                log.info("Cekam na pripojeni dalsiho klienta.");
+                log.info("Waiting for the client connection");
                 Socket clientSocket = serverSocket.accept();
 
-                log.info("Klient pripojen, zahajuji komunikaci.");
+                log.info("Client connected, opening communication");
                 server.newSession(clientSocket);
             }
         } catch (IOException e) {
             if (keepAlive) {
-                log.error("Doslo k vyjimce pri cekani na pripojeni dalsiho klienta, ukoncuji cely server.", e);
+                log.error("An exception happened while waiting for the next client, terminating the server", e);
                 server.terminate();
             }
         } finally {
             close();
         }
 
-        log.info("Acceptor vlakno bylo ukonceno.");
+        log.info("Acceptor thread has been ended");
     }
 
     private void close() {
@@ -68,14 +67,14 @@ public class Acceptor implements Runnable {
             }
 
             if (serverSocket == null) {
-                log.debug("Server-socket neexistuje, ukoncuji Acceptor vlakno.");
+                log.debug("Server-socket does not exist, terminating the Acceptor thread");
             } else {
-                log.debug("Uzaviram server-socket a ukoncuji Acceptor vlakno.");
+                log.debug("Closing server-socket and terminating the Acceptor thread");
 
                 try {
                     serverSocket.close();
                 } catch (IOException e) {
-                    log.debug("Doslo k vyjimce pri uzavirani server-socketu behem ukoncovani Acceptor vlakna, neni treba resit.", e);
+                    log.debug("An exception happened while closing server socket, terminating the server", e);
                 }
             }
 
@@ -84,7 +83,7 @@ public class Acceptor implements Runnable {
     }
 
     public void terminate() {
-        log.info("Prijem novych pripojeni byl ukoncen.");
+        log.info("Acceptor thread has been terminated");
         keepAlive = false;
 
         close();
