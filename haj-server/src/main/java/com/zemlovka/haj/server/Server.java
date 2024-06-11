@@ -1,14 +1,12 @@
 package com.zemlovka.haj.server;
 
 import com.zemlovka.haj.server.game.Lobby;
+import com.zemlovka.haj.server.game.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.Socket;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -23,6 +21,7 @@ public class Server {
 
     private Sender sender;
     private ConcurrentHashMap<String, Lobby> lobbies;
+    private ConcurrentHashMap<String, User> users;
 
     public Server() {
         sessions = new HashSet<>();
@@ -45,7 +44,7 @@ public class Server {
 
     public void newSession(Socket clientSocket) {
         log.info("Vytvarim novou session.");
-        Session session = new Session(clientSocket, this, lobbies);
+        Session session = new Session(clientSocket, this, lobbies, users);
 
         synchronized(sessions) {
             sessions.add(session);

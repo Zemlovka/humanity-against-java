@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -26,7 +27,7 @@ public class Session {
     private User userData;
     private ServerWsActions wsActions;
 
-    public Session(Socket clientSocket, Server server, ConcurrentHashMap<String, Lobby> lobbies) {
+    public Session(Socket clientSocket, Server server, ConcurrentHashMap<String, Lobby> lobbies, Map<String, User> users) {
         log.debug("Vytvarim objekt Session a pripravuji samostatna vlakna pro jeho obsluhu.");
         this.clientSocket = clientSocket;
         this.server = server;
@@ -58,10 +59,8 @@ public class Session {
             } finally {
                 close();
             }
-
-            log.debug("Vlakno session uzivatele '{}' bylo ukonceno.", userData.getUsername());
         });
-        wsActions = new ServerWsActions(workLock, writer, lobbies, userData);
+        wsActions = new ServerWsActions(workLock, writer, lobbies, userData, users);
 
         // thread.setDaemon(true);
         thread.start();

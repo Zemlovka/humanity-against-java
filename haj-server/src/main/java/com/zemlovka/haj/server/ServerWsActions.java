@@ -15,6 +15,7 @@ import org.w3c.dom.ls.LSOutput;
 
 import java.io.PrintWriter;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,22 +30,24 @@ public class ServerWsActions {
     private final ConcurrentHashMap<String, Lobby> lobbies;
     private final User userData;
     private final Set<ServerCommand<? extends Resource>> commandSet;
+    private final Map<String, User> userMap;
 
     private final ObjectMapper objectMapper;
 
-    public ServerWsActions(Object workLock, PrintWriter writer, ConcurrentHashMap<String, Lobby> lobbies, User userData) {
+    public ServerWsActions(Object workLock, PrintWriter writer, ConcurrentHashMap<String, Lobby> lobbies, User userData, Map<String, User> userMap) {
         this.workLock = workLock;
         this.writer = writer;
         this.lobbies = lobbies;
         this.userData = userData;
         this.commandSet = new HashSet<>();
         this.objectMapper = ResourceObjectMapperFactory.getObjectMapper();
+        this.userMap = userMap;
         populateStaticCommandSet();
     }
 
     private void populateStaticCommandSet() {
         commandSet.add(new LeaveLobbyCommand(this, lobbies, userData));
-        commandSet.add(new LoginCommand(this, userData));
+        commandSet.add(new LoginCommand(this, userData, userMap));
         commandSet.add(new LogoutCommand(this, userData));
         commandSet.add(new JoinLobbyCommand(this, lobbies, userData));
         commandSet.add(new CreateLobbyCommand(this, lobbies, userData));
@@ -58,7 +61,7 @@ public class ServerWsActions {
     }
 
     public void resolveAndSendCommand(String message) throws JsonProcessingException {
-        CommunicationObject clientCommunicationObject = objectMapper.readValue(message, CommunicationObject.class);
+        CommunicationObject<? extends Resource> clientCommunicationObject = objectMapper.readValue(message, CommunicationObject.class);
         ConnectionHeader clientHeader = clientCommunicationObject.header();
         log.info("Command {} received from client {} with object type and communicationId {}",
                 clientHeader.commandName(), compileUUID(clientHeader.clientID()), compileUUID(clientHeader.communicationUuid()));
