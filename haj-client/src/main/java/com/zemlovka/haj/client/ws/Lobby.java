@@ -7,16 +7,18 @@ public class Lobby {
     private final String name;
     private String password = null;
     private final int capacity;
+    private int roundNumber;
     private List<Player> players;
 
     private List<AnswerCard> answerCards;
     private List<AnswerCard> playerCards;
     private QuestionCard questionCard;
 
-    public Lobby(String name, String password, int capacity) {
+    public Lobby(String name, String password, int capacity, int roundNumber) {
         this.name = name;
         this.password = password;
         this.capacity = capacity;
+        this.roundNumber = roundNumber;
         this.players = new ArrayList<>();
         this.answerCards = new ArrayList<>();
         this.playerCards = new ArrayList<>();
@@ -87,5 +89,13 @@ public class Lobby {
 
     public QuestionCard getQuestionCard() {
         return questionCard;
+    }
+
+    public int getRoundNumber() {
+        return roundNumber;
+    }
+
+    public void setRoundNumber(int roundNumber) {
+        this.roundNumber = roundNumber;
     }
 }
