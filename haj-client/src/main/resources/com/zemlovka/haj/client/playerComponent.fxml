@@ -29,7 +29,7 @@
       </VBox>
       <AnchorPane layoutX="13.0" layoutY="146.0" prefWidth="109.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <VBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <VBox alignment="CENTER" layoutY="7.0" AnchorPane.bottomAnchor="-7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <children>
                   <Label fx:id="username" alignment="CENTER" cacheShape="false" graphicTextGap="0.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" prefWidth="90.0" scaleShape="false" text="n1ckor" textAlignment="CENTER" textFill="#e37107" wrapText="true">
                      <font>

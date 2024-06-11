@@ -124,9 +124,16 @@ public class LayoutUtil {
             if (currentPlayer.getUsername().equals(p.getName()))
                 return currentPlayer;
             else
-                return new Player(p.getName(), null, false);
+                return new Player(p.getName(), null, false, p.getPoints());
         }).collect(Collectors.toList());
     }
+    public static Player mapPlayer(PlayerDTO playerDTO, Player currentPlayer) {
+        if (currentPlayer.getUsername().equals(playerDTO.getName()))
+            return currentPlayer;
+        else
+            return new Player(playerDTO.getName(), null, false, playerDTO.getPoints());
+
+        }
     public static List<Lobby> mapLobbies(Set<LobbyDTO> lobbyDTOSet, Player currentPlayer) {
         return lobbyDTOSet.stream().map(lobby -> mapLobby(lobby, currentPlayer)).collect(Collectors.toList());
     }
