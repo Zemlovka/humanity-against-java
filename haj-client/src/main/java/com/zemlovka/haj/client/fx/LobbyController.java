@@ -1,7 +1,6 @@
 package com.zemlovka.haj.client.fx;
 
 import com.zemlovka.haj.client.ws.*;
-import com.zemlovka.haj.utils.dto.server.FetchPlayersResponseDTO;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.event.Event;
@@ -10,7 +9,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.slf4j.Logger;
@@ -92,23 +90,27 @@ public class LobbyController extends AbstractWsActionsSettingController {
     }
 
     private void renderPlayers(List<Player> playerList) {
-        log.info("Rendering players: " + playerList.stream().map(Player::getUsername).collect(Collectors.joining(", ")));
         playersContainer.getChildren().clear();
 
         for (Player player : playerList) {
-            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/lobbyComponent.fxml"));
-            //HBox lobbyComponent = loader.load();
-            //LobbyComponentController controller = loader.getController();
 
-            //controller.setLobby(lobby);
-            Label playerComponent = new Label(player.getUsername());
-            log.info("rendering {}", player.getUsername());
-            if (player.isClient()) {
-                playerComponent.setText(playerComponent.getText() + " (You)");
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/playerComponent.fxml"));
+                Pane playerComponentPane = loader.load();
+                LobbyPlayerComponentController controller = loader.getController();
+                controller.setPlayer(player);
+
+//                if (player.isClient()) {
+//                    playerComponentPane.setText(playerComponent.getText() + " (You)");
+//                }
+                //playerComponent.setWrapText(true);
+                playersContainer.getChildren().add(playerComponentPane);
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-            //playerComponent.setWrapText(true);
+            //Label playerComponent = new Label(player.getUsername());
 
-            playersContainer.getChildren().add(playerComponent);
         }
     }
 
