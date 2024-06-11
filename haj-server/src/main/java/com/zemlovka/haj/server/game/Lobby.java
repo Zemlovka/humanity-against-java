@@ -24,13 +24,13 @@ public class Lobby {
     private int roundNumber;
 
 
-    public Lobby(int capacity, String name, String password, int roundNUmber) {
+    public Lobby(int capacity, String name, String password, int roundNumber) {
         this.capacity = capacity;
         this.name = name;
         this.password = password;
         this.users = new ConcurrentHashMap<>();
         this.flags = new Flags();
-        this.roundNumber = roundNUmber;
+        this.roundNumber = roundNumber;
         questionCardsPool = CardsSupplier.getQuestionCardPool();
         answerCardsPool = CardsSupplier.getAnswerCardPool();
         rounds = new ArrayList<>();
@@ -111,7 +111,7 @@ public class Lobby {
     }
 
     public boolean isRoundPlayable() {
-        return rounds.size() <= roundNumber;
+        return rounds.size() <= roundNumber + 1;
     }
 
     public synchronized Round getCurrentRound() {
