@@ -78,7 +78,7 @@ public class CreateLobbyController extends AbstractWsActionsSettingController {
                     true);
             tn.showToast();
         } else {
-            Lobby lobby = new Lobby(lobbyName, lobbyPassword, lobbySize);
+            Lobby lobby = new Lobby(lobbyName, lobbyPassword, lobbySize, 5);
             WSActions.createLobby(lobby);
             Player player = appState.getCurrentPlayer();
             lobby.addPlayerToList(player);
