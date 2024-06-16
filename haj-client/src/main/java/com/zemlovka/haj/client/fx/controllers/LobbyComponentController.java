@@ -1,6 +1,8 @@
-package com.zemlovka.haj.client.fx;
+package com.zemlovka.haj.client.fx.controllers;
 
-import com.zemlovka.haj.client.ws.Lobby;
+import com.zemlovka.haj.client.fx.AppState;
+import com.zemlovka.haj.client.fx.LayoutUtil;
+import com.zemlovka.haj.client.ws.entities.Lobby;
 import com.zemlovka.haj.utils.dto.secondary.LobbyDTO;
 import com.zemlovka.haj.utils.dto.server.JoinLobbyResponseDTO;
 import javafx.fxml.FXML;
@@ -70,7 +72,7 @@ public class LobbyComponentController extends AbstractWsActionsSettingController
             if(joinLobbyResponse.joinState() == JoinLobbyResponseDTO.JoinState.SUCCESS){
                 LobbyDTO lobbyDTO = joinLobbyResponse.lobby();
                 appState.setCurrentLobby(LayoutUtil.mapLobby(lobbyDTO, appState.getCurrentPlayer()));
-                LayoutUtil.changeLayoutWithFadeTransition((Stage) joinLobbyButton.getScene().getWindow(), "/com/zemlovka/haj/client/lobby.fxml", wsActions);
+                LayoutUtil.changeLayoutWithFadeTransition((Stage) joinLobbyButton.getScene().getWindow(), "/com/zemlovka/haj/client/fxml/lobby.fxml", wsActions);
             } else {
                 //todo not connected to lobby error
             }

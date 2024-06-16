@@ -1,6 +1,7 @@
-package com.zemlovka.haj.client.fx;
+package com.zemlovka.haj.client.fx.controllers;
 
-import com.zemlovka.haj.client.ws.AnswerCard;
+import com.zemlovka.haj.client.fx.AppState;
+import com.zemlovka.haj.client.ws.entities.AnswerCard;
 import javafx.animation.TranslateTransition;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -13,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Controller for the answerCard component, which represents answer (orange) card in the game
+ * Controller for the playerCard component (answer card hold by a player), which represents answer (orange) card in the game
  *
  * @author Korotov Nikita
  * @version 1.0

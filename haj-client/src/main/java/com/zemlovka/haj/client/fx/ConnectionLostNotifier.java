@@ -1,9 +1,15 @@
 package com.zemlovka.haj.client.fx;
 
+import com.zemlovka.haj.client.fx.notificationService.ToastNotification;
 import com.zemlovka.haj.client.ws.ConnectionStatusListener;
 import javafx.application.Platform;
 import javafx.stage.Window;
 
+/**
+ * Observes the connection status and shows a notification when the connection is lost or re-established.
+ * Is using {@link ToastNotification} to show the notifications.
+ *
+ */
 public class ConnectionLostNotifier implements ConnectionStatusListener {
     private final Window owner;
     private boolean showingConnectionLost = false;
@@ -42,7 +48,7 @@ public class ConnectionLostNotifier implements ConnectionStatusListener {
             }
             Platform.runLater(() -> {
                 welcomeBackNotification = AppState.getInstance().getNotificationService().createToast(owner,
-                        "Welcome back! Connection re-established.",
+                        "Welcome back! Connection has been re-established.",
                         ToastNotification.Position.CENTER,
                         true,
                         false,

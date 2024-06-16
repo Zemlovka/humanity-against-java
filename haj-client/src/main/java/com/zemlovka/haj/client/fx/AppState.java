@@ -1,8 +1,16 @@
 package com.zemlovka.haj.client.fx;
 
-import com.zemlovka.haj.client.ws.Lobby;
-import com.zemlovka.haj.client.ws.Player;
+import com.zemlovka.haj.client.fx.notificationService.NotificationService;
+import com.zemlovka.haj.client.ws.entities.Lobby;
+import com.zemlovka.haj.client.ws.entities.Player;
 
+/**
+ * Singleton class that holds the current state of the application. Inspired by Redux pattern in React.
+ * Is used to pass data between controllers and client components.
+ * <p>
+ * @author Nikita Korotov
+ * @version 1.0
+ */
 public final class AppState {
     Player currentPlayer;
     Lobby currentLobby;

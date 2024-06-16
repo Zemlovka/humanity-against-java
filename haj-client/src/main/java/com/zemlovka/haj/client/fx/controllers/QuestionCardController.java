@@ -1,22 +1,16 @@
-package com.zemlovka.haj.client.fx;
+package com.zemlovka.haj.client.fx.controllers;
 
-import com.zemlovka.haj.client.ws.Lobby;
-import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
-import javafx.animation.TranslateTransition;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Controller for the asnwerCard component, which represents answer (orange) card in the game
+ * Controller for the questionCard component, which represents question (black) card in the game
  *
  * @author Korotov Nikita
  * @version 1.0

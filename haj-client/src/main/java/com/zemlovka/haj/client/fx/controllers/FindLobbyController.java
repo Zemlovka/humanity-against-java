@@ -1,6 +1,8 @@
-package com.zemlovka.haj.client.fx;
+package com.zemlovka.haj.client.fx.controllers;
 
-import com.zemlovka.haj.client.ws.Lobby;
+import com.zemlovka.haj.client.fx.AppState;
+import com.zemlovka.haj.client.fx.LayoutUtil;
+import com.zemlovka.haj.client.ws.entities.Lobby;
 import com.zemlovka.haj.client.ws.WSActions;
 import javafx.application.Platform;
 import javafx.event.Event;
@@ -18,7 +20,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -67,7 +68,7 @@ public class FindLobbyController extends AbstractWsActionsSettingController {
 
         for (Lobby lobby : lobbyList) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/lobbyComponent.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/fxml/lobbyComponent.fxml"));
                 HBox lobbyComponent = loader.load();
 
                 LobbyComponentController controller = loader.getController();
@@ -130,14 +131,14 @@ public class FindLobbyController extends AbstractWsActionsSettingController {
     @FXML
     private void goMenu() {
         try {
-            LayoutUtil.changeLayoutWithFadeTransition((Stage) backButton.getScene().getWindow(), "/com/zemlovka/haj/client/menu.fxml", wsActions);
+            LayoutUtil.changeLayoutWithFadeTransition((Stage) backButton.getScene().getWindow(), "/com/zemlovka/haj/client/fxml/menu.fxml", wsActions);
         } catch (IOException e) {
             log.error("Failed to return to the menu", e);
         }
     }
 
     @Override
-    void setWsActions(WSActions wsActions) {
+    public void setWsActions(WSActions wsActions) {
         super.setWsActions(wsActions);
         registerPollLobbyList();
     }

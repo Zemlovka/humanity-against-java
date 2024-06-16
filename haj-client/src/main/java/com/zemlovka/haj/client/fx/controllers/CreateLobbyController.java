@@ -1,12 +1,13 @@
-package com.zemlovka.haj.client.fx;
+package com.zemlovka.haj.client.fx.controllers;
 
-import com.zemlovka.haj.client.ws.Lobby;
+import com.zemlovka.haj.client.fx.AppState;
+import com.zemlovka.haj.client.fx.LayoutUtil;
+import com.zemlovka.haj.client.fx.notificationService.ToastNotification;
+import com.zemlovka.haj.client.ws.entities.Lobby;
 import com.zemlovka.haj.client.ws.WSActions;
-import com.zemlovka.haj.client.ws.Player;
-import javafx.application.Platform;
+import com.zemlovka.haj.client.ws.entities.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -86,7 +87,7 @@ public class CreateLobbyController extends AbstractWsActionsSettingController {
             appState.setCurrentLobby(lobby);
             log.info("Creating lobby: {}", lobbyName);
             try {
-                LayoutUtil.changeLayoutWithFadeTransition((Stage) lobbyNameField.getScene().getWindow(), "/com/zemlovka/haj/client/lobby.fxml", WSActions);
+                LayoutUtil.changeLayoutWithFadeTransition((Stage) lobbyNameField.getScene().getWindow(), "/com/zemlovka/haj/client/fxml/lobby.fxml", WSActions);
             } catch (IOException e) {
                 log.error("Failed to change layout", e);
                 throw new RuntimeException(e);
@@ -100,7 +101,7 @@ public class CreateLobbyController extends AbstractWsActionsSettingController {
     @FXML
     private void goMenu() {
         try {
-            LayoutUtil.changeLayoutWithFadeTransition((Stage) backButton.getScene().getWindow(), "/com/zemlovka/haj/client/menu.fxml", WSActions);
+            LayoutUtil.changeLayoutWithFadeTransition((Stage) backButton.getScene().getWindow(), "/com/zemlovka/haj/client/fxml/menu.fxml", WSActions);
         } catch (IOException e) {
             log.error("Failed to return to the menu", e);
         }

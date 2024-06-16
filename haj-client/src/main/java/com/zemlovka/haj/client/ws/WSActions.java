@@ -2,6 +2,8 @@ package com.zemlovka.haj.client.ws;
 
 import com.zemlovka.haj.client.fx.ConnectionLostNotifier;
 import com.zemlovka.haj.client.ws.commands.*;
+import com.zemlovka.haj.client.ws.entities.AnswerCard;
+import com.zemlovka.haj.client.ws.entities.Lobby;
 import com.zemlovka.haj.utils.dto.client.*;
 import com.zemlovka.haj.utils.dto.server.*;
 import org.slf4j.Logger;
@@ -9,7 +11,12 @@ import org.slf4j.LoggerFactory;
 
 import static com.zemlovka.haj.utils.dto.CommandNameEnum.*;
 
-
+/**
+ * Class that contains all the actions that can be performed by the client.
+ * @see Commands
+ * @version 1.0
+ * @author Mykhailo Bubnov, Nikita Korotov
+ */
 public class WSActions {
     private static final Logger logger = LoggerFactory.getLogger(LoggerFactory.class);
 

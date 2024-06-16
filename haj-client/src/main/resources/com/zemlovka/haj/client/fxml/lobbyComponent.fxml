@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="lobbyComponent" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="296.0" spacing="10.0" styleClass="lobbyComponent" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zemlovka.haj.client.fx.LobbyComponentController">
+<HBox fx:id="lobbyComponent" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="296.0" spacing="10.0" styleClass="lobbyComponent" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zemlovka.haj.client.fx.controllers.LobbyComponentController">
    <children>
       <Label fx:id="lobbyTitle" alignment="CENTER" prefHeight="36.0" prefWidth="173.0" styleClass="LobbyTitle" text="Lobby">
          <font>

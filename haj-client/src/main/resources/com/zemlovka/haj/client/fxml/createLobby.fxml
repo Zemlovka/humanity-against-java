@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zemlovka.haj.client.fx.CreateLobbyController">
+<StackPane fx:id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zemlovka.haj.client.fx.controllers.CreateLobbyController">
    <children>
       <VBox fx:id="dialogForm" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="402.0" prefWidth="428.0" styleClass="dialog-form">
          <children>
@@ -40,6 +40,12 @@
                      <children>
                         <Label text="Lobby size:" />
                         <Slider fx:id="lobbySlider" blockIncrement="1.0" majorTickUnit="1.0" max="6.0" min="2.0" minorTickCount="0" prefHeight="38.0" prefWidth="272.0" showTickLabels="true" snapToTicks="true" styleClass="lobbySlider" value="2.0" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label text="Rounds:" />
+                        <Slider fx:id="roundSlider" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" min="5.0" minorTickCount="0" prefHeight="38.0" prefWidth="272.0" showTickLabels="true" snapToTicks="true" styleClass="lobbySlider" value="2.0" />
                      </children>
                   </VBox>
                </children>

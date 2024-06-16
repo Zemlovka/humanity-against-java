@@ -1,5 +1,8 @@
-package com.zemlovka.haj.client.ws;
+package com.zemlovka.haj.client.ws.entities;
 
+/**
+ * Represents a player in the game
+ */
 public class Player {
     private final String username;
     private final String avatar;

@@ -1,6 +1,13 @@
-package com.zemlovka.haj.client.fx;
+package com.zemlovka.haj.client.fx.controllers;
 
+import com.zemlovka.haj.client.fx.AppState;
+import com.zemlovka.haj.client.fx.LayoutUtil;
+import com.zemlovka.haj.client.fx.notificationService.ToastNotification;
 import com.zemlovka.haj.client.ws.*;
+import com.zemlovka.haj.client.ws.entities.AnswerCard;
+import com.zemlovka.haj.client.ws.entities.Lobby;
+import com.zemlovka.haj.client.ws.entities.Player;
+import com.zemlovka.haj.client.ws.entities.QuestionCard;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.event.Event;
@@ -16,7 +23,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.zemlovka.haj.client.fx.AppState.State.CHOOSING;
 import static com.zemlovka.haj.client.fx.AppState.State.VOTING;
@@ -53,7 +59,9 @@ public class LobbyController extends AbstractWsActionsSettingController {
     private final Lobby lobby = appState.getCurrentLobby();
     private static final Logger log = LoggerFactory.getLogger(LobbyController.class);
 
-
+    /**
+     * Function to initialize the lobby screen. Renders the players in the lobby (so, creator only) and the spinner, since lobby in the state of waiting.
+     */
     @FXML
     private void initialize() {
         log.info("Lobby controller started.");
@@ -70,7 +78,11 @@ public class LobbyController extends AbstractWsActionsSettingController {
         showSpinner();
     }
 
-
+    /**
+     * Function to fetch players from the server. Renders player if they connect to a lobby,
+     * and starts the game if the lobby is full.
+     * <p>
+     */
     private void registerFetchPlayer() {
         wsActions.fetchPlayers().thenApply(f -> {
             Platform.runLater(() -> {
@@ -86,6 +98,9 @@ public class LobbyController extends AbstractWsActionsSettingController {
         startGame();
     }
 
+    /**
+     * Function to fetch chosen cards. If all players have chosen their cards, the voting starts.
+     */
     private void registerChosenCards() {
         wsActions.getChosenCards().thenApply(f -> {
             Platform.runLater(() -> {
@@ -101,6 +116,11 @@ public class LobbyController extends AbstractWsActionsSettingController {
         });
     }
 
+    /**
+     * Function to start the game. Is used at the beginning of every round.
+     * <p>
+     * Clears the answer cards, renders the question card and player cards, and registers chosen cards.
+     */
     private void startGame() {
         wsActions.startGame().thenApply(f -> {
             Platform.runLater(() -> {
@@ -117,6 +137,12 @@ public class LobbyController extends AbstractWsActionsSettingController {
                     registerChosenCards();
                 } else {
                     //todo end game
+                    appState.getNotificationService().createToast(dialogForm.getScene().getWindow(),
+                            "Game has ended",
+                            ToastNotification.Position.CENTER,
+                            false,
+                            true,
+                            false).showToast();
                 }
             });
             return null;
@@ -126,6 +152,10 @@ public class LobbyController extends AbstractWsActionsSettingController {
         });
     }
 
+    /**
+     * Function to start voting. Is used when all players have chosen their cards.
+     * Continuously fetch votes, and if all players have voted, the winner is chosen.
+     */
     private void startVoting() {
         appState.setCurrentState(VOTING);
         appState.setCanVote(true);
@@ -146,7 +176,7 @@ public class LobbyController extends AbstractWsActionsSettingController {
                     appState.getNotificationService().createToast(dialogForm.getScene().getWindow(),
                             "The winner is: " + f.winnerPlayer().getName(),
                             ToastNotification.Position.RIGHT_BOTTOM,
-                            false,
+                            true,
                             true,
                             false).showToast();
                 });
@@ -159,31 +189,32 @@ public class LobbyController extends AbstractWsActionsSettingController {
         });
     }
 
-
-
+    /**
+     * Function to render players in the lobby.
+     *
+     * @param playerList List of players in the lobby
+     */
     private void renderPlayers(List<Player> playerList) {
         playersContainer.getChildren().clear();
-        //appState.getCurrentLobby().getPlayers().clear();
         for (Player player : playerList) {
-            //appState.getCurrentLobby().getPlayers().add(player);
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/playerComponent.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/fxml/playerComponent.fxml"));
                 Pane playerComponentPane = loader.load();
                 LobbyPlayerComponentController controller = loader.getController();
                 controller.setPlayer(player);
-//                if (player.isClient()) {
-//                    playerComponentPane.setText(playerComponent.getText() + " (You)");
-//                }
-                //playerComponent.setWrapText(true);
                 playersContainer.getChildren().add(playerComponentPane);
 
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            //Label playerComponent = new Label(player.getUsername());
-
         }
     }
+
+    /**
+     * Function to render player cards.
+     *
+     * @param answersCards List of answer cards to render
+     */
     @FXML
     private void renderPlayerCards(List<AnswerCard> answersCards) {
         playerCardsContainer.getChildren().clear();
@@ -195,7 +226,7 @@ public class LobbyController extends AbstractWsActionsSettingController {
             AnswerCard card = answersCards.get(i);
             KeyFrame keyFrame = new KeyFrame(delayBetweenCards.multiply(i), event -> {
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/answerCard.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/fxml/answerCard.fxml"));
                     PlayerCardController controller = new PlayerCardController();
                     loader.setController(controller);
                     controller.setCard(card);
@@ -233,10 +264,15 @@ public class LobbyController extends AbstractWsActionsSettingController {
         timeline.play();
     }
 
+    /**
+     * Function to render question card
+     *
+     * @param questionCard Question card to render
+     */
     private void renderQuestionCard(QuestionCard questionCard) {
         questionCardContainer.getChildren().clear();
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/questionCard.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/fxml/questionCard.fxml"));
             Pane questionCardPane = loader.load();
             QuestionCardController controller = loader.getController();
             lobby.setQuestionCard(questionCard);
@@ -248,12 +284,17 @@ public class LobbyController extends AbstractWsActionsSettingController {
 
     }
 
+    /**
+     * Function to render answer cards (cards that are chosen by players).
+     *
+     * @param answerCards List of answer cards to render
+     */
     @FXML
     private void renderAnswerCards(List<AnswerCard> answerCards) {
         answerCardsContainer.getChildren().clear();
         for (AnswerCard card : answerCards) {
             try {
-                String url = "/com/zemlovka/haj/client/answerCard.fxml";
+                String url = "/com/zemlovka/haj/client/fxml/answerCard.fxml";
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(url));
                 AnswerCardController controller = new AnswerCardController();
                 loader.setController(controller); //defining controller since there are 2 controllers for answerCards.fxml
@@ -267,11 +308,18 @@ public class LobbyController extends AbstractWsActionsSettingController {
             }
         }
     }
+
+    /**
+     * Function to clear answer cards.
+     */
     @FXML
     private void clearAnswerCards() {
         answerCardsContainer.getChildren().clear();
     }
 
+    /**
+     * Function to show the spinner while waiting for other players to choose their cards. Puts spinner into answer cards container.
+     */
     private void showSpinner() {
         VBox container = new VBox();
         container.setAlignment(javafx.geometry.Pos.CENTER);
@@ -290,6 +338,9 @@ public class LobbyController extends AbstractWsActionsSettingController {
         answerCardsContainer.getChildren().add(container);
     }
 
+    /**
+     * Function to remove the spinner from answer cards container.
+     */
     private void removeSpinner() {
         Node spinnerNode = answerCardsContainer.lookup("#spinner");
         answerCardsContainer.getChildren().remove(spinnerNode);
@@ -303,7 +354,7 @@ public class LobbyController extends AbstractWsActionsSettingController {
         try {
             if (LayoutUtil.showAlert(Alert.AlertType.CONFIRMATION, "You are about to leave the lobby", "Proceed leaving lobby?")) {
                 wsActions.leaveLobby();
-                LayoutUtil.changeLayoutWithFadeTransition((Stage) backButton.getScene().getWindow(), "/com/zemlovka/haj/client/menu.fxml", wsActions);
+                LayoutUtil.changeLayoutWithFadeTransition((Stage) backButton.getScene().getWindow(), "/com/zemlovka/haj/client/fxml/menu.fxml", wsActions);
             }
         } catch (IOException e) {
             log.error("Failed to return to the menu", e);
@@ -311,7 +362,7 @@ public class LobbyController extends AbstractWsActionsSettingController {
     }
 
     @Override
-    void setWsActions(WSActions wsActions) {
+    public void setWsActions(WSActions wsActions) {
         super.setWsActions(wsActions);
         registerFetchPlayer();
     }

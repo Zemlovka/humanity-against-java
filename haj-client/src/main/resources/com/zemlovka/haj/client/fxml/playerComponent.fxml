@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="playerPane" maxHeight="210.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="90.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zemlovka.haj.client.fx.LobbyPlayerComponentController">
+<AnchorPane fx:id="playerPane" maxHeight="210.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="90.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zemlovka.haj.client.fx.controllers.LobbyPlayerComponentController">
    <children>
       <VBox alignment="TOP_CENTER" layoutX="13.0" layoutY="14.0" prefHeight="70.0" prefWidth="90.0" spacing="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -20,7 +20,7 @@
                         <Rectangle2D />
                      </viewport>
                      <image>
-                        <Image url="@player.png" />
+                        <Image url="@../player.png" />
                      </image>
                   </ImageView>
                </children>

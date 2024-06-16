@@ -1,8 +1,9 @@
-package com.zemlovka.haj.client.fx;
+package com.zemlovka.haj.client.fx.controllers;
 
-import com.zemlovka.haj.client.ws.WSActions;
-import com.zemlovka.haj.client.ws.Player;
-import com.zemlovka.haj.utils.dto.server.LoginResponseDTO;
+import com.zemlovka.haj.client.fx.AppState;
+import com.zemlovka.haj.client.fx.LayoutUtil;
+import com.zemlovka.haj.client.fx.notificationService.ToastNotification;
+import com.zemlovka.haj.client.ws.entities.Player;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,7 +25,6 @@ import java.io.IOException;
 /**
  * Controller for the login screen. Handles the login process (just a simple username input for now).
  * <p>
- * Uses the {@link WSActions} to connect to the server and send the username.
  *
  * @author Nikita Korotov
  * @version 1.0
@@ -91,7 +91,7 @@ public class LoginController extends AbstractWsActionsSettingController {
                             appState.setCurrentPlayer(player);
                             log.info("Username set: {}", username);
                             try {
-                                LayoutUtil.changeLayoutWithFadeTransition((Stage) usernameInputField.getScene().getWindow(), "/com/zemlovka/haj/client/menu.fxml", wsActions);
+                                LayoutUtil.changeLayoutWithFadeTransition((Stage) usernameInputField.getScene().getWindow(), "/com/zemlovka/haj/client/fxml/menu.fxml", wsActions);
                             } catch (IOException e) {
                                 log.error("Failed to change layout", e);
                                 throw new RuntimeException(e);
@@ -119,7 +119,7 @@ public class LoginController extends AbstractWsActionsSettingController {
     @FXML
     private void openTAC(ActionEvent event) throws IOException {
         Stage tacStage = new Stage();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/tac.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zemlovka/haj/client/fxml/tac.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root, 600, 600);
         tacStage.setScene(scene);

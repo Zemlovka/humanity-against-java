@@ -1,8 +1,11 @@
-package com.zemlovka.haj.client.ws;
+package com.zemlovka.haj.client.ws.entities;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class representing a lobby in the game.
+ */
 public class Lobby {
     private final String name;
     private String password = null;

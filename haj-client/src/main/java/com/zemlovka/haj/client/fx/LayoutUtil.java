@@ -1,6 +1,11 @@
 package com.zemlovka.haj.client.fx;
 
+import com.zemlovka.haj.client.fx.controllers.AbstractWsActionsSettingController;
 import com.zemlovka.haj.client.ws.*;
+import com.zemlovka.haj.client.ws.entities.AnswerCard;
+import com.zemlovka.haj.client.ws.entities.Lobby;
+import com.zemlovka.haj.client.ws.entities.Player;
+import com.zemlovka.haj.client.ws.entities.QuestionCard;
 import com.zemlovka.haj.utils.dto.secondary.CardDTO;
 import com.zemlovka.haj.utils.dto.secondary.LobbyDTO;
 import com.zemlovka.haj.utils.dto.secondary.PlayerDTO;
@@ -57,7 +62,7 @@ public class LayoutUtil {
         fadeTransition.setFromValue(1);
         fadeTransition.setToValue(0);
         fadeTransition.setOnFinished(event -> stage.getScene().setRoot(newRoot));
-        fadeTransition.play(); // Start the fade-out transition
+        fadeTransition.play();
     }
 
     /**
@@ -94,7 +99,7 @@ public class LayoutUtil {
      *
      * @param alertType   The type of the alert
      * @param title       The title of the alert
-     * @param contentText The content text of the alert
+     * @param contentText The text of the alert
      * @return true if OK is pressed, false otherwise (for confirmation alerts)
      */
     public static boolean showAlert(Alert.AlertType alertType, String title, String contentText) {
@@ -104,9 +109,8 @@ public class LayoutUtil {
         alert.setContentText(contentText);
         Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
         alertStage.setAlwaysOnTop(true);
-        //alertStage.initStyle(StageStyle.UNDECORATED);
         Scene alertScene = alert.getDialogPane().getScene();
-        alertScene.getRoot().getStylesheets().add(Objects.requireNonNull(LayoutUtil.class.getResource("/com/zemlovka/haj/client/alert.css")).toExternalForm());
+        alertScene.getRoot().getStylesheets().add(Objects.requireNonNull(LayoutUtil.class.getResource("/com/zemlovka/haj/client/css/alert.css")).toExternalForm());
 
         alert.getDialogPane().getScene().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.ENTER) {
@@ -119,6 +123,13 @@ public class LayoutUtil {
         return alert.getResult() == ButtonType.OK;
     }
 
+    /**
+     * Maps a set of playerDTOs to a list of players
+     *
+     * @param playerDTOSet  The set of playerDTOs
+     * @param currentPlayer The current player (client)
+     * @return The list of {@link Player}
+     */
     public static List<Player> mapPlayers(Set<PlayerDTO> playerDTOSet, Player currentPlayer) {
         return playerDTOSet.stream().map(p -> {
             if (currentPlayer.getUsername().equals(p.getName()))
@@ -127,26 +138,60 @@ public class LayoutUtil {
                 return new Player(p.getName(), null, false, p.getPoints());
         }).collect(Collectors.toList());
     }
+
+    /**
+     * Maps a playerDTO to a player
+     *
+     * @param playerDTO     The playerDTO
+     * @param currentPlayer The current player (client)
+     * @return {@link Player}
+     */
     public static Player mapPlayer(PlayerDTO playerDTO, Player currentPlayer) {
         if (currentPlayer.getUsername().equals(playerDTO.getName()))
             return currentPlayer;
         else
             return new Player(playerDTO.getName(), null, false, playerDTO.getPoints());
 
-        }
+    }
+
+    /**
+     * Maps a set of lobbyDTOs to a list of lobbies
+     *
+     * @param lobbyDTOSet   The set of lobbyDTOs
+     * @param currentPlayer The current player (client)
+     * @return The list of {@link Lobby}
+     */
     public static List<Lobby> mapLobbies(Set<LobbyDTO> lobbyDTOSet, Player currentPlayer) {
         return lobbyDTOSet.stream().map(lobby -> mapLobby(lobby, currentPlayer)).collect(Collectors.toList());
     }
 
+    /**
+     * Maps a lobbyDTO to a lobby
+     *
+     * @param lobbyDTO      The lobbyDTO
+     * @param currentPlayer The current player (client)
+     * @return {@link Lobby}
+     */
     public static Lobby mapLobby(LobbyDTO lobbyDTO, Player currentPlayer) {
         return new Lobby(lobbyDTO.getName(), mapPlayers(lobbyDTO.getPlayers(), currentPlayer), lobbyDTO.getCapacity());
     }
 
-
+    /**
+     * Maps a cardDTO to a question card
+     *
+     * @param cardDTO The cardDTO
+     * @return {@link QuestionCard}
+     */
     public static QuestionCard mapQuestionCard(CardDTO cardDTO) {
         return new QuestionCard(cardDTO.getId(), cardDTO.getText());
     }
 
+    /**
+     * Maps a list of cardDTOs to a list of answer cards
+     *
+     * @param cardDTOList The list of cardDTOs
+     * @return The list of {@link AnswerCard}
+     */
     public static List<AnswerCard> mapAnswerCards(List<CardDTO> cardDTOList) {
         return cardDTOList.stream().map(c -> new AnswerCard(c.getId(), c.getText())).collect(Collectors.toList());
     }

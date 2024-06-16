@@ -1,5 +1,6 @@
 package com.zemlovka.haj.client.fx;
 
+import com.zemlovka.haj.client.fx.controllers.LoginController;
 import com.zemlovka.haj.client.ws.WSActions;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -18,12 +19,12 @@ import java.util.Objects;
 
 public class App extends Application {
 
-    public static final String CSS = Objects.requireNonNull(App.class.getResource("/com/zemlovka/haj/client/styles.css")).toExternalForm();
+    public static final String CSS = Objects.requireNonNull(App.class.getResource("/com/zemlovka/haj/client/css/styles.css")).toExternalForm();
 
     @Override
     public void start(Stage stage) throws IOException {
 
-        FXMLLoader loginLoader = new FXMLLoader(App.class.getResource("/com/zemlovka/haj/client/login.fxml"));
+        FXMLLoader loginLoader = new FXMLLoader(App.class.getResource("/com/zemlovka/haj/client/fxml/login.fxml"));
         Scene loginScene = new Scene(loginLoader.load(), 1200, 800);
 
         final KeyCombination FullScreenKeyCombo = new KeyCodeCombination(KeyCode.ENTER, KeyCombination.ALT_DOWN);
@@ -37,11 +38,7 @@ public class App extends Application {
 
         loginScene.getStylesheets().add(CSS);
 
-        Font.loadFont(getClass().getResourceAsStream("/com/zemlovka/haj/client/Montserrat/static/Montserrat-Regular.ttf"), 14); // Load font collection
-        //Font regularFont = Font.loadFont(getClass().getResourceAsStream("/YourFontCollection.ttf#Regular"), 14);
-        //Font boldFont = Font.loadFont(getClass().getResourceAsStream("/YourFontCollection.ttf#Bold"), 14);
-        //Font italicFont = Font.loadFont(getClass().getResourceAsStream("/YourFontCollection.ttf#Italic"), 14);
-
+        Font.loadFont(getClass().getResourceAsStream("/com/zemlovka/haj/client/Montserrat/static/Montserrat-Regular.ttf"), 14);
 
         stage.setTitle("Humanity Against Java");
         stage.setScene(loginScene);

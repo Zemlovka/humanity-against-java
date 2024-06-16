@@ -17,6 +17,12 @@ import java.util.function.Consumer;
 
 import static com.zemlovka.haj.utils.GlobalUtils.compileUUID;
 
+/**
+ * Client class that handles communication with the server.
+ * <p>
+ * @version 1.0
+ * @author Nikita Korotov, Mykhailo Bubnov
+ */
 public class Client extends Thread {
     private static final Logger log = LoggerFactory.getLogger(Client.class);
     private final ObjectMapper objectMapper;
@@ -42,6 +48,9 @@ public class Client extends Thread {
         this.connectionStatusListener = listener;
     }
 
+    /**
+     * Main method of the client. Connects to the server and listens for incoming communication.
+     */
     @Override
     public void run() {
         log.info("Client started.");
@@ -96,6 +105,12 @@ public class Client extends Thread {
         }
     }
 
+    /**
+     * Sends a request to the server and returns a CompletableFuture that will be completed when the response is received.
+     * @param request the request to send
+     * @param commandName the name of the command
+     * @return {@link CompletableFuture} that will be completed when the response is received
+     */
     public CommandCallback<Resource> sendRequest(Resource request, String commandName) {
         final UUID uuid = UUID.randomUUID();
         final ConnectionHeader header = new ConnectionHeader(clientId, uuid, request.getClass().getSimpleName(), commandName);
@@ -121,6 +136,9 @@ public class Client extends Thread {
         return completableFuture;
     }
 
+    /**
+     * Processes the command queue. This method is called when the client is connected to the server.
+     */
     private void processCommandQueue() {
         Consumer<PrintWriter> command;
         while ((command = commandQueue.poll()) != null) {

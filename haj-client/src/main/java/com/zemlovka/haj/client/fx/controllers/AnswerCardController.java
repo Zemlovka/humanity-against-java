@@ -1,6 +1,7 @@
-package com.zemlovka.haj.client.fx;
+package com.zemlovka.haj.client.fx.controllers;
 
-import com.zemlovka.haj.client.ws.AnswerCard;
+import com.zemlovka.haj.client.fx.AppState;
+import com.zemlovka.haj.client.ws.entities.AnswerCard;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.Event;
@@ -11,14 +12,13 @@ import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Controller for the asnwerCard component, which represents answer (orange) card in the game
+ * Controller for the answerCard component, which represents answer (orange) card in the game
  *
  * @author Korotov Nikita
  * @version 1.0
@@ -56,7 +56,7 @@ public class AnswerCardController extends AbstractWsActionsSettingController {
     }
 
     /**
-     * Removes the logo from its parent container (card).
+     * Hides the logo on its parent container (card).
      */
     private void hideLogo() {
         logo.setOpacity(0);
@@ -93,10 +93,10 @@ public class AnswerCardController extends AbstractWsActionsSettingController {
                 dropShadow.setColor(Color.BLACK);
                 dropShadow.setRadius(10);
                 dropShadow.setSpread(0.5);
-                // Create a Glow effect
+
                 Glow glow = new Glow();
                 glow.setLevel(0.6);
-                // Combine the Glow and DropShadow effects
+
                 dropShadow.setInput(glow);
 
                 BoxBlur blurEffect = new BoxBlur();
@@ -104,8 +104,6 @@ public class AnswerCardController extends AbstractWsActionsSettingController {
                 blurEffect.setHeight(5);
                 blurEffect.setIterations(1);
 
-
-                // Apply the combined effect to the answerCardPane
                 answerCardPane.setEffect(dropShadow);
                 answerCardPane.getParent().getChildrenUnmodifiable().forEach(node -> {
                     if (!(node == answerCardPane)) {

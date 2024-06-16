@@ -1,5 +1,8 @@
-package com.zemlovka.haj.client.ws;
+package com.zemlovka.haj.client.ws.entities;
 
+/**
+ * Abstract class representing a card in the game.
+ */
 public abstract class Card {
     private final String text;
     private final int id;
