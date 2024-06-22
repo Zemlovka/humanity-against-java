@@ -14,8 +14,7 @@ public class DtoMapper {
     public static LobbyDTO mapLobby(Lobby lobby) {
         return new LobbyDTO(lobby.getName(),
                 lobby.getCapacity(),
-                mapPlayers(lobby.getUsers().values()),
-                lobby.getPassword() != null && !lobby.getPassword().isEmpty());
+                mapPlayers(lobby.getUsers().values()));
     }
 
     public static Set<PlayerDTO> mapPlayers(Collection<User> players) {

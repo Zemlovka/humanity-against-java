@@ -36,9 +36,6 @@ public class JoinLobbyCommand extends AbstractServerCommand<JoinLobbyDTO, JoinLo
         if (lobby == null) {
             response = new JoinLobbyResponseDTO(JoinLobbyResponseDTO.JoinState.LOBBY_DOES_NOT_EXIST, null);
         }
-        else if (!lobby.getPassword().equals(argument.password())) {
-            response = new JoinLobbyResponseDTO(JoinLobbyResponseDTO.JoinState.WRONG_PASSWORD, null);
-        }
         else if (lobby.getCapacity() <= lobby.getUsers().size()) {
             response = new JoinLobbyResponseDTO(JoinLobbyResponseDTO.JoinState.LOBBY_FULL, null);
         }

@@ -15,7 +15,6 @@ public class Lobby {
     private static final int POINTS_FOR_WIN = 5;
     private final int capacity;
     private final String name;
-    private final String password;
     private final ConcurrentHashMap<UUID, User> users;
     private final Flags flags;
     private final List<CardDTO> questionCardsPool;
@@ -28,10 +27,9 @@ public class Lobby {
     private int roundNumber;
 
 
-    public Lobby(int capacity, String name, String password, int roundNumber) {
+    public Lobby(int capacity, String name, int roundNumber) {
         this.capacity = capacity;
         this.name = name;
-        this.password = password;
         this.users = new ConcurrentHashMap<>();
         this.flags = new Flags();
         this.roundNumber = roundNumber;
@@ -49,10 +47,6 @@ public class Lobby {
 
     public String getName() {
         return name;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public Map<UUID, User> getUsers() {

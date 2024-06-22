@@ -68,7 +68,7 @@ public class LobbyComponentController extends AbstractWsActionsSettingController
         log.info("Join lobby button clicked");
         try {
             //wsActions.joinLobby(lobby, "").get();
-            JoinLobbyResponseDTO joinLobbyResponse= wsActions.joinLobby(lobby, "").get();
+            JoinLobbyResponseDTO joinLobbyResponse= wsActions.joinLobby(lobby).get();
             if(joinLobbyResponse.joinState() == JoinLobbyResponseDTO.JoinState.SUCCESS){
                 LobbyDTO lobbyDTO = joinLobbyResponse.lobby();
                 appState.setCurrentLobby(LayoutUtil.mapLobby(lobbyDTO, appState.getCurrentPlayer()));

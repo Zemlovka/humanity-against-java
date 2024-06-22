@@ -8,13 +8,11 @@ public class LobbyDTO {
     private String name;
     private int capacity;
     private Set<PlayerDTO> players;
-    private boolean isLocked;
 
-    public LobbyDTO(String name, int capacity, Set<PlayerDTO> players, boolean isLocked) {
+    public LobbyDTO(String name, int capacity, Set<PlayerDTO> players) {
         this.name = name;
         this.capacity = capacity;
         this.players = players;
-        this.isLocked = isLocked;
     }
 
     public LobbyDTO() {
@@ -43,13 +41,5 @@ public class LobbyDTO {
 
     public void setPlayers(Set<PlayerDTO> players) {
         this.players = players;
-    }
-
-    public boolean isLocked() {
-        return isLocked;
-    }
-
-    public void setLocked(boolean locked) {
-        isLocked = locked;
     }
 }

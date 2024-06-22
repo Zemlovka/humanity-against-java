@@ -39,7 +39,7 @@ public class CreateLobbyCommand extends AbstractServerCommand<CreateLobbyDTO, Cr
             logger.info("Lobby with name: {} was not created because this name has already been used for another lobby", argument.name());
             response = new CreateLobbyResponseDTO(false);
         } else {
-            Lobby lobby = new Lobby(argument.size(), argument.name(), argument.password(), argument.roundNumber());
+            Lobby lobby = new Lobby(argument.size(), argument.name(), argument.roundNumber());
             userData.setCurrentLobby(lobby);
             lobby.addUser(userData);
             lobbies.put(lobby.getName(), lobby);

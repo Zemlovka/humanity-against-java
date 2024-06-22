@@ -56,8 +56,8 @@ public class WSActions {
         return commands.fetchLobbyList.run(new FetchLobbyListDTO());
     }
 
-    public CommandCallback<JoinLobbyResponseDTO> joinLobby(Lobby lobby, String password) {
-        return commands.joinLobby.run(new JoinLobbyDTO(lobby.getName(), password));
+    public CommandCallback<JoinLobbyResponseDTO> joinLobby(Lobby lobby) {
+        return commands.joinLobby.run(new JoinLobbyDTO(lobby.getName()));
     }
     public CommandCallback<StartGameResponseDTO> startGame() {
         return commands.startGame.run(new StartGameDTO());

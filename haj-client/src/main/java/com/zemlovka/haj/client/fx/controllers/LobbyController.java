@@ -74,6 +74,7 @@ public class LobbyController extends AbstractWsActionsSettingController {
         answerCardsContainer.setOnMousePressed(Event::consume);
         playerCardsScroll.setOnMousePressed(Event::consume);
         myCardsSection.setOnMousePressed(Event::consume);
+        appState.getCurrentPlayer().setScore(0);
         renderPlayers(appState.getCurrentLobby().getPlayers());
         showSpinner();
     }
