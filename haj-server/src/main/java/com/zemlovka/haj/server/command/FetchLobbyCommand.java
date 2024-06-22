@@ -18,13 +18,16 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 
-public class FetchLobbysCommand extends AbstractServerCommand<FetchLobbyListDTO, LobbyListDTO> {
-    private static final Logger logger = LoggerFactory.getLogger(FetchLobbysCommand.class);
+/**
+ * Returns current active lobbies, uses an executor for polling communication
+ */
+public class FetchLobbyCommand extends AbstractServerCommand<FetchLobbyListDTO, LobbyListDTO> {
+    private static final Logger logger = LoggerFactory.getLogger(FetchLobbyCommand.class);
     private static final String NAME = CommandNameEnum.FETCH_LOBBY_LIST.name();
     private final ConcurrentHashMap<String, Lobby> lobbies;
     private final User userData;
 
-    public FetchLobbysCommand(ServerWsActions wsActions, ConcurrentHashMap<String, Lobby> lobbies, User userData) {
+    public FetchLobbyCommand(ServerWsActions wsActions, ConcurrentHashMap<String, Lobby> lobbies, User userData) {
         super(wsActions);
         this.lobbies = lobbies;
         this.userData = userData;
@@ -37,7 +40,7 @@ public class FetchLobbysCommand extends AbstractServerCommand<FetchLobbyListDTO,
 // then, when you want to schedule a task
         Runnable task = () ->{
             LobbyListDTO response = new LobbyListDTO(
-                    lobbies.values().stream().map(DtoMapper::mapLobby).collect(Collectors.toSet())
+                    lobbies.values().stream().filter(Lobby::isGameActive).map(DtoMapper::mapLobby).collect(Collectors.toSet())
             );
             send(response, clientHeader);
         };

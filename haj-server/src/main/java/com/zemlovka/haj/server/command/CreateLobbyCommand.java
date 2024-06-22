@@ -10,10 +10,11 @@ import com.zemlovka.haj.utils.dto.server.CreateLobbyResponseDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-
+/**
+ * Allows user to create a lobby
+ */
 public class CreateLobbyCommand extends AbstractServerCommand<CreateLobbyDTO, CreateLobbyResponseDTO> {
     private static final Logger logger = LoggerFactory.getLogger(CreateLobbyCommand.class);
     private static final String NAME = CommandNameEnum.CREATE_LOBBY.name();

@@ -11,6 +11,9 @@ import com.zemlovka.haj.utils.dto.server.FetchPlayersResponseDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Returns current active lobbies, uses resubmittable flags for polling communication
+ */
 public class FetchPlayersCommand extends AbstractServerCommand<FetchPlayersDTO, FetchPlayersResponseDTO> {
     private static final Logger logger = LoggerFactory.getLogger(FetchPlayersCommand.class);
     private static final String NAME = CommandNameEnum.FETCH_PLAYERS.name();

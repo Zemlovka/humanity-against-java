@@ -14,7 +14,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-
+/**
+ * Returns the winner card, is being set of by the VoteCardCommand from all users
+ */
 public class GetWinnerCardCommand extends AbstractServerCommand<GetWinnerCardDTO, GetWinnerCardResponseDTO> {
     private static final Logger logger = LoggerFactory.getLogger(GetWinnerCardCommand.class);
     private static final String NAME = CommandNameEnum.GET_WINNER_CARD.name();

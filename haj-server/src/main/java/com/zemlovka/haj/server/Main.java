@@ -3,7 +3,6 @@ package com.zemlovka.haj.server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Optional;
 import java.util.Scanner;
 
 public class Main {
@@ -13,7 +12,7 @@ public class Main {
     public static void main(String[] args) {
         log.info("Server is starting");
         Scanner scanner = new Scanner(System.in);
-        Integer port = null;
+        int port;
         try {
             port = Integer.parseInt(args[0]);
         } catch (Exception e) {

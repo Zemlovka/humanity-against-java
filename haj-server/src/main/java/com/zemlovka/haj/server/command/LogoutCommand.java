@@ -9,7 +9,9 @@ import com.zemlovka.haj.utils.dto.server.LogoutResponseDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+/**
+ * A login command to uninitialize the user
+ */
 public class LogoutCommand extends AbstractServerCommand<LogoutDTO, LogoutResponseDTO> {
     private static final Logger logger = LoggerFactory.getLogger(LogoutCommand.class);
     private static final String NAME = CommandNameEnum.LOGOUT.name();

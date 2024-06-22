@@ -13,6 +13,9 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 
 
+/**
+ * Used to disconnect the user from lobby
+ */
 public class LeaveLobbyCommand extends AbstractServerCommand<LeaveLobbyDTO, LeaveLobbyResponseDTO> {
     private static final Logger logger = LoggerFactory.getLogger(LeaveLobbyCommand.class);
     private static final String NAME = CommandNameEnum.LEAVE_LOBBY.name();

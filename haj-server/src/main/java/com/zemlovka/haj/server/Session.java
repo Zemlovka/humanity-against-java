@@ -22,15 +22,13 @@ public class Session {
     private volatile boolean closed;
     private BufferedReader reader;
     private PrintWriter writer;
-    private Socket clientSocket;
-    private Server server;
-    private User userData;
-    private ServerWsActions wsActions;
+    private final Socket clientSocket;
+    private final User userData;
+    private final ServerWsActions wsActions;
 
-    public Session(Socket clientSocket, Server server, ConcurrentHashMap<String, Lobby> lobbies, Map<String, User> users) {
+    public Session(Socket clientSocket, ConcurrentHashMap<String, Lobby> lobbies, Map<String, User> users) {
         log.debug("Creating a new session");
         this.clientSocket = clientSocket;
-        this.server = server;
         userData = new User();
 
         keepAlive = true;

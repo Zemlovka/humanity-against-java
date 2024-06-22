@@ -5,19 +5,14 @@ import com.zemlovka.haj.server.game.Lobby;
 import com.zemlovka.haj.server.game.User;
 import com.zemlovka.haj.utils.ConnectionHeader;
 import com.zemlovka.haj.utils.dto.CommandNameEnum;
-import com.zemlovka.haj.utils.dto.client.ChooseCardDTO;
 import com.zemlovka.haj.utils.dto.client.VoteCardDTO;
-import com.zemlovka.haj.utils.dto.secondary.CardDTO;
-import com.zemlovka.haj.utils.dto.secondary.PlayerDTO;
-import com.zemlovka.haj.utils.dto.server.ChooseCardResponseDTO;
-import com.zemlovka.haj.utils.dto.server.GetChosenCardsResponseDTO;
 import com.zemlovka.haj.utils.dto.server.VoteCardResponseDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
-
-
+/**
+ * A command to vote for the card, sets off a flag for the GetWInnerCardCommand
+ */
 public class VoteCardCommand extends AbstractServerCommand<VoteCardDTO, VoteCardResponseDTO> {
     private static final Logger logger = LoggerFactory.getLogger(VoteCardCommand.class);
     private static final String NAME = CommandNameEnum.VOTE_CARD.name();

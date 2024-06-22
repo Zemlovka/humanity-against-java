@@ -15,9 +15,9 @@ public class Acceptor implements Runnable {
     private volatile boolean keepAlive;
     private volatile boolean closed;
 
-    private int incomingPort;
+    private final int incomingPort;
 
-    private Server server;
+    private final Server server;
 
     private ServerSocket serverSocket;
 

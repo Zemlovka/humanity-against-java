@@ -38,7 +38,7 @@ public class Server {
 
     public void newSession(Socket clientSocket) {
         log.info("Creating a new session");
-        Session session = new Session(clientSocket, this, lobbies, users);
+        Session session = new Session(clientSocket, lobbies, users);
 
         synchronized(sessions) {
             sessions.add(session);

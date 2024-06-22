@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-
+/**
+ * A round class for all the functions connected to a round logic
+ */
 public class Round {
     private final int roundNumber;
     private final Lobby lobby;

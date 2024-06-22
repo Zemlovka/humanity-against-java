@@ -11,13 +11,11 @@ import com.zemlovka.haj.utils.ResourceObjectMapperFactory;
 import com.zemlovka.haj.utils.dto.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.ls.LSOutput;
 
 import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.zemlovka.haj.utils.GlobalUtils.compileUUID;
@@ -51,7 +49,7 @@ public class ServerWsActions {
         commandSet.add(new LogoutCommand(this, userData));
         commandSet.add(new JoinLobbyCommand(this, lobbies, userData));
         commandSet.add(new CreateLobbyCommand(this, lobbies, userData));
-        commandSet.add(new FetchLobbysCommand(this, lobbies, userData));
+        commandSet.add(new FetchLobbyCommand(this, lobbies, userData));
         commandSet.add(new StartGameCommand(this, userData));
         commandSet.add(new FetchPlayersCommand(this, userData));
         commandSet.add(new ChooseCardCommand(this, userData));

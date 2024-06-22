@@ -14,6 +14,9 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.ConcurrentHashMap;
 
 
+/**
+ * Joins user to the lobby, notifies other users that used a FetchPLayersCommand
+ */
 public class JoinLobbyCommand extends AbstractServerCommand<JoinLobbyDTO, JoinLobbyResponseDTO> {
     private static final Logger logger = LoggerFactory.getLogger(JoinLobbyCommand.class);
     private static final String NAME = CommandNameEnum.JOIN_LOBBY.name();

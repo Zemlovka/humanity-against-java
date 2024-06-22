@@ -7,6 +7,9 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 
+/**
+ * A lobby class for all the functions connected to a lobby logic
+ */
 public class Lobby {
     private static final int DEFAULT_PLAYER_CARDS_NUMBER = 5;
     private static final int POINTS_FOR_WIN = 5;
@@ -20,6 +23,7 @@ public class Lobby {
     private final List<Round> rounds;
     private final Map<UUID, Map<Integer, CardDTO>> userToCardsMap;
     private final Map<UUID, Integer> userToPoints;
+    private boolean isGameActive;
     private int currentRoundNumber = -1;
     private int roundNumber;
 
@@ -36,6 +40,7 @@ public class Lobby {
         rounds = new ArrayList<>();
         userToCardsMap = new HashMap<>();
         userToPoints = new HashMap<>();
+        isGameActive = true;
     }
 
     public int getCapacity() {
@@ -53,9 +58,9 @@ public class Lobby {
     public Map<UUID, User> getUsers() {
         return Collections.unmodifiableMap(users);
     }
-    public synchronized boolean removeUser(User user) {
+    public synchronized void removeUser(User user) {
         userToCardsMap.remove(user.getUuid());
-        return users.remove(user.getUuid()) != null;
+        users.remove(user.getUuid());
     }
     public synchronized void addUser(User user) {
         users.put(user.getUuid(), user);
@@ -89,7 +94,6 @@ public class Lobby {
 
     /**
      *
-     * @return if the next rounds is playable or if it's the ond of the game
      */
     public synchronized void nextRound() {
         currentRoundNumber++;
@@ -98,16 +102,12 @@ public class Lobby {
         rounds.add(round);
     }
 
-    public synchronized List<Round> getRounds() {
-        return rounds;
-    }
-
     public int getPoints(User user) {
         return userToPoints.get(user.getUuid());
     }
 
-    public int addPoints(User user) {
-        return userToPoints.put(user.getUuid(), userToPoints.get(user.getUuid()) + POINTS_FOR_WIN);
+    public void addPoints(User user) {
+        userToPoints.put(user.getUuid(), userToPoints.get(user.getUuid()) + POINTS_FOR_WIN);
     }
 
     public boolean isRoundPlayable() {
@@ -116,6 +116,14 @@ public class Lobby {
 
     public synchronized Round getCurrentRound() {
         return rounds.get(currentRoundNumber);
+    }
+
+    public boolean isGameActive() {
+        return isGameActive;
+    }
+
+    public void setGameActive(boolean gameActive) {
+        isGameActive = gameActive;
     }
 
     @Override

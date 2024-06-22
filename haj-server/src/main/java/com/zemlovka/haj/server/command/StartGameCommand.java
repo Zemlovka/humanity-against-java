@@ -42,6 +42,7 @@ public class StartGameCommand extends AbstractServerCommand<StartGameDTO, StartG
                     e.printStackTrace();
                 }
             } else {
+                lobby.setGameActive(false);
                 send(new StartGameResponseDTO(true, null, null, null), clientHeader);
             }
             return null;

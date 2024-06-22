@@ -11,10 +11,12 @@ import com.zemlovka.haj.utils.dto.server.GetChosenCardsResponseDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collection;
 import java.util.List;
 
 
+/**
+ * Returns the chosen card, is being set of by the ChooseCardCommand from all users
+ */
 public class GetChosenCardsCommand extends AbstractServerCommand<GetChosenCardsDTO, GetChosenCardsResponseDTO> {
     private static final Logger logger = LoggerFactory.getLogger(GetChosenCardsCommand.class);
     private static final String NAME = CommandNameEnum.GET_CHOSEN_CARDS.name();

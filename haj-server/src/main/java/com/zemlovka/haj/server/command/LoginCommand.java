@@ -12,6 +12,9 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 
 
+/**
+ * A login command to initialize the user
+ */
 public class LoginCommand extends AbstractServerCommand<LoginDTO, LoginResponseDTO> {
     private static final Logger logger = LoggerFactory.getLogger(LoginCommand.class);
     private static final String NAME = CommandNameEnum.LOGIN.name();

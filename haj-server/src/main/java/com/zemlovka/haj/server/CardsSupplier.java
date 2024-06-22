@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.util.List;
 
 
+/**
+ * Static card supplier to init all the cards for the application
+ */
 public class CardsSupplier {
     private final static String QUESTION_CARDS_FILENAME = "questionCards.json";
     private final static String ANSWER_CARDS_FILENAME = "answerCards.json";

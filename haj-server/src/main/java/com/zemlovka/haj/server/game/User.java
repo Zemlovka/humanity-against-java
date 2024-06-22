@@ -4,6 +4,9 @@ import java.util.UUID;
 import java.util.concurrent.ScheduledExecutorService;
 
 
+/**
+ * Represents a business user
+ */
 public class User {
     private String username;
     private UUID uuid;
