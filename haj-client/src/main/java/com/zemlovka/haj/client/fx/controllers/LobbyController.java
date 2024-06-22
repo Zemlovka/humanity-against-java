@@ -318,7 +318,7 @@ public class LobbyController extends AbstractWsActionsSettingController {
     }
 
     /**
-     * Function to show the spinner while waiting for other players to choose their cards. Puts spinner into answer cards container.
+     * Function to show the spinner while waiting for other players. Puts spinner into answer cards container.
      */
     private void showSpinner() {
         VBox container = new VBox();

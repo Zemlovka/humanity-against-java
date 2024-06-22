@@ -38,6 +38,8 @@ public class CreateLobbyController extends AbstractWsActionsSettingController {
     @FXML
     private Slider lobbySlider;
     @FXML
+    private Slider roundSlider;
+    @FXML
     private Button backButton;
 
     private WSActions WSActions;
@@ -66,9 +68,8 @@ public class CreateLobbyController extends AbstractWsActionsSettingController {
 
         String lobbyPassword = lobbyPasswordField.getText();
         int lobbySize = (int) lobbySlider.getValue();
-        log.info("Lobby name: {}", lobbyName);
-        log.info("Lobby password: {}", lobbyPassword);
-        log.info("Lobby size: {}", lobbySize);
+        int rounds = (int) roundSlider.getValue();
+        log.info("Lobby name: {} with password {}, and size of {} with {} rounds", lobbyName, lobbyPassword, lobbySize, rounds);
         if (lobbyName == null || lobbyName.trim().isEmpty()) {
             log.error("Lobby name is empty or null");
             ToastNotification tn = appState.getNotificationService().createToast(dialogForm.getScene().getWindow(),
@@ -79,7 +80,7 @@ public class CreateLobbyController extends AbstractWsActionsSettingController {
                     true);
             tn.showToast();
         } else {
-            Lobby lobby = new Lobby(lobbyName, lobbyPassword, lobbySize, 5);
+            Lobby lobby = new Lobby(lobbyName, lobbyPassword, lobbySize, rounds);
             WSActions.createLobby(lobby);
             Player player = appState.getCurrentPlayer();
             lobby.addPlayerToList(player);
