@@ -5,10 +5,10 @@
     <parent>
         <artifactId>humanity-against-java</artifactId>
         <groupId>com.zemlovka.haj</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
 
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>haj-client</artifactId>
     <name>haj-client</name>
@@ -43,7 +43,7 @@
                     <dependency>
                         <groupId>com.zemlovka.haj</groupId>
                         <artifactId>haj-utils</artifactId>
-                        <version>1.0-SNAPSHOT</version>
+                        <version>1.0</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -51,25 +51,166 @@
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
-                <dependencies>
-                </dependencies>
+                <configuration>
+                    <mainClass>com.zemlovka.haj.client.fx.AppStarter</mainClass>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.0</version>
                 <executions>
                     <execution>
-                        <!-- Default configuration for running with: mvn clean javafx:run -->
-                        <id>default-cli</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
                         <configuration>
-                            <mainClass>com.zemlovka.jah.client.client/com.zemlovka.haj.client.fx.App
-                            </mainClass>
-                            <launcher>app</launcher>
-                            <jlinkZipName>app</jlinkZipName>
-                            <jlinkImageName>app</jlinkImageName>
-                            <noManPages>true</noManPages>
-                            <stripDebug>true</stripDebug>
-                            <noHeaderFiles>true</noHeaderFiles>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.zemlovka.haj.client.fx.AppStarter</mainClass>
+                                </transformer>
+                            </transformers>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-shade-plugin</artifactId>-->
+<!--                <version>3.6.0</version>-->
+<!--                <configuration>-->
+<!--                    <archive>-->
+<!--                        <manifest>-->
+<!--                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>-->
+<!--                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>-->
+<!--                            <addClasspath>true</addClasspath>-->
+<!--                            <classpathPrefix>lib/</classpathPrefix>-->
+<!--                            <mainClass>com.zemlovka.haj.client.fx.App</mainClass>-->
+<!--                        </manifest>-->
+<!--                    </archive>-->
+<!--                    <outputFile>C:\Users\Bruh\Documents\vse\4IT353\humanity-against-java\haj-client\target\haj-client-1.0.jar</outputFile>-->
+
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>shade</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <transformers>-->
+<!--                                <transformer-->
+<!--                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
+<!--&lt;!&ndash;                                    <manifestEntries>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <Main-Class>com.zemlovka.haj.client.fx.App</Main-Class>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <Build-Number>123</Build-Number>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    </manifestEntries>&ndash;&gt;-->
+<!--                                    <mainClass>com.zemlovka.haj.client.fx.App</mainClass>-->
+
+<!--                                </transformer>-->
+<!--                            </transformers>-->
+<!--                            <archive>-->
+<!--                                <manifest>-->
+<!--                                    <addDefaultImplementationEntries>true</addDefaultImplementationEntries>-->
+<!--                                    <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>-->
+<!--                                    <addClasspath>true</addClasspath>-->
+<!--                                    <classpathPrefix>lib/</classpathPrefix>-->
+<!--                                    <mainClass>com.zemlovka.haj.client.fx.App</mainClass>-->
+<!--                                </manifest>-->
+<!--                            </archive>-->
+<!--                            <outputFile>C:\Users\Bruh\Documents\vse\4IT353\humanity-against-java\haj-client\target\haj-client-1.0.jar</outputFile>-->
+
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.openjfx</groupId>-->
+            <!--                <artifactId>javafx-maven-plugin</artifactId>-->
+            <!--                <version>0.0.8</version>-->
+            <!--                <dependencies>-->
+            <!--                </dependencies>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        &lt;!&ndash; Default configuration for running with: mvn clean javafx:run &ndash;&gt;-->
+            <!--                        <id>default-cli</id>-->
+            <!--                        <configuration>-->
+            <!--                            <mainClass>com.zemlovka.jah.client.client/com.zemlovka.haj.client.fx.App-->
+            <!--                            </mainClass>-->
+            <!--                            <launcher>app</launcher>-->
+            <!--                            <jlinkZipName>app</jlinkZipName>-->
+            <!--                            <jlinkImageName>app</jlinkImageName>-->
+            <!--                            <noManPages>true</noManPages>-->
+            <!--                            <stripDebug>true</stripDebug>-->
+            <!--                            <noHeaderFiles>true</noHeaderFiles>-->
+            <!--                        </configuration>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <artifactId>maven-assembly-plugin</artifactId>-->
+            <!--                <configuration>-->
+            <!--                    <archive>-->
+            <!--                        <manifest>-->
+            <!--                            <mainClass>com.zemlovka.haj.client.fx.App</mainClass>-->
+            <!--                        </manifest>-->
+            <!--                    </archive>-->
+            <!--                    <descriptorRefs>-->
+            <!--                        <descriptorRef>jar-with-dependencies</descriptorRef>-->
+            <!--                    </descriptorRefs>-->
+            <!--                </configuration>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <id>make-assembly</id> &lt;!&ndash; this is used for inheritance merges &ndash;&gt;-->
+            <!--                        <phase>package</phase> &lt;!&ndash; bind to the packaging phase &ndash;&gt;-->
+            <!--                        <goals>-->
+            <!--                            <goal>single</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-jar-plugin</artifactId>-->
+            <!--                <version>3.0.2</version>-->
+            <!--                <configuration>-->
+            <!--                    <archive>-->
+            <!--                        <manifest>-->
+            <!--                            <addClasspath>true</addClasspath>-->
+            <!--                            <mainClass>com.zemlovka.haj.client.fx.App</mainClass>-->
+            <!--                        </manifest>-->
+            <!--                    </archive>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-shade-plugin</artifactId>-->
+            <!--                <version>2.4.3</version>-->
+            <!--                <configuration>-->
+            <!--                    <archive>-->
+            <!--                        <manifest>-->
+            <!--                            <mainClass>com.zemlovka.haj.client.fx.App</mainClass>-->
+            <!--                        </manifest>-->
+            <!--                    </archive>-->
+            <!--                </configuration>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <phase>package</phase>-->
+            <!--                        <goals>-->
+            <!--                            <goal>shade</goal>-->
+            <!--                        </goals>-->
+            <!--                        <configuration>-->
+            <!--                            <transformers>-->
+            <!--                                <transformer-->
+            <!--                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
+            <!--                                    <mainClass>com.zemlovka.haj.client.fx.App</mainClass>-->
+            <!--                                </transformer>-->
+            <!--                            </transformers>-->
+            <!--                        </configuration>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
         </plugins>
     </build>
 </project>

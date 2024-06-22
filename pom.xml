@@ -7,7 +7,7 @@
     <groupId>com.zemlovka.haj</groupId>
     <artifactId>humanity-against-java</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <modules>
         <module>haj-server</module>
         <module>haj-client</module>
@@ -26,17 +26,17 @@
             <dependency>
                 <groupId>com.zemlovka.haj</groupId>
                 <artifactId>haj-utils</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.0</version>
             </dependency>
             <dependency>
                 <groupId>com.zemlovka.haj</groupId>
                 <artifactId>haj-server</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.0</version>
             </dependency>
             <dependency>
                 <groupId>com.zemlovka.haj</groupId>
                 <artifactId>haj-client</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.0</version>
             </dependency>
             <dependency>
                 <groupId>org.openjfx</groupId>
@@ -106,8 +106,6 @@
 
     <build>
         <plugins>
-
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

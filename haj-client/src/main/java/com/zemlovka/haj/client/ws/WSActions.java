@@ -24,8 +24,8 @@ public class WSActions {
     private final Client client;
     private final ConnectionLostNotifier connectionStatusNotifier;
 
-    public WSActions(ConnectionLostNotifier connectionStatusNotifier) {
-        Client client = new Client();
+    public WSActions(ConnectionLostNotifier connectionStatusNotifier, String host, int port) {
+        Client client = new Client(host, port);
         client.start();
         this.client = client;
         this.connectionStatusNotifier = connectionStatusNotifier;
@@ -48,7 +48,7 @@ public class WSActions {
 
     public CommandCallback<CreateLobbyResponseDTO> createLobby(Lobby lobby) {
         return commands.createLobby.run(
-                new CreateLobbyDTO(lobby.getName(), lobby.getPassword(), lobby.getCapacity(), lobby.getRoundNumber())
+                new CreateLobbyDTO(lobby.getName(), lobby.getCapacity(), lobby.getRoundNumber())
         );
     }
 

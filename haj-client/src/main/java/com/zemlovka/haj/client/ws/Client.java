@@ -36,12 +36,16 @@ public class Client extends Thread {
     private volatile boolean connected = false;
     private volatile boolean running = true;
     private Thread listenerThread;
+    private int port;
+    private String host;
 
-    public Client() {
+    public Client(String host, int port) {
         this.objectMapper = ResourceObjectMapperFactory.getObjectMapper();
         futureConcurrentHashMap = new ConcurrentHashMap<>();
         commandQueue = new ConcurrentLinkedQueue<>();
         clientId = UUID.randomUUID();
+        this.host = host;
+        this.port = port;
     }
 
     public void setConnectionStatusListener(ConnectionStatusListener listener) {
@@ -56,7 +60,7 @@ public class Client extends Thread {
         log.info("Client started.");
         while (running) {
             try {
-                this.clientSocket = new Socket("127.0.0.1", 8082);
+                this.clientSocket = new Socket(host, port);
                 this.pw = new PrintWriter(clientSocket.getOutputStream(), true);
                 connected = true;
                 if (connectionStatusListener != null) {

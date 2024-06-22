@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class Lobby {
     private final String name;
-    private String password = null;
+//    private String password = null;
     private final int capacity;
     private int roundNumber;
     private List<Player> players;
@@ -17,9 +17,10 @@ public class Lobby {
     private List<AnswerCard> playerCards;
     private QuestionCard questionCard;
 
-    public Lobby(String name, String password, int capacity, int roundNumber) {
+    public Lobby(String name, int capacity, int roundNumber) {
         this.name = name;
-        this.password = password;
+//        this.password = password;
+
         this.capacity = capacity;
         this.roundNumber = roundNumber;
         this.players = new ArrayList<>();
@@ -54,9 +55,9 @@ public class Lobby {
         return name;
     }
 
-    public String getPassword() {
-        return password;
-    }
+//    public String getPassword() {
+//        return password;
+//    }
 
     public int getCapacity() {
         return capacity;

@@ -5,15 +5,14 @@
     <parent>
         <artifactId>humanity-against-java</artifactId>
         <groupId>com.zemlovka.haj</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
 
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <dependencies>
         <dependency>
             <groupId>com.zemlovka.haj</groupId>
             <artifactId>haj-utils</artifactId>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
     <modelVersion>4.0.0</modelVersion>
@@ -21,4 +20,30 @@
     <name>haj-server</name>
 
 
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.zemlovka.haj.server.Main</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id> <!-- this is used for inheritance merges -->
+                        <phase>package</phase> <!-- bind to the packaging phase -->
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

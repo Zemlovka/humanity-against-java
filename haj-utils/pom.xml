@@ -5,12 +5,12 @@
     <parent>
         <artifactId>humanity-against-java</artifactId>
         <groupId>com.zemlovka.haj</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
 
     <artifactId>haj-utils</artifactId>
     <name>haj-utils</name>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
 </project>

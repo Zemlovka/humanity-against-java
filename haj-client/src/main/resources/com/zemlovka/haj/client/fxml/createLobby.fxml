@@ -35,7 +35,7 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   </TextField>
-                  <TextField fx:id="lobbyPasswordField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="329.0" promptText="Lobby's password (leave blank if there's not)" />
+<!--                  <TextField fx:id="lobbyPasswordField" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="329.0" promptText="Lobby's password (leave blank if there's not)" />-->
                   <VBox spacing="5.0">
                      <children>
                         <Label text="Lobby size:" />
