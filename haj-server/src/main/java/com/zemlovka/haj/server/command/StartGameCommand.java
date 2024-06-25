@@ -47,11 +47,13 @@ public class StartGameCommand extends AbstractServerCommand<StartGameDTO, StartG
             }
             return null;
         });
-        List<User> readyUsers = lobby.getUsers().values().stream().filter(User::isReady).toList();
-        if (readyUsers.size() == lobby.getCapacity()) {
-            lobby.nextRound();
-            logger.info("Signaling flag StartGame from user {}", GlobalUtils.compileUUID(clientHeader.clientID()));
-            lobby.getFlags().lobbyReady().signal();
+        synchronized (lobby) {
+            List<User> readyUsers = lobby.getUsers().values().stream().filter(User::isReady).toList();
+            if (readyUsers.size() == lobby.getCapacity()) {
+                lobby.nextRound();
+                logger.info("Signaling flag StartGame from user {}", GlobalUtils.compileUUID(clientHeader.clientID()));
+                lobby.getFlags().lobbyReady().signal();
+            }
         }
     }
 

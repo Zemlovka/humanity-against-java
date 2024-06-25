@@ -30,14 +30,16 @@ public class LoginCommand extends AbstractServerCommand<LoginDTO, LoginResponseD
     @Override
     public void execute(LoginDTO argument, ConnectionHeader clientHeader) {
         final LoginResponseDTO loginResponseDTO;
-        if (userMap.get(argument.username()) != null) {
-            loginResponseDTO = new LoginResponseDTO(false, "User " + argument.username() + " is already initiated");
-        } else {
-            userData.setUsername(argument.username());
-            userData.setUuid(argument.clientUuid());
-            userMap.put(argument.username(), userData);
-            logger.info("User initiated with username {}", userData.getUsername());
-            loginResponseDTO = new LoginResponseDTO(true, "User with username " + userData.getUsername() + "initiated succesfully");
+        synchronized (userMap) {
+            if (userMap.get(argument.username()) != null) {
+                loginResponseDTO = new LoginResponseDTO(false, "User " + argument.username() + " is already initiated");
+            } else {
+                userData.setUsername(argument.username());
+                userData.setUuid(argument.clientUuid());
+                userMap.put(argument.username(), userData);
+                logger.info("User initiated with username {}", userData.getUsername());
+                loginResponseDTO = new LoginResponseDTO(true, "User with username " + userData.getUsername() + "initiated succesfully");
+            }
         }
         send(loginResponseDTO,clientHeader);
     }

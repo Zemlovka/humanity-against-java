@@ -2,6 +2,8 @@ package com.zemlovka.haj.server.game;
 
 import com.zemlovka.haj.server.CardsSupplier;
 import com.zemlovka.haj.utils.dto.secondary.CardDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -11,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * A lobby class for all the functions connected to a lobby logic
  */
 public class Lobby {
+    private static final Logger log = LoggerFactory.getLogger(Lobby.class);
     private static final int DEFAULT_PLAYER_CARDS_NUMBER = 5;
     private static final int POINTS_FOR_WIN = 5;
     private final int capacity;
@@ -105,7 +108,7 @@ public class Lobby {
     }
 
     public boolean isRoundPlayable() {
-        return rounds.size() <= roundNumber + 1;
+        return rounds.size() <= roundNumber;
     }
 
     public synchronized Round getCurrentRound() {
