@@ -5,6 +5,8 @@
 This project is an online implementation of the board game “Cards Against Humanity” written in pure Java, featuring a
 server and client using JavaFX. The communication between the client and server is managed through sockets with
 CompletableFuture and polling, utilizing multiple threads.
+## Authors
+[Nikita (Nick) Korotov](https://github.com/Nikinayzer), [Mykhailo Bubnov](https://github.com/miahandrio)
 
 ## Table of Contents
 
