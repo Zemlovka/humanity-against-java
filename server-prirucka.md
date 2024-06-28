@@ -1,6 +1,11 @@
-Až se spustíš archiv haj-server-1.0.jar pomocí přikazu
+## Running the Server
 
+To start the server, execute the following command:
+
+```sh
 java -jar haj-server-1.0.jar
+```
 
-Budeš musít zadat port typu 8080, nebolí stisknut Enter a použije se default.
-Potom server začne svůj běh, vypnout ho je možně stísknutím Enter.
+You will be prompted to enter the port (e.g., 8080) or press Enter to use the default values.
+The server will then start, waiting for clients to connect.
+The server can be stopped by pressing Enter again.

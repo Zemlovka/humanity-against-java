@@ -1,6 +1,10 @@
-Až se spustíš archiv haj-client-1.0.jar pomocí přikazu
+## Running the Client
 
+To start the client, execute the following command:
+
+```sh
 java -jar haj-client-1.0.jar
+```
 
-Budeš musít zadat host a port typu 127.0.0.1 a 8080, nebolí stisknut Enter a použije se default.
-Potom se ti objeví aplikace ve ktere můžeš zadát uživatelské jmeno, následně výtvožit nebo připojít se k lobby a hrát.
+You will be prompted to enter the host (e.g., 127.0.0.1) and port (e.g., 8080) or press Enter to use the default values.
+The application will then launch, allowing you to enter a username, create or join a lobby, and start playing.
