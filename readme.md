@@ -62,7 +62,7 @@ To start the server, execute the following command:
 java -jar haj-server-1.0.jar
 ```
 
-You will be prompted to enter the host (e.g., 127.0.0.1) and port (e.g., 8080) or press Enter to use the default values.
+You will be prompted to enter port (e.g., 8080) or press Enter to use the default values.
 The server will then start, waiting for clients to connect.
 
 ## Running the Client
@@ -73,7 +73,7 @@ To start the client, execute the following command:
 java -jar haj-client-1.0.jar
 ```
 
-You will be prompted to enter the port (e.g., 8080) or press Enter to use the default values.
+You will be prompted to enter the host (e.g., 127.0.0.1) and port (e.g., 8080) or press Enter to use the default values.
 The application will then launch, allowing you to enter a username, create or join a lobby, and start playing.
 
 ## Technical Details
