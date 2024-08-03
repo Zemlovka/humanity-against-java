@@ -31,8 +31,7 @@ updates and new cards.
 The server manages the game flow, including when cards are played and who wins each round. It maintains the game state,
 including the list of players, their cards, and the current cards on the table. Upon receiving a message from a client,
 the server responds according to the game rules and updates the game state. The server features “lobbies” that players
-can create and join. Clients and the server communicate using text messages in JSON format, which are
-serialized/deserialized to/from objects for the internal game logic to process.
+can create and join.
 
 ## Game Flow
 
